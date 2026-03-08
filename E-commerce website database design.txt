@@ -1,0 +1,110 @@
+E-commerce website database design
+
+Product of Main Category three main category only 
+Handicraft , Texttile ,  FMCG (Fast-moving consumer goods)
+
+🪔 HANDICRAFTS – BULK RATE (Minimum 10 Pcs)
+🪵 Wooden Items
+5
+No	Item	Size	Retail ₹	Bulk (10 pcs) ₹
+1	Wooden Elephant	8 inch	2,000	1,500
+2	Jewelry Box	Small	900	650
+3	Key Holder	Standard	600	420
+4	Wall Hanging	Medium	1,200	850
+5	Wooden Tray	Medium	1,000	750
+6	Pen Stand	Small	400	280
+7	Wooden Clock	Medium	2,000	1,450
+8	Photo Frame	Standard	600	420
+9	Decorative Panel	Large	8,000	6,000
+10	Wooden Temple	Small	7,000	5,200
+
+5,200
+🏺 Brass & Metal Items
+5
+No	Item	Size	Retail ₹	Bulk (10 pcs) ₹
+11	Brass Diya	Small	400	280
+12	Brass Ganesh Idol	8 inch	4,000	3,000
+13	Pooja Thali	Standard	2,500	1,850
+14	Copper Bottle	1 Ltr	1,200	850
+15	Metal Wall Art	Medium	5,000	3,800
+16	Brass Bell	Small	900	650
+17	Candle Stand	Medium	1,800	1,300
+18	Iron Lantern	Medium	2,200	1,650
+19	Flower Vase	Large	3,500	2,600
+20	Urli Bowl	Medium	5,500	4,200
+
+Items Full Bulk Catalogue (Minimum Order: 10 Pieces)
+No Category Product Name Size Bulk Price ■
+1 Textiles Cotton Bedsheet Single 90x100 inch 380
+2 Textiles Cotton Bedsheet Double 90x108 inch 750
+3 Textiles King Size Bedsheet 108x108 inch 1150
+4 Textiles Printed Bedsheet Double 720
+5 Textiles Luxury Bedsheet King 1400
+6 Textiles Comforter Double 1900
+7 Textiles Quilt (Rajai) Double 2600
+8 Textiles Dohar Double 1350
+9 Textiles Blanket Single 1100
+
+👜 JUTE BAGS – BULK RATE (1–25)
+5
+No	Product Name	Size	Bulk ₹ (10 pcs)
+1	Jute Shopping Bag	Medium	120
+2	Jute Shopping Bag	Large	160
+3	Printed Jute Bag	Medium	150
+4	Jute Grocery Bag	Large	180
+5	Jute Tote Bag	Standard	140
+6	Designer Jute Handbag	Medium	220
+7	Jute Office Bag	Laptop Size	450
+8	Jute Laptop Bag	15 inch	480
+9	Jute Conference Bag	Large	250
+10	Jute Wine Bag	Single	90
+11	Jute Wine Bag	Double	130
+12	Jute Lunch Bag	Medium	160
+13	Jute Backpack	Standard	480
+14	Jute School Bag	Large	520
+15	Jute Drawstring Bag	Standard	110
+16	Jute Promotional Bag	Medium	130
+17	Jute Beach Bag	Large	240
+18	Jute Travel Bag	Large	550
+19	Jute File Folder Bag	A4	95
+20	Jute Gift Bag	Small	70
+21	Jute Gift Bag	Medium	95
+22	Jute Gift Bag	Large	130
+23	Jute Carry Bag with Zip	Medium	190
+24	Jute Market Bag	Large	210
+25	Jute Vegetable Bag	Medium	125
+
+🏠 JUTE HOME DECOR – BULK RATE (26–50)
+5
+No	Product Name	Size	Bulk ₹
+26	Jute Carpet	4x6 ft	950
+27	Jute Rug	3x5 ft	720
+28	Jute Door Mat	Standard	180
+29	Jute Floor Mat	Large	260
+30	Jute Wall Hanging	Medium	350
+31	Jute Wall Art Panel	Large	480
+32	Jute Lamp Shade	Medium	420
+33	Jute Pendant Light Cover	Standard	450
+34	Jute Table Runner	Standard	140
+35	Jute Table Cloth	4x6 ft	380
+36	Jute Table Mat Set	6 pcs	220
+37	Jute Cushion Cover	16x16	75
+38	Jute Cushion Cover	18x18	90
+39	Jute Pouf	Standard	850
+40	Jute Bean Bag	Large	1200
+41	Jute Plant Hanger	Medium	85
+42	Jute Hanging Basket	Medium	140
+43	Jute Curtain Tie Back	Pair	95
+44	Jute Storage Box	Large	320
+45	Jute Organizer Box	Medium	240
+46	Jute Magazine Holder	Large	280
+47	Jute Bread Basket	Medium	150
+48	Jute Fruit Basket	Large	220
+49	Jute Laundry Basket	Large	380
+50	Jute Storage Basket	Medium	260
+
+
+FMCG ITEM
+
+Home made jam - 200gm , 900gm
+Pickles  - 1kg , 3kg , 5kg - 10kg

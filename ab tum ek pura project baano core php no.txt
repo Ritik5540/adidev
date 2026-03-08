@@ -1,0 +1,30 @@
+ab tum ek pura project baano core php not pdo and stmt used e-commerce ka jisme uske login kiya , add to cart , wishlist , address set multiple addess ,  
+Feature	Table	Status
+User Management	users
+Multiple Addresses	user_addresses
+Wishlist	user_wishlist
+Shopping Cart	carts, cart_items
+Order History	orders
+Order Items	order_items
+Order Tracking	order_tracking
+Multiple Payment Methods	payments
+Invoicing	invoices
+Product Reviews	product_reviews
+Bulk Inquiries	bulk_inquiries
+Bulk Quotations	bulk_quotations
+Coupons/Discounts	coupons
+Notifications	notifications
+
+main_categories 
+sub_categories 
+products 
+product_variants 
+product_images 
+
+ek project baano or ecommerce ke hr page meta title page ke hissab se hoga ish prompt ko english professional convert kro 
+
+User register 
+User login
+Add to cart 
+also add session based 1 hr active either auto logout and payment 5 min cookies or expires like that 
+database tumhne pehle create kr diya mujhe kewal php project ka code do bs ecommerce aur kuch create karna ke jarurat nhi tumhne jo previous response mein database create kiya wahi bana ke doo and as core php no need to make admin panel now 
