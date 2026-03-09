@@ -1,4 +1,15 @@
-<?php include "header.php"; ?>
+<?php
+require_once __DIR__ . '/config.php';
+require_login();
+
+$page_meta = [
+    'title'       => 'My Account | Adidev',
+    'description' => 'View your Adidev account overview, orders, wishlist and profile information.',
+    'keywords'    => 'Adidev account, orders, wishlist, profile',
+];
+
+include "header.php";
+?>
  <!--=========================
         PAGE BANNER START
     ==========================-->
@@ -40,8 +51,8 @@
                                     <label for="profile_photo"><i class="far fa-camera"></i></label>
                                     <input type="file" id="profile_photo" hidden="">
                                 </div>
-                                <h3>Mr. ariful islam</h3>
-                                <p>arifulislam@gmail.com</p>
+                                <h3><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Customer'); ?></h3>
+                                <p><?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?></p>
                             </div>
                             <div class="dashboard_sidebar_menu">
                                 <ul>

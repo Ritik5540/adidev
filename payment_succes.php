@@ -1,4 +1,21 @@
-<?php include "header.php"; ?>
+<?php
+require_once __DIR__ . '/config.php';
+require_login();
+ensure_checkout_session_valid();
+
+// After successful payment, you may want to clear the checkout window
+unset($_SESSION['checkout_started_at'], $_SESSION['checkout_token']);
+setcookie('adidev_checkout', '', time() - 3600, '/');
+
+// SEO for payment success
+$page_meta = [
+    'title'       => 'Payment Status | Adidev',
+    'description' => 'View the status of your recent payment on Adidev.',
+    'keywords'    => 'Adidev, payment success, order confirmation',
+];
+
+include "header.php";
+?>
  <!--============================
         PAYMENT SUCCESS START
     =============================-->

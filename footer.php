@@ -8,7 +8,7 @@
                 <div class="col-xl-3 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay=".7s">
                     <div class="footer_2_logo_area">
                         <a class="footer_logo" href="index.php">
-                            <img src="assets/images/footer_logo_2.png" alt="Zenis" class="img-fluid w-100">
+                            <img src="assets/images/logo_2.png" alt="Adidev Manufacturing Pvt. Ltd." class="img-fluid w-100">
                         </a>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, distinctio molestiae error
                             ullam obcaecati dolorem inventore.</p>
@@ -37,11 +37,12 @@
                     <div class="footer_link">
                         <h3>Category</h3>
                         <ul>
-                            <li><a href="#">Men’s Fashion</a></li>
-                            <li><a href="#">denim Collection</a></li>
-                            <li><a href="#">western wear</a></li>
-                            <li><a href="#">sport wear</a></li>
-                            <li><a href="#">fashion jewellery</a></li>
+                            <li><a href="category.php">All Categories</a></li>
+                            <?php foreach ($footer_sub_categories as $mainId => $subCats) : ?>
+                                <?php foreach ($subCats as $subCat) : ?>
+                                    <li><a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>"><?php echo htmlspecialchars($subCat['name']); ?></a></li>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>

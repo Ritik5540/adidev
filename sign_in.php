@@ -1,4 +1,28 @@
-<?php include "header.php"; ?>
+<?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/auth_functions.php';
+
+$login_errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email    = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    if (login_user($email, $password, $login_errors)) {
+        // Redirect to dashboard or home after successful login
+        redirect('dashboard.php');
+    }
+}
+
+// SEO meta for this page
+$page_meta = [
+    'title'       => 'Sign In | Adidev Manufacturing Pvt. Ltd',
+    'description' => 'Sign in to your Adidev account to manage orders, wishlist, and bulk inquiries.',
+    'keywords'    => 'Adidev, sign in, login, customer account',
+];
+
+include "header.php";
+?>
  <!--=========================
         SIGN IN PAGE START
     ==========================-->
@@ -13,18 +37,38 @@
                 <div class="col-xxl-4 col-lg-7 col-xl-6 col-md-10 wow fadeInRight">
                     <div class="sign_in_form">
                         <h3>Sign In to Continue 👋</h3>
-                        <form>
+
+                        <?php if (!empty($login_errors)) : ?>
+                            <div class="alert alert-danger">
+                                <?php foreach ($login_errors as $err) : ?>
+                                    <p><?php echo htmlspecialchars($err); ?></p>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form method="post" action="sign_in.php" novalidate>
                             <div class="row">
                                 <div class="col-xl-12">
                                     <div class="single_input">
                                         <label>email</label>
-                                        <input type="email" placeholder="example@Zenis.com">
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="example@yourdomain.com"
+                                            value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
                                     <div class="single_input">
                                         <label>password</label>
-                                        <input type="password" placeholder="********">
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            placeholder="********"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-12">
