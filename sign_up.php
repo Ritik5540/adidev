@@ -1,4 +1,27 @@
-<?php include "header.php"; ?>
+<?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/auth_functions.php';
+
+$register_errors = [];
+$register_success = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (register_user($_POST, $register_errors)) {
+        $register_success = true;
+        // Redirect to dashboard or home after registration
+        redirect('dashboard.php');
+    }
+}
+
+// SEO meta for this page
+$page_meta = [
+    'title'       => 'Sign Up | Adidev Manufacturing Pvt. Ltd',
+    'description' => 'Create your Adidev account to place orders, manage addresses, wishlist products and submit bulk inquiries.',
+    'keywords'    => 'Adidev, sign up, registration, create account',
+];
+
+include "header.php";
+?>
   <!--=========================
         SIGN UP PAGE START
     ==========================-->
@@ -13,43 +36,85 @@
                 <div class="col-xxl-5 col-lg-8 col-xl-6 col-md-10 wow fadeInRight">
                     <div class="sign_in_form">
                         <h3>Sign Up to Continue 👋</h3>
-                        <form>
+
+                        <?php if (!empty($register_errors)) : ?>
+                            <div class="alert alert-danger">
+                                <?php foreach ($register_errors as $err) : ?>
+                                    <p><?php echo htmlspecialchars($err); ?></p>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form method="post" action="sign_up.php" novalidate>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="single_input">
                                         <label>first name</label>
-                                        <input type="text" placeholder="First name">
+                                        <input
+                                            type="text"
+                                            name="first_name"
+                                            placeholder="First name"
+                                            value="<?php echo isset($_POST['first_name']) ? htmlspecialchars($_POST['first_name']) : ''; ?>"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="single_input">
                                         <label>Last name</label>
-                                        <input type="text" placeholder="Last name">
+                                        <input
+                                            type="text"
+                                            name="last_name"
+                                            placeholder="Last name"
+                                            value="<?php echo isset($_POST['last_name']) ? htmlspecialchars($_POST['last_name']) : ''; ?>"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="single_input">
                                         <label>email</label>
-                                        <input type="email" placeholder="Vipin@wciprofile.com
-">
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="you@example.com"
+                                            value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="single_input">
                                         <label>phone</label>
-                                        <input type="text" placeholder="+91 9999127533">
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            placeholder="+91 9999127533"
+                                            value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="single_input">
                                         <label>password</label>
-                                        <input type="password" placeholder="********">
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            placeholder="********"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="single_input">
                                         <label>cnfirm password</label>
-                                        <input type="password" placeholder="********">
+                                        <input
+                                            type="password"
+                                            name="confirm_password"
+                                            placeholder="********"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

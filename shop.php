@@ -1,4 +1,70 @@
- <?php include "header.php"; ?>
+ <?php
+ require_once __DIR__ . '/config.php';
+ require_once __DIR__ . '/catalog_functions.php';
+
+ // Process filters (category or subcategory via slug)
+ $subCategoryId   = null;
+ $currentCategory = null;
+
+ if (!empty($_GET['sub'])) {
+     $slug = trim($_GET['sub']);
+     $stmt = db_execute(
+         'SELECT id, name, meta_title, meta_description, meta_keywords
+          FROM sub_categories
+          WHERE slug = ? AND is_active = 1
+          LIMIT 1',
+         's',
+         [$slug]
+     );
+     $res = $stmt->get_result();
+     $currentCategory = $res->fetch_assoc();
+     $stmt->close();
+
+     if ($currentCategory) {
+         $subCategoryId = (int) $currentCategory['id'];
+     }
+ } elseif (!empty($_GET['category'])) {
+     $slug = trim($_GET['category']);
+     $stmt = db_execute(
+         'SELECT id, name, meta_title, meta_description, meta_keywords
+          FROM main_categories
+          WHERE slug = ? AND is_active = 1
+          LIMIT 1',
+         's',
+         [$slug]
+     );
+     $res = $stmt->get_result();
+     $currentCategory = $res->fetch_assoc();
+     $stmt->close();
+ }
+
+ // SEO meta for shop page
+ if ($currentCategory) {
+     $page_meta = [
+         'title'       => $currentCategory['meta_title'] ?: ($currentCategory['name'] . ' | Shop | Adidev'),
+         'description' => $currentCategory['meta_description'] ?: 'Browse products in ' . $currentCategory['name'] . ' on Adidev.',
+         'keywords'    => $currentCategory['meta_keywords'] ?: $currentCategory['name'] . ', Adidev products',
+     ];
+ } else {
+     $page_meta = [
+         'title'       => 'Shop | Adidev',
+         'description' => 'Browse all available products on Adidev.',
+         'keywords'    => 'Adidev, products, shop, ecommerce',
+     ];
+ }
+
+ // Sidebar categories
+ $sidebarMain = get_main_categories_for_menu();
+
+ // Product listing
+ $filters = [];
+ if ($subCategoryId !== null) {
+     $filters['sub_category_id'] = $subCategoryId;
+ }
+ $products = get_products($filters, 12, 0);
+
+ include "header.php";
+ ?>
  <!--=========================
         PAGE BANNER START
     ==========================-->
@@ -56,102 +122,16 @@
                             <div class="sidebar_category">
                                 <h3>Categories</h3>
                                 <ul>
-                                    <li>
-                                        <a href="#">
-                                            Men’s Fashion
-                                            <span>20</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            western wear
-                                            <span>09</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            skin care
-                                            <span>04</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            sport wear
-                                            <span>13</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            fashion jewellery
-                                            <span>36</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            beauty Care
-                                            <span>22</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Makeoup Tools
-                                            <span>16</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Winter collention
-                                            <span>27</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Men’s Fashion
-                                            <span>20</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            western wear
-                                            <span>09</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            skin care
-                                            <span>04</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            sport wear
-                                            <span>13</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            fashion jewellery
-                                            <span>36</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            beauty Care
-                                            <span>22</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Makeoup Tools
-                                            <span>16</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Winter collention
-                                            <span>27</span>
-                                        </a>
-                                    </li>
+                                    <?php foreach ($sidebarMain as $mainCat) : ?>
+                                        <li>
+                                            <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>">
+                                                <?php echo htmlspecialchars($mainCat['name']); ?>
+                                                <?php if (isset($mainCat['total_products'])) : ?>
+                                                    <span><?php echo (int) $mainCat['total_products']; ?></span>
+                                                <?php endif; ?>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
                             <div class="sidebar_color">

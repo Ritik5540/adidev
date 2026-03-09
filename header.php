@@ -1,4 +1,41 @@
+<?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/catalog_functions.php';
 
+// Basic SEO meta defaults (can be overridden per page via $page_meta)
+$meta_title       = isset($page_meta['title']) ? (string) $page_meta['title'] : 'Adidev Manufacturing Pvt. Ltd';
+$meta_description = isset($page_meta['description']) ? (string) $page_meta['description'] : 'Adidev Manufacturing Pvt. Ltd - E-commerce platform for manufacturing, wholesale and bulk orders.';
+$meta_keywords    = isset($page_meta['keywords']) ? (string) $page_meta['keywords'] : 'Adidev, manufacturing, ecommerce, bulk orders';
+
+// Build a simple current user display name
+$current_user_name = is_logged_in() && !empty($_SESSION['user_name'])
+    ? $_SESSION['user_name']
+    : 'My Account';
+
+// Preload categories for header menu
+$header_main_categories = get_main_categories_for_menu();
+$header_sub_categories  = get_sub_categories_grouped_by_main(
+    array_map(
+        static fn(array $c): int => (int) $c['id'],
+        $header_main_categories
+    ),
+    30,
+    'name',
+    'ASC'
+);
+$footer_sub_categories = get_sub_categories_grouped_by_main(
+    array_map(
+        static fn(array $c): int => (int) $c['id'],
+        $header_main_categories
+    ),
+    5,
+    'RAND()',
+    ''
+);
+$trending_sub_categories = get_trending_every_sub_categories_5_products_randomly();
+$flash_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale' => 0], 20);
+$special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale' => 0], 6);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +45,9 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi" />
-    <title>Adidev Manufacturing Pvt. Ltd</title>
+    <title><?php echo htmlspecialchars($meta_title); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($meta_description); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($meta_keywords); ?>">
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="stylesheet" href="assets/css/all.min.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -38,7 +77,7 @@
                 <div class="col-lg-2">
                     <div class="header_logo_area">
                         <a href="index.php" class="header_logo">
-                            <img src="assets/images/logo_2.png" alt="Zenis" class="img-fluid w-100">
+                            <img src="assets/images/logo_2.png" alt="Adidev Manufacturing Pvt. Ltd." class="img-fluid w-100">
                         </a>
                         <div class="mobile_menu_icon d-block d-lg-none" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
@@ -50,11 +89,9 @@
                     <form action="#">
                         <select class="select_2">
                             <option>All Categories</option>
-                            <option>Fashion</option>
-                            <option>Elentronics</option>
-                            <option>Fashion & Beauty</option>
-                            <option>Jewelry</option>
-                            <option>Grocery</option>
+                            <?php foreach ($header_main_categories as $mainCat) : ?>
+                                <option value="<?php echo urlencode($mainCat['slug']); ?>"><?php echo htmlspecialchars($mainCat['name']); ?></option>
+                            <?php endforeach; ?>
                         </select>
                         <div class="input">
                             <input type="text" placeholder="Search your product...">
@@ -75,21 +112,6 @@
                                 </a>
                             </h3>
                         </div>
-                    </div>
-                    <div class="topbar_right d-flex flex-wrap align-items-center justify-content-end">
-                        <select class="select_js language">
-                              <option>Hindi</option>
-                            <option>English</option>
-                            <option>Arabic</option>
-                            <option>Chinese</option>
-                        </select>
-                        <select class="select_js">
-                             <option>₹INR</option>
-                            <option>$USD</option>
-                            <option>€EUR</option>
-                            <option>¥JPY</option>
-                            <option>£GBP</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -122,178 +144,36 @@
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                             <ul class="menu_cat_item">
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_1.png" alt="category">
-                                        </span>
-                                        Men’s Fashion
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">shirts <i class="fal fa-angle-right"></i></a>
-                                            <ul class="sub_category">
-                                                <li><a href="shop.php">Casual Shirts</a> </li>
-                                                <li><a href="shop.php">Formal Shirts</a></li>
-                                                <li><a href="shop.php">Denim Shirts</a></li>
+                                <?php foreach ($header_main_categories as $mainCat) : ?>
+                                    <li>
+                                        <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>">
+                                            <span>
+                                                <?php
+                                                $iconPath = !empty($mainCat['icon'])
+                                                    ? htmlspecialchars($mainCat['icon'])
+                                                    : 'assets/images/category_list_icon_1.png';
+                                                ?>
+                                                <img src="<?php echo $iconPath; ?>" alt="category" class="img-fluid">
+                                            </span>
+                                            <?php echo htmlspecialchars($mainCat['name']); ?>
+                                        </a>
+                                        <?php
+                                        $mainId = (int) $mainCat['id'];
+                                        $subForMain = $header_sub_categories[$mainId] ?? [];
+                                        if (!empty($subForMain)) :
+                                        ?>
+                                            <ul class="menu_cat_droapdown">
+                                                <?php foreach ($subForMain as $subCat) : ?>
+                                                    <li>
+                                                        <a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>">
+                                                            <?php echo htmlspecialchars($subCat['name']); ?>
+                                                        </a>
+                                                    </li>
+                                                <?php endforeach; ?>
                                             </ul>
-                                        </li>
-                                        <li><a href="shop.php">pant <i class="fal fa-angle-right"></i></a>
-                                            <ul class="sub_category">
-                                                <li><a href="shop.php">Casual Pants</a></li>
-                                                <li><a href="shop.php">Formal Trousers</a> </li>
-                                                <li><a href="shop.php">Jeans & Denim</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop.php">Casual Wear</a></li>
-                                        <li><a href="shop.php">Formal Attire</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_2.png" alt="category">
-                                        </span>
-                                        Women's Fashion
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">sharee</a></li>
-                                        <li><a href="shop.php">Shirts <i class="fal fa-angle-right"></i></a>
-                                            <ul class="sub_category">
-                                                <li><a href="shop.php">Full Sleeves Printed</a> </li>
-                                                <li><a href="shop.php">Full Sleeves Solid</a></li>
-                                                <li><a href="shop.php">Half Sleeves Solid</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop.php">T-Shirts <i class="fal fa-angle-right"></i></a>
-                                            <ul class="sub_category">
-                                                <li><a href="shop.php">Crew Neck</a></li>
-                                                <li><a href="shop.php">V Neck</a> </li>
-                                                <li><a href="shop.php">Henley Neck</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop.php">Nightie Set</a></li>
-                                        <li><a href="shop.php">3-Piece</a></li>
-                                        <li><a href="shop.php">leggings</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_3.png" alt="category">
-                                        </span>
-                                        KId's Fashion
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">Boys’ Fashion</a></li>
-                                        <li><a href="shop.php">Girls’ Fashion</a></li>
-                                        <li><a href="shop.php">Newborn Essentials <i
-                                                    class="fal fa-angle-right"></i></a>
-                                            <ul class="sub_category">
-                                                <li><a href="shop.php">Sleepwear</a></li>
-                                                <li><a href="shop.php">Loungewear</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop.php">Party & Occasion Wear</a></li>
-                                        <li><a href="shop.php">Winter Warmers</a></li>
-                                        <li><a href="shop.php">Summer Coolers</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_4.png" alt="category">
-                                        </span>
-                                        denim Collection
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">Denim Essentials</a></li>
-                                        <li><a href="shop.php">Jeans & Bottoms</a></li>
-                                        <li><a href="shop.php">Denim Jackets</a></li>
-                                        <li><a href="shop.php">Outerwear</a></li>
-                                        <li><a href="shop.php">Denim Shirts & Tops</a></li>
-                                        <li><a href="shop.php">Denim Shorts</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_5.png" alt="category">
-                                        </span>
-                                        western wear
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">Dresses & Jumpsuits</a></li>
-                                        <li><a href="shop.php">Tops & Blouses</a></li>
-                                        <li><a href="shop.php">T-Shirts & Tank Tops</a></li>
-                                        <li><a href="shop.php">Jeans & Denim</a></li>
-                                        <li><a href="shop.php">Trousers & Pants</a></li>
-                                        <li><a href="shop.php">Skirts & Shorts</a></li>
-                                        <li><a href="shop.php">Blazers & Jackets</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_6.png" alt="category">
-                                        </span>
-                                        sport wear
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">Men’s Activewear</a></li>
-                                        <li><a href="shop.php">Women’s Activewear</a></li>
-                                        <li><a href="shop.php">Gym & Training Gear</a></li>
-                                        <li><a href="shop.php">Running Apparel</a></li>
-                                        <li><a href="shop.php">Yoga & Athleisure</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_7.png" alt="category">
-                                        </span>
-                                        footwear
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">Men’s Footwear</a></li>
-                                        <li><a href="shop.php">Women’s Footwear</a></li>
-                                        <li><a href="shop.php">Casual Shoes</a></li>
-                                        <li><a href="shop.php">Formal Shoes</a></li>
-                                        <li><a href="shop.php">Boots & Winter Wear</a></li>
-                                        <li><a href="shop.php">Sandals & Slippers</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_8.png" alt="category">
-                                        </span>
-                                        fashion jewellery
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">Necklaces & Pendants</a></li>
-                                        <li><a href="shop.php">Earrings & Studs</a></li>
-                                        <li><a href="shop.php">Bracelets & Bangles</a></li>
-                                        <li><a href="shop.php">Rings & Finger Jewelry</a></li>
-                                        <li><a href="shop.php">Brooches & Pins</a></li>
-                                        <li><a href="shop.php">Hair Accessories</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shop.php">
-                                        <span>
-                                            <img src="assets/images/category_list_icon_2.png" alt="category">
-                                        </span>
-                                        Beauty & Cosmetics
-                                    </a>
-                                    <ul class="menu_cat_droapdown">
-                                        <li><a href="shop.php">Necklaces & Pendants</a></li>
-                                        <li><a href="shop.php">Earrings & Studs</a></li>
-                                        <li><a href="shop.php">Bracelets & Bangles</a></li>
-                                        <li><a href="shop.php">Rings & Finger Jewelry</a></li>
-                                        <li><a href="shop.php">Brooches & Pins</a></li>
-                                        <li><a href="shop.php">Hair Accessories</a></li>
-                                    </ul>
-                                </li>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
                                 <li class="all_category">
                                     <a href="category.php">View All Categories <i class="far fa-arrow-right"></i></a>
                                 </li>
@@ -302,20 +182,28 @@
                         <ul class="menu_item">
                            <li><a href="index.php">Home</a></li>
                             <li>
-                                   <li><a href="about.php">About-Us</a></li>
-                            <li>
-                                <a href="#">shop <i class="fas fa-chevron-down"></i></a>
+                                <a href="#">All Products <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
-                                    <li><a href="shop.php">Shop</a></li>
-                                    <li><a href="shop_details.php">Shop Details</a></li>
+                                    <li><a href="shop.php">All Products</a></li>
+                                    <li><a href="shop_details.php">Product Details</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="#">Stores <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
                                     <li><a href="store.php">Store</a></li>
                                     <li><a href="vendor_details.php">Store Details</a></li>
                                     <li><a href="vendor_registration.php">Become a Vendor</a></li>
+                                </ul>
+                            </li> -->
+                            <li>
+                                <a href="#">Categories <i class="fas fa-chevron-down"></i></a>
+                                <ul class="menu_droapdown">
+                                    <?php foreach ($header_sub_categories as $mainId => $subCats) : ?>
+                                        <?php foreach ($subCats as $subCat) : ?>
+                                            <li><a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>"><?php echo htmlspecialchars($subCat['name']); ?></a></li>
+                                        <?php endforeach; ?>
+                                    <?php endforeach; ?>
                                 </ul>
                             </li>
                            
@@ -337,6 +225,7 @@
                                     <li><a href="dashboard.php">Dashboard</a></li>
                                 </ul>
                             </li>
+                            <li><a href="about.php">About-Us</a></li>
                             <li><a href="blog.php">Blogs</a></li>
                             <li><a href="contact_us.php">contact</a></li>
                         </ul>
@@ -367,11 +256,11 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="user" href="dashboard.php">
+                                <a class="user" href="<?php echo is_logged_in() ? 'dashboard.php' : 'sign_in.php'; ?>">
                                     <b>
                                         <img src="assets/images/user_icon_black.svg" alt="cart" class="img-fluid">
                                     </b>
-                                    <h5> Smith Jhon</h5>
+                                    <h5><?php echo htmlspecialchars($current_user_name); ?></h5>
                                 </a>
                                 <ul class="user_dropdown">
                                     <li>
@@ -415,7 +304,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <?php if (is_logged_in()) : ?>
+                                        <a href="logout.php">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -423,6 +313,16 @@
                                             </svg>
                                             logout
                                         </a>
+                                        <?php else : ?>
+                                        <a href="sign_in.php">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 4.5v15m-7.5-7.5h15" />
+                                            </svg>
+                                            sign in
+                                        </a>
+                                        <?php endif; ?>
                                     </li>
                                 </ul>
                             </li>
