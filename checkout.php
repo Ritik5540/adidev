@@ -343,7 +343,7 @@ include "header.php";
                                 </a>
                                 <div class="text">
                                     <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                    <p>$59.00 × 2</p>
+                                    <p>₹59.00 × 2</p>
                                     <p>Color: Red, Size: XL</p>
                                 </div>
                             </li>
@@ -353,7 +353,7 @@ include "header.php";
                                 </a>
                                 <div class="text">
                                     <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                    <p>$75.00 × 1</p>
+                                    <p>₹75.00 × 1</p>
                                     <p>Color: Orange, Size: M</p>
                                 </div>
                             </li>
@@ -374,30 +374,30 @@ include "header.php";
                                 </a>
                                 <div class="text">
                                     <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                    <p>$59.00 × 2</p>
+                                    <p>₹59.00 × 2</p>
                                     <p>Color: Red, Size: XL</p>
                                 </div>
                             </li>
                         </ul>
 
-                        <h6>subtotal <span>$395.00</span></h6>
-                        <h6>Tax <span>(+) $100.00</span></h6>
-                        <h6>Discount <span>(-) $45.00</span></h6>
-                        <h4>Subtotal <span>$350.00</span></h4>
+                        <h6>subtotal <span>₹395.00</span></h6>
+                        <h6>Tax <span>(+) ₹100.00</span></h6>
+                        <h6>Discount <span>(-) ₹45.00</span></h6>
+                        <h4>Subtotal <span>₹350.00</span></h4>
                         <div class="checkout_shipping">
                             <h6>Shipping method</h6>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefaul"
                                     id="flexRadioDefaultShip4">
                                 <label class="form-check-label" for="flexRadioDefaultShip4">
-                                    Flat rate: <span>(+) $15.00</span>
+                                    Flat rate: <span>(+) ₹15.00</span>
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefaul"
                                     id="flexRadioDefaultShip2">
                                 <label class="form-check-label" for="flexRadioDefaultShip2">
-                                    Local pickup: <span>(+) $19.00</span>
+                                    Local pickup: <span>(+) ₹19.00</span>
                                 </label>
                             </div>
                             <div class="form-check">
@@ -408,7 +408,7 @@ include "header.php";
                                 </label>
                             </div>
                         </div>
-                        <h4>Total <span>$410.00</span></h4>
+                        <h4>Total <span>₹410.00</span></h4>
                     </div>
                     <div class="checkout_payment">
                         <h3>payment method</h3>

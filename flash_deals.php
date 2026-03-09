@@ -65,7 +65,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Denim 2 Quarter Pant</a>
-                            <p class="price">$40.00</p>
+                            <p class="price">₹40.00</p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -110,7 +110,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Men's Denim combo set</a>
-                            <p class="price">$47.00 <del>$50.00</del></p>
+                            <p class="price">₹47.00 <del>₹50.00</del></p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -154,7 +154,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Women's Western Party Dress</a>
-                            <p class="price">$43.00</p>
+                            <p class="price">₹43.00</p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -199,7 +199,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Kid's Western Party Dress</a>
-                            <p class="price">$75.00 <del>$69.00</del></p>
+                            <p class="price">₹75.00 <del>₹69.00</del></p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -244,7 +244,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Denim Jeans Pants For Men</a>
-                            <p class="price">$71.00</p>
+                            <p class="price">₹71.00</p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -289,7 +289,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Full Sleeve Hoodie Jacket</a>
-                            <p class="price">$88.00 </p>
+                            <p class="price">₹88.00 </p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -334,7 +334,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Men's premium formal shirt</a>
-                            <p class="price">$46.00</p>
+                            <p class="price">₹46.00</p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -378,7 +378,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">cherry fabric western tops</a>
-                            <p class="price">$46.00</p>
+                            <p class="price">₹46.00</p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -434,7 +434,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Half Sleeve Tops for Women</a>
-                            <p class="price">$29.00</p>
+                            <p class="price">₹29.00</p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -479,7 +479,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Sharee Petticoat For Women</a>
-                            <p class="price">$56.00 </p>
+                            <p class="price">₹56.00 </p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -524,7 +524,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Jeans Pants For Women</a>
-                            <p class="price">$49.00 <del>$39.00</del></p>
+                            <p class="price">₹49.00 <del>₹39.00</del></p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -568,7 +568,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">cherry fabric western tops</a>
-                            <p class="price">$33.00</p>
+                            <p class="price">₹33.00</p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -613,7 +613,7 @@
                         </div>
                         <div class="product_text">
                             <a class="title" href="#">Denim Shirt For Men</a>
-                            <p class="price">$40.00 <del>$48.00</del></p>
+                            <p class="price">₹40.00 <del>₹48.00</del></p>
                             <p class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
