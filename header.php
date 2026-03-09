@@ -41,6 +41,7 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
 
 
 <!-- Mirrored from html.narzotech.com/zenis/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Jun 2025 15:22:05 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -180,7 +181,7 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                             </ul>
                         </div>
                         <ul class="menu_item">
-                           <li><a href="index.php">Home</a></li>
+                            <li><a href="index.php">Home</a></li>
                             <li>
                                 <a href="#">All Products <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
@@ -206,7 +207,7 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                                     <?php endforeach; ?>
                                 </ul>
                             </li>
-                           
+
                             <li><a href="#">pages <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
                                     <li><a href="category.php">Category</a></li>
@@ -305,23 +306,23 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                                     </li>
                                     <li>
                                         <?php if (is_logged_in()) : ?>
-                                        <a href="logout.php">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
-                                            </svg>
-                                            logout
-                                        </a>
+                                            <a href="logout.php">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+                                                </svg>
+                                                logout
+                                            </a>
                                         <?php else : ?>
-                                        <a href="sign_in.php">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 4.5v15m-7.5-7.5h15" />
-                                            </svg>
-                                            sign in
-                                        </a>
+                                            <a href="sign_in.php">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 4.5v15m-7.5-7.5h15" />
+                                                </svg>
+                                                sign in
+                                            </a>
                                         <?php endif; ?>
                                     </li>
                                 </ul>
@@ -423,27 +424,6 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i
                     class="fal fa-times"></i></button>
             <div class="offcanvas-body">
-
-                <ul class="mobile_currency">
-                    <li>
-                        <select class="select_js language">
-                            <option>Hindi</option>
-                            <option>English</option>
-                            <option>Arabic</option>
-                            <option>Chinese</option>
-                        </select>
-                    </li>
-                    <li>
-                        <select class="select_js">
-                            <option>₹INR</option>
-                            <option>$USD</option>
-                            <option>€EUR</option>
-                            <option>¥JPY</option>
-                            <option>£GBP</option>
-                        </select>
-                    </li>
-                </ul>
-
                 <ul class="mobile_menu_header d-flex flex-wrap">
                     <li>
                         <a href="compare.php">
@@ -493,130 +473,41 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
                             aria-labelledby="pills-home-tab" tabindex="0">
                             <ul class="main_mobile_menu">
-                                <li class="mobile_dropdown">
-                                    <a href="#">Men's Fashion</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">jeans pant</a></li>
-                                        <li><a href="shop.php">formal shirt</a></li>
-                                        <li><a href="shop.php">2 quater</a></li>
-                                        <li><a href="shop.php">denim jacket</a></li>
-                                        <li><a href="shop.php">t-shirt</a></li>
-                                        <li><a href="shop.php">polo-shirt</a></li>
-                                        <li><a href="shop.php">formal pant</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">women's Fashion</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">sharee</a></li>
-                                        <li><a href="shop.php">kurti</a></li>
-                                        <li><a href="shop.php">plazoo</a></li>
-                                        <li><a href="shop.php">lagins</a></li>
-                                        <li><a href="shop.php">tops</a></li>
-                                        <li><a href="shop.php">scart</a></li>
-                                        <li><a href="shop.php">denim jeans</a></li>
-                                        <li><a href="shop.php">Gown</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">kids fashion</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">t-shirt</a></li>
-                                        <li><a href="shop.php">partu dress</a></li>
-                                        <li><a href="shop.php">sharee</a></li>
-                                        <li><a href="shop.php">kurti</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">western wear</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">western party dress</a></li>
-                                        <li><a href="shop.php">kurti</a></li>
-                                        <li><a href="shop.php">denim pant</a></li>
-                                        <li><a href="shop.php">casual jacket</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">Denim collection</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">shirt</a></li>
-                                        <li><a href="shop.php">pant</a></li>
-                                        <li><a href="shop.php">jacket</a></li>
-                                        <li><a href="shop.php">blazer</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">sport wear</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">shoes</a></li>
-                                        <li><a href="shop.php">trouser</a></li>
-                                        <li><a href="shop.php">meat</a></li>
-                                        <li><a href="shop.php">Outdoors</a></li>
-                                        <li><a href="shop.php">Sports Pant</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">beauty products</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">Concealer Palette</a></li>
-                                        <li><a href="shop.php">Highlighter Palette</a></li>
-                                        <li><a href="shop.php">SkinPure Avocado Gel</a></li>
-                                        <li><a href="shop.php">Blush Palette</a></li>
-                                        <li><a href="shop.php">Face Wash</a></li>
-                                        <li><a href="shop.php">Lip Balm</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">fashion jewellery</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="shop.php">Necklace</a></li>
-                                        <li><a href="shop.php">ear ring</a></li>
-                                        <li><a href="shop.php">fingure ring</a></li>
-                                        <li><a href="shop.php">bratchlet</a></li>
-                                    </ul>
-                                </li>
+                                <?php foreach ($header_main_categories as $mainCat) : ?>
+                                    <li class="mobile_dropdown">
+                                        <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>"><?php echo htmlspecialchars($mainCat['name']); ?></a>
+                                        <ul class="inner_menu">
+                                            <?php foreach ($header_sub_categories[$mainCat['id']] as $subCat) : ?>
+                                                <li><a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>"><?php echo htmlspecialchars($subCat['name']); ?></a></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                         <div class="tab-pane fade" id="pills-profile" role="tabpanel"
                             aria-labelledby="pills-profile-tab" tabindex="0">
                             <ul class="main_mobile_menu">
-                               <li><a href="index.php">Home</a></li>
+                                <li><a href="index.php">Home</a></li>
                                 <li class="mobile_dropdown">
-                                    <a href="#">shop</a>
+                                    <a href="shop.php">Products</a>
                                     <ul class="inner_menu">
-                                        <li><a href="shop.php">Shop</a></li>
-                                        <li><a href="shop_details.php">Shop details</a></li>
+                                        <li><a href="shop.php">All Products</a></li>
+                                        <li><a href="shop_details.php">Product details</a></li>
                                     </ul>
                                 </li>
                                 <li class="mobile_dropdown">
-                                    <a href="#">store</a>
+                                    <a href="shop.php">Categories</a>
                                     <ul class="inner_menu">
-                                        <li><a href="store.php">store</a></li>
-                                        <li><a href="vendor_details.php">store details</a></li>
-                                        <li><a href="vendor_registration.php">become a vendor</a></li>
+                                        <?php foreach ($header_sub_categories as $mainId => $subCats) : ?>
+                                            <?php foreach ($subCats as $subCat) : ?>
+                                                <li><a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>"><?php echo htmlspecialchars($subCat['name']); ?></a></li>
+                                            <?php endforeach; ?>
+                                        <?php endforeach; ?>
                                     </ul>
                                 </li>
-                                <li class="mobile_dropdown">
-                                    <a href="#">pages</a>
-                                    <ul class="inner_menu">
-                                        <li><a href="about.php">about us</a></li>
-                                        <li><a href="category.php">Category</a></li>
-                                        <li><a href="cart.php">cart view</a></li>
-                                        <li><a href="wishlist.php">wishlist</a></li>
-                                        <li><a href="checkout.php">checkout</a></li>
-                                        <li><a href=" payment_succes.php">payment success</a></li>
-                                        <li><a href="track_order.php">track order</a></li>
-                                        <li><a href=" faq.php">FAQ's</a></li>
-                                        <li><a href=" privacy_policy.php">privacy Policy</a></li>
-                                        <li><a href=" terms_condition.php">terms and condition</a></li>
-                                        <li><a href="return_policy.php">return policy</a></li>
-                                        <li><a href="sign_in.php">sign in</a></li>
-                                        <li><a href="sign_up.php">sign up</a></li>
-                                        <li><a href=" forgot_password.php">forgot password</a></li>
-                                        <li><a href="dashboard.php">Dashboard</a></li>
-                                    </ul>
-                                </li>
-                               <li><a href="blog.php">Blog</a></li>
+                                <li><a href="about.php">About Us</a></li>
+                                <li><a href="blog.php">Blog</a></li>
                                 <li><a href="contact_us.php">contact</a></li>
                             </ul>
                         </div>
