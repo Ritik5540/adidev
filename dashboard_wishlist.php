@@ -200,7 +200,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="#">Full Sleeve Hoodie Jacket</a>
-                                            <p class="price">$40.00 <del>$48.00</del></p>
+                                            <p class="price">₹40.00 <del>₹48.00</del></p>
                                             <p class="rating">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -249,7 +249,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="#">Denim casual blazer for men</a>
-                                            <p class="price">$120.00 <del>$99.00</del></p>
+                                            <p class="price">₹120.00 <del>₹99.00</del></p>
                                             <p class="rating">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -297,7 +297,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="#">Women's Western Party Dress</a>
-                                            <p class="price">$50.00 <del>$40.00</del></p>
+                                            <p class="price">₹50.00 <del>₹40.00</del></p>
                                             <p class="rating">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -346,7 +346,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="#">tops pant beautiful dress</a>
-                                            <p class="price">$75.00 <del>$69.00</del></p>
+                                            <p class="price">₹75.00 <del>₹69.00</del></p>
                                             <p class="rating">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -395,7 +395,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="#">Kid's Western Party Dress</a>
-                                            <p class="price">$49.00 <del>$39.00</del></p>
+                                            <p class="price">₹49.00 <del>₹39.00</del></p>
                                             <p class="rating">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -443,7 +443,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="#">Men's premium formal shirt</a>
-                                            <p class="price">$41.00 <del>$59.00</del></p>
+                                            <p class="price">₹41.00 <del>₹59.00</del></p>
                                             <p class="rating">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>

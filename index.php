@@ -266,7 +266,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="shop_details.php"><?php echo htmlspecialchars($sub_category_product['name']); ?></a>
-                                            <p class="price">$<?php echo htmlspecialchars($sub_category_product['base_retail_price']); ?> <del>$<?php echo htmlspecialchars($sub_category_product['mrp']); ?></del></p>
+                                            <p class="price">₹<?php echo htmlspecialchars($sub_category_product['base_retail_price']); ?> <del>₹<?php echo htmlspecialchars($sub_category_product['mrp']); ?></del></p>
                                             <?php
                                             $reviews = get_product_reviews($sub_category_product['id']);
                                             $rating = get_average_product_rating($sub_category_product['id']);
@@ -383,7 +383,7 @@
                                 class="img-fluid w-100">
                             <div class="text">
                                 <a class="title" href="shop_details.php">Men's trendy casual shoes</a>
-                                <p class="price">$89.00 <del>$12.00</del></p>
+                                <p class="price">₹89.00 <del>₹12.00</del></p>
                                 <a class="buy_btn" href="shop_details.php">buy now <i
                                         class="far fa-arrow-up"></i></a>
                             </div>
@@ -395,7 +395,7 @@
                                 class="img-fluid w-100">
                             <div class="text">
                                 <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                <p class="price">$75.00 <del>$99.00</del></p>
+                                <p class="price">₹75.00 <del>₹99.00</del></p>
                                 <a class="buy_btn" href="shop_details.php">buy now <i
                                         class="far fa-arrow-up"></i></a>
                             </div>
@@ -407,7 +407,7 @@
                                 class="img-fluid w-100">
                             <div class="text">
                                 <a class="title" href="shop_details.php">Men's Casual Winter Jacket</a>
-                                <p class="price">$60.00 <del>$65.00</del></p>
+                                <p class="price">₹60.00 <del>₹65.00</del></p>
                                 <a class="buy_btn" href="shop_details.php">buy now <i
                                         class="far fa-arrow-up"></i></a>
                             </div>
@@ -420,7 +420,7 @@
                     <img src="assets/images/best_sell_pro_img_4.jpg" alt="best sell" class="img-fluid w-100">
                     <div class="text">
                         <a class="title" href="shop_details.php">Best Sales Discount And Offers</a>
-                        <p class="price">$89.00 <del>$12.00</del></p>
+                        <p class="price">₹89.00 <del>₹12.00</del></p>
                         <a class="common_btn" href="shop_details.php">buy now <i
                                 class="fas fa-long-arrow-right"></i></a>
                     </div>
@@ -479,7 +479,7 @@
                     </div>
                     <div class="product_text">
                         <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                        <p class="price">$88.00 </p>
+                        <p class="price">₹88.00 </p>
                         <p class="rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -524,7 +524,7 @@
                     </div>
                     <div class="product_text">
                         <a class="title" href="shop_details.php">Men's premium formal shirt</a>
-                        <p class="price">$46.00</p>
+                        <p class="price">₹46.00</p>
                         <p class="rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -568,7 +568,7 @@
                     </div>
                     <div class="product_text">
                         <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                        <p class="price">$46.00</p>
+                        <p class="price">₹46.00</p>
                         <p class="rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -613,7 +613,7 @@
                     </div>
                     <div class="product_text">
                         <a class="title" href="shop_details.php">Comfortable Sports Sneakers</a>
-                        <p class="price">$75.00</p>
+                        <p class="price">₹75.00</p>
                         <p class="rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -656,7 +656,7 @@
                     </div>
                     <div class="product_text">
                         <a class="title" href="shop_details.php"> Kid's dresses for summer</a>
-                        <p class="price">$70.00</p>
+                        <p class="price">₹70.00</p>
                         <p class="rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -737,7 +737,7 @@
                                 </div>
                                 <div class="product_text">
                                     <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                    <p class="price">$54.00</p>
+                                    <p class="price">₹54.00</p>
                                     <p class="rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -776,7 +776,7 @@
                                 </div>
                                 <div class="product_text">
                                     <a class="title" href="shop_details.php">Women denim jacket</a>
-                                    <p class="price">$49.00</p>
+                                    <p class="price">₹49.00</p>
                                     <p class="rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -818,7 +818,7 @@
                                 </div>
                                 <div class="product_text">
                                     <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                    <p class="price">$40.00 <del>$48.00</del></p>
+                                    <p class="price">₹40.00 <del>₹48.00</del></p>
                                     <p class="rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -857,7 +857,7 @@
                                 </div>
                                 <div class="product_text">
                                     <a class="title" href="shop_details.php">Half Sleeve Jachket for Women</a>
-                                    <p class="price">$60.00</p>
+                                    <p class="price">₹60.00</p>
                                     <p class="rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -899,7 +899,7 @@
                                 </div>
                                 <div class="product_text">
                                     <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                    <p class="price">$40.00 <del>$48.00</del></p>
+                                    <p class="price">₹40.00 <del>₹48.00</del></p>
                                     <p class="rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>

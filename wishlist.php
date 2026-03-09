@@ -74,12 +74,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                            <p>$59.00 <del>$65.00</del></p>
+                                            <p>₹59.00 <del>₹65.00</del></p>
                                             <span><b>Color:</b> Orange</span>
                                             <span><b>Size:</b> M (Medium)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$59.00</h3>
+                                            <h3>₹59.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -106,12 +106,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Denim 2 Quarter Pant</a>
-                                            <p>$36.00</p>
+                                            <p>₹36.00</p>
                                             <span><b>Color:</b> Black</span>
                                             <span><b>Size:</b> L (Large)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$36.00</h3>
+                                            <h3>₹36.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -161,12 +161,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                            <p>$75.00</p>
+                                            <p>₹75.00</p>
                                             <span><b>Color:</b> Blue</span>
                                             <span><b>Size:</b> XL (Extra Large)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$72.00</h3>
+                                            <h3>₹72.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -193,12 +193,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Comfortable Sports Sneakers</a>
-                                            <p>$66.00 <del>$70.00</del></p>
+                                            <p>₹66.00 <del>₹70.00</del></p>
                                             <span><b>Color:</b> Blue</span>
                                             <span><b>Size:</b> 40" (Large)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$66.00</h3>
+                                            <h3>₹66.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -225,12 +225,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Denim Jeans Pants For Men</a>
-                                            <p>$52.00</p>
+                                            <p>₹52.00</p>
                                             <span><b>Color:</b> Gray</span>
                                             <span><b>Size:</b> 42" (Medium)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$59.00</h3>
+                                            <h3>₹59.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">

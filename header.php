@@ -348,7 +348,7 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                         </a>
                         <div class="cart_text">
                             <a class="cart_title" href=" shop_details.php">Men's Fashionable Hoodie</a>
-                            <p>$140 <del>$150</del></p>
+                            <p>₹140 <del>₹150</del></p>
                             <span><b>Color:</b> Red</span>
                             <span><b>Size:</b> XL (Extra Large)</span>
                         </div>
@@ -360,7 +360,7 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                         </a>
                         <div class="cart_text">
                             <a class="cart_title" href=" shop_details.php">Kids cotton Combo Set</a>
-                            <p>$130 <del>$160</del></p>
+                            <p>₹130 <del>₹160</del></p>
                             <span><b>Color:</b> Orange</span>
                             <span><b>Size:</b> M (Medium)</span>
                         </div>
@@ -372,7 +372,7 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                         </a>
                         <div class="cart_text">
                             <a class="cart_title" href=" shop_details.php">Women's Western Party Dress</a>
-                            <p>$90 <del>$100</del></p>
+                            <p>₹90 <del>₹100</del></p>
                             <span><b>Color:</b> Purple</span>
                             <span><b>Size:</b> S (Small)</span>
                         </div>
@@ -384,7 +384,7 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                         </a>
                         <div class="cart_text">
                             <a class="cart_title" href=" shop_details.php">Men's trendy formal shoes</a>
-                            <p>$140</p>
+                            <p>₹140</p>
                             <span><b>Color:</b> Blue</span>
                             <span><b>Size:</b> XL (Extra Large)</span>
                         </div>
@@ -396,14 +396,14 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                         </a>
                         <div class="cart_text">
                             <a class="cart_title" href=" shop_details.php">Kid's Western Party Dress</a>
-                            <p>$99.00</p>
+                            <p>₹99.00</p>
                             <span><b>Color:</b> Black</span>
                             <span><b>Size:</b> L (Large)</span>
                         </div>
                         <a class="del_icon" href="#"><i class="fal fa-times"></i></a>
                     </li>
                 </ul>
-                <h5>sub total <span>$429.00</span></h5>
+                <h5>sub total <span>₹429.00</span></h5>
                 <div class="minicart_btn_area">
                     <a class="common_btn" href="cart.php">view cart</a>
                 </div>

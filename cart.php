@@ -86,12 +86,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                            <p>$59.00 <del>$65.00</del></p>
+                                            <p>₹59.00 <del>₹65.00</del></p>
                                             <span><b>Color:</b> Orange</span>
                                             <span><b>Size:</b> M (Medium)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$59.00</h3>
+                                            <h3>₹59.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -103,7 +103,7 @@
                                             </div>
                                         </td>
                                         <td class="cart_page_total">
-                                            <h3>$59.00</h3>
+                                            <h3>₹59.00</h3>
                                         </td>
                                         <td class="cart_page_action">
                                             <a href="#"> <i class="fal fa-times"></i> Remove</a>
@@ -124,12 +124,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Denim 2 Quarter Pant</a>
-                                            <p>$36.00</p>
+                                            <p>₹36.00</p>
                                             <span><b>Color:</b> Black</span>
                                             <span><b>Size:</b> L (Large)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$36.00</h3>
+                                            <h3>₹36.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -141,7 +141,7 @@
                                             </div>
                                         </td>
                                         <td class="cart_page_total">
-                                            <h3>$36.00</h3>
+                                            <h3>₹36.00</h3>
                                         </td>
                                         <td class="cart_page_action">
                                             <a href="#"> <i class="fal fa-times"></i> Remove</a>
@@ -185,12 +185,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                            <p>$75.00</p>
+                                            <p>₹75.00</p>
                                             <span><b>Color:</b> Blue</span>
                                             <span><b>Size:</b> XL (Extra Large)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$72.00</h3>
+                                            <h3>₹72.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -202,7 +202,7 @@
                                             </div>
                                         </td>
                                         <td class="cart_page_total">
-                                            <h3>$72.00</h3>
+                                            <h3>₹72.00</h3>
                                         </td>
                                         <td class="cart_page_action">
                                             <a href="#"> <i class="fal fa-times"></i> Remove</a>
@@ -223,12 +223,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Comfortable Sports Sneakers</a>
-                                            <p>$66.00 <del>$70.00</del></p>
+                                            <p>₹66.00 <del>₹70.00</del></p>
                                             <span><b>Color:</b> Blue</span>
                                             <span><b>Size:</b> 40" (Large)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$66.00</h3>
+                                            <h3>₹66.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -240,7 +240,7 @@
                                             </div>
                                         </td>
                                         <td class="cart_page_total">
-                                            <h3>$66.00</h3>
+                                            <h3>₹66.00</h3>
                                         </td>
                                         <td class="cart_page_action">
                                             <a href="#"> <i class="fal fa-times"></i> Remove</a>
@@ -261,12 +261,12 @@
                                         </td>
                                         <td class="cart_page_details">
                                             <a class="title" href="shop_details.php">Denim Jeans Pants For Men</a>
-                                            <p>$52.00</p>
+                                            <p>₹52.00</p>
                                             <span><b>Color:</b> Gray</span>
                                             <span><b>Size:</b> 42" (Medium)</span>
                                         </td>
                                         <td class="cart_page_price">
-                                            <h3>$59.00</h3>
+                                            <h3>₹59.00</h3>
                                         </td>
                                         <td class="cart_page_quantity">
                                             <div class="details_qty_input">
@@ -278,7 +278,7 @@
                                             </div>
                                         </td>
                                         <td class="cart_page_total">
-                                            <h3>$59.00</h3>
+                                            <h3>₹59.00</h3>
                                         </td>
                                         <td class="cart_page_action">
                                             <a href="#"> <i class="fal fa-times"></i> Remove</a>
@@ -310,7 +310,7 @@
                                     </a>
                                     <div class="text">
                                         <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                        <p>$59.00 × 2</p>
+                                        <p>₹59.00 × 2</p>
                                         <p>Color: Red, Size: XL</p>
                                     </div>
                                 </li>
@@ -320,7 +320,7 @@
                                     </a>
                                     <div class="text">
                                         <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                        <p>$75.00 × 1</p>
+                                        <p>₹75.00 × 1</p>
                                         <p>Color: Orange, Size: M</p>
                                     </div>
                                 </li>
@@ -341,16 +341,16 @@
                                     </a>
                                     <div class="text">
                                         <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                        <p>$59.00 × 2</p>
+                                        <p>₹59.00 × 2</p>
                                         <p>Color: Red, Size: XL</p>
                                     </div>
                                 </li>
                             </ul>
 
-                            <h6>subtotal <span>$395.00</span></h6>
-                            <h6>Tax <span>(+) $100.00</span></h6>
-                            <h6>Discount <span>(-) $45.00</span></h6>
-                            <h4>Total <span>$410.00</span></h4>
+                            <h6>subtotal <span>₹395.00</span></h6>
+                            <h6>Tax <span>(+) ₹100.00</span></h6>
+                            <h6>Discount <span>(-) ₹45.00</span></h6>
+                            <h4>Total <span>₹410.00</span></h4>
 
                             <form action="#">
                                 <input type="text" placeholder="Coupon code">
