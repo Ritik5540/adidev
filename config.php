@@ -2,10 +2,17 @@
 // Core configuration and database bootstrap for Adidev E‑Commerce
 
 // --- Database connection settings (adjust for your local setup) ---
-$DB_HOST = '127.0.0.1';
-$DB_USER = 'root';
-$DB_PASS = '';
-$DB_NAME = '20260307_adidev'; // Change here if your database name differs
+if($_SERVER['SERVER_NAME'] == 'localhost'){
+    $DB_HOST = '127.0.0.1';
+    $DB_USER = 'root';
+    $DB_PASS = '';
+    $DB_NAME = '20260307_adidev'; // Change here if your database name differs
+}else{
+    $DB_HOST = 'localhost';
+    $DB_USER = 'u409719797_ecomadidev';
+    $DB_PASS = 'w=hA8A+2';
+    $DB_NAME = 'u409719797_ecomadidev'; // Change here if your database name differs
+}
 
 $mysqli = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
