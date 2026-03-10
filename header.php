@@ -108,8 +108,8 @@ $special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale
                             </span>
                             <h3>
                                 Hotline:
-                                <a href="callto:+91 9999127533">
-                                    <span>+91 9999127533</span>
+                                <a href="callto:+91 7369084701">
+                                    <span>+91 7369084701</span>
                                 </a>
                             </h3>
                         </div>

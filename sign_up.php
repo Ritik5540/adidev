@@ -89,7 +89,7 @@ include "header.php";
                                         <input
                                             type="text"
                                             name="phone"
-                                            placeholder="+91 9999127533"
+                                            placeholder="+91 7369084701"
                                             value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>"
                                             required
                                         >
