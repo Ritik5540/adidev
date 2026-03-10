@@ -34,19 +34,15 @@
                     <div class="contact_info wow fadeInUp">
                         <span><img src="assets/images/call_icon_black.png" alt="call" class="img-fluid"></span>
                         <h3>Call Us</h3>
-                        <a href="callto:+91 9999127533">+91 9999127533</a>
-                      <a href="callto:+91 9999127533">+91 9999127533</a>
+                        <a href="callto:+91 7369084701">+91 7369084701</a>
                     </div>
                 </div>
                 <div class="col-xl-4 col-md-6">
                     <div class="contact_info wow fadeInUp">
                         <span><img src="assets/images/mail_icon_black.png" alt="Mail" class="img-fluid"></span>
                         <h3>Email Us</h3>
-                        <a href="mailto:Vipin@wciprofile.com
-">Vipin@wciprofile.com
-</a>
- <a href="mailto:Vipin@wciprofile.com
-">Vipin@wciprofile.com
+                        <a href="mailto:care@adidevmanufacturing.com
+">care@adidevmanufacturing.com
 </a>
                        
                     </div>
@@ -55,7 +51,8 @@
                     <div class="contact_info wow fadeInUp">
                         <span><img src="assets/images/location_icon_black.png" alt="Map" class="img-fluid"></span>
                         <h3>Our Location</h3>
-                        <p>IITPL NimbusHyde Park, Hyde Park, Sector 78, Noida, Uttar Pradesh 201301</p>
+                        <p>H1 279, KARTIK ORAON CHOWK HARMU COLONY
+                        RANCHI,JHARKHAND,834002, INDIA</p>
                     </div>
                 </div>
             </div>
@@ -65,7 +62,7 @@
                         <img src="assets/images/contact_message.jpg" alt="contact" class="img-fluid w-100">
                         <div class="contact_hotline">
                             <h3>Hotline</h3>
-                            <a href="callto:+91 9999127533">+91 9999127533</a>
+                            <a href="callto:+91 7369084701">+91 7369084701</a>
                             <div class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -96,7 +93,7 @@
                                 <div class="col-md-6">
                                     <div class="single_input">
                                         <label>phone</label>
-                                        <input type="text" placeholder="+91 9999127533">
+                                        <input type="text" placeholder="+91 7369084701">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -121,7 +118,7 @@
         </div>
         <div class="contact_map mt_100 wow fadeInUp">
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1752.1090442584996!2d77.38944565!3d28.563213150000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cef5b3694f54f%3A0x6e12931a178287ff!2sIITL%20NIMBUS%20THE%20HYDE%20PARK%2C%20Sector%2078%2C%20Noida%2C%20Uttar%20Pradesh%20201305!5e0!3m2!1sen!2sin!4v1751018467858!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d14651.005902220944!2d85.29419134126013!3d23.361016760374174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sH1%20279%2C%20KARTIK%20ORAON%20CHOWK%20HARMU%20COLONY%20RANCHI%2CJHARKHAND%2C834002%2C%20INDIA!5e0!3m2!1sen!2sin!4v1767744910104!5m2!1sen!2sin"
                 width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>

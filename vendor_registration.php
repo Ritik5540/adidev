@@ -121,7 +121,7 @@
                                     <div class="col-lg-12 col-xl-6 col-md-6">
                                         <div class="single_input">
                                             <label>Your phone</label>
-                                            <input type="text" placeholder="+91 9999127533
+                                            <input type="text" placeholder="+91 7369084701
 ">
                                         </div>
                                     </div>
