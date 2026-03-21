@@ -1,1174 +1,372 @@
- <?php
- require_once __DIR__ . '/config.php';
- require_once __DIR__ . '/catalog_functions.php';
+<?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/catalog_functions.php';
 
- // Process filters (category or subcategory via slug)
- $subCategoryId   = null;
- $currentCategory = null;
+// Process filters (category or subcategory via slug)
+$subCategoryId = null;
+$mainCategoryId = null;
+$currentCategory = null;
+$categoryType = null;
 
- if (!empty($_GET['sub'])) {
-     $slug = trim($_GET['sub']);
-     $stmt = db_execute(
-         'SELECT id, name, meta_title, meta_description, meta_keywords
-          FROM sub_categories
-          WHERE slug = ? AND is_active = 1
-          LIMIT 1',
-         's',
-         [$slug]
-     );
-     $res = $stmt->get_result();
-     $currentCategory = $res->fetch_assoc();
-     $stmt->close();
+if (!empty($_GET['sub'])) {
+    $slug = trim($_GET['sub']);
+    $stmt = db_execute(
+        'SELECT id, name, meta_title, meta_description, meta_keywords, main_category_id
+         FROM sub_categories
+         WHERE slug = ? AND is_active = 1
+         LIMIT 1',
+        's',
+        [$slug]
+    );
+    $res = $stmt->get_result();
+    $currentCategory = $res->fetch_assoc();
+    $stmt->close();
 
-     if ($currentCategory) {
-         $subCategoryId = (int) $currentCategory['id'];
-     }
- } elseif (!empty($_GET['category'])) {
-     $slug = trim($_GET['category']);
-     $stmt = db_execute(
-         'SELECT id, name, meta_title, meta_description, meta_keywords
-          FROM main_categories
-          WHERE slug = ? AND is_active = 1
-          LIMIT 1',
-         's',
-         [$slug]
-     );
-     $res = $stmt->get_result();
-     $currentCategory = $res->fetch_assoc();
-     $stmt->close();
- }
+    if ($currentCategory) {
+        $subCategoryId = (int) $currentCategory['id'];
+        $categoryType = 'sub';
+    }
+} elseif (!empty($_GET['category'])) {
+    $slug = trim($_GET['category']);
+    $stmt = db_execute(
+        'SELECT id, name, meta_title, meta_description, meta_keywords
+         FROM main_categories
+         WHERE slug = ? AND is_active = 1
+         LIMIT 1',
+        's',
+        [$slug]
+    );
+    $res = $stmt->get_result();
+    $currentCategory = $res->fetch_assoc();
+    $stmt->close();
 
- // SEO meta for shop page
- if ($currentCategory) {
-     $page_meta = [
-         'title'       => $currentCategory['meta_title'] ?: ($currentCategory['name'] . ' | Shop | Adidev'),
-         'description' => $currentCategory['meta_description'] ?: 'Browse products in ' . $currentCategory['name'] . ' on Adidev.',
-         'keywords'    => $currentCategory['meta_keywords'] ?: $currentCategory['name'] . ', Adidev products',
-     ];
- } else {
-     $page_meta = [
-         'title'       => 'Shop | Adidev',
-         'description' => 'Browse all available products on Adidev.',
-         'keywords'    => 'Adidev, products, shop, ecommerce',
-     ];
- }
+    if ($currentCategory) {
+        $mainCategoryId = (int) $currentCategory['id'];
+        $categoryType = 'main';
+    }
+}
 
- // Sidebar categories
- $sidebarMain = get_main_categories_for_menu();
+// Get filter parameters from AJAX or URL
+$minPrice = isset($_GET['min_price']) ? (float) $_GET['min_price'] : 0;
+$maxPrice = isset($_GET['max_price']) ? (float) $_GET['max_price'] : 100000;
+$selectedColors = isset($_GET['colors']) ? explode(',', $_GET['colors']) : [];
+$selectedRatings = isset($_GET['ratings']) ? explode(',', $_GET['ratings']) : [];
+$stockStatus = isset($_GET['stock']) ? $_GET['stock'] : '';
+$sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'default';
+$perPage = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 12;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$offset = ($page - 1) * $perPage;
 
- // Product listing
- $filters = [];
- if ($subCategoryId !== null) {
-     $filters['sub_category_id'] = $subCategoryId;
- }
- $products = get_products($filters, 12, 0);
+// Build filters array
+$filters = [
+    'min_price' => $minPrice,
+    'max_price' => $maxPrice,
+    'colors' => $selectedColors,
+    'ratings' => $selectedRatings,
+    'stock_status' => $stockStatus,
+    'sort_by' => $sortBy,
+    'limit' => $perPage,
+    'offset' => $offset
+];
 
- include "header.php";
- ?>
- <!--=========================
-        PAGE BANNER START
-    ==========================-->
-    <section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
-        <div class="page_banner_overlay">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page_banner_text wow fadeInUp">
-                            <h1>Shop</h1>
+if ($subCategoryId !== null) {
+    $filters['sub_category_id'] = $subCategoryId;
+}
+if ($mainCategoryId !== null) {
+    $filters['main_category_id'] = $mainCategoryId;
+}
+
+// Get products and total count
+$products = get_productsBySubCat($filters);
+$totalProducts = get_products_count($filters);
+$totalPages = ceil($totalProducts / $perPage);
+
+// Get price range for slider
+$priceRange = get_price_range($filters);
+
+// Get all colors with counts for filter
+$allColors = get_product_colors_with_counts($filters);
+
+// Get categories for sidebar
+$sidebarMain = get_main_categories_for_menu();
+
+// SEO meta for shop page
+if ($currentCategory) {
+    $page_meta = [
+        'title'       => $currentCategory['meta_title'] ?: ($currentCategory['name'] . ' | Shop | Adidev'),
+        'description' => $currentCategory['meta_description'] ?: 'Browse products in ' . $currentCategory['name'] . ' on Adidev.',
+        'keywords'    => $currentCategory['meta_keywords'] ?: $currentCategory['name'] . ', Adidev products',
+    ];
+} else {
+    $page_meta = [
+        'title'       => 'Shop | Adidev',
+        'description' => 'Browse all available products on Adidev.',
+        'keywords'    => 'Adidev, products, shop, ecommerce',
+    ];
+}
+
+include "header.php";
+?>
+
+<!--=========================
+    PAGE BANNER START
+==========================-->
+<section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
+    <div class="page_banner_overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page_banner_text wow fadeInUp">
+                        <h1><?php echo $currentCategory ? htmlspecialchars($currentCategory['name']) : 'Shop'; ?></h1>
+                        <ul>
+                            <li><a href="index.php"><i class="fal fa-home-lg"></i> Home</a></li>
+                            <li><a href="#"><?php echo $currentCategory ? htmlspecialchars($currentCategory['name']) : 'Shop'; ?></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=========================
+    PAGE BANNER END
+==========================-->
+
+<!--============================
+    SHOP PAGE START
+============================-->
+<section class="shop_page mt_100 mb_100">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-2 col-lg-4 col-xl-3">
+                <div id="sticky_sidebar">
+                    <div class="shop_filter_btn d-lg-none"> Filter </div>
+                    <div class="shop_filter_area">
+                        <!-- Price Range Filter -->
+                        <div class="sidebar_range">
+                            <h3>Price Range</h3>
+                            <div class="range_slider" data-min="<?php echo $priceRange['min']; ?>" data-max="<?php echo $priceRange['max']; ?>"></div>
+                            <div class="price-inputs">
+                                <input type="text" id="min_price_input" value="<?php echo $minPrice; ?>" placeholder="Min">
+                                <span>-</span>
+                                <input type="text" id="max_price_input" value="<?php echo $maxPrice == 100000 ? '' : $maxPrice; ?>" placeholder="Max">
+                                <button id="apply_price_filter" class="btn-sm">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Stock Status Filter -->
+                        <div class="sidebar_status">
+                            <h3>Product Status</h3>
+                            <div class="form-check">
+                                <input class="form-check-input stock-filter" type="checkbox" value="in_stock" id="stock_in_stock" <?php echo $stockStatus == 'in_stock' ? 'checked' : ''; ?>>
+                                <label class="form-check-label" for="stock_in_stock">
+                                    In Stock
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input stock-filter" type="checkbox" value="out_of_stock" id="stock_out_of_stock" <?php echo $stockStatus == 'out_of_stock' ? 'checked' : ''; ?>>
+                                <label class="form-check-label" for="stock_out_of_stock">
+                                    Out of Stock
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Categories Filter -->
+                        <div class="sidebar_category">
+                            <h3>Categories</h3>
                             <ul>
-                                <li><a href="#"><i class="fal fa-home-lg"></i> Home</a></li>
-                                <li><a href="#">Shop</a></li>
+                                <?php foreach ($sidebarMain as $mainCat) : ?>
+                                    <li>
+                                        <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>">
+                                            <?php echo htmlspecialchars($mainCat['name']); ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div class="sidebar_rating">
+                            <h3>Rating</h3>
+                            <?php for ($rating = 5; $rating >= 1; $rating--): ?>
+                                <div class="form-check">
+                                    <input class="form-check-input rating-filter" type="checkbox"
+                                        value="<?php echo $rating; ?>"
+                                        id="rating_<?php echo $rating; ?>"
+                                        <?php echo in_array($rating, $selectedRatings) ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="rating_<?php echo $rating; ?>">
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <i class="fas fa-star<?php echo $i <= $rating ? '' : '-o'; ?>" style="color: #ffac00;"></i>
+                                        <?php endfor; ?>
+                                        <?php echo $rating; ?> star or above
+                                    </label>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-10 col-lg-8 col-xl-9">
+                <div class="product_page_top">
+                    <div class="row">
+                        <div class="col-4 col-xl-6 col-md-6">
+                            <div class="product_page_top_button">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="grid-view-tab" data-bs-toggle="tab"
+                                            data-bs-target="#grid-view" type="button" role="tab">
+                                            <i class="fas fa-th"></i>
+                                        </button>
+                                        <button class="nav-link" id="list-view-tab" data-bs-toggle="tab"
+                                            data-bs-target="#list-view" type="button" role="tab">
+                                            <i class="fas fa-list-ul"></i>
+                                        </button>
+                                    </div>
+                                </nav>
+                                <p>Showing <?php echo ($offset + 1); ?>–<?php echo min($offset + $perPage, $totalProducts); ?> of <?php echo $totalProducts; ?> results</p>
+                            </div>
+                        </div>
+                        <div class="col-8 col-xl-6 col-md-6">
+                            <ul class="product_page_sorting">
+                                <li>
+                                    <select class="select_js sort-by" id="sort_by">
+                                        <option value="default" <?php echo $sortBy == 'default' ? 'selected' : ''; ?>>Default Sorting</option>
+                                        <option value="price_asc" <?php echo $sortBy == 'price_asc' ? 'selected' : ''; ?>>Price: Low to High</option>
+                                        <option value="price_desc" <?php echo $sortBy == 'price_desc' ? 'selected' : ''; ?>>Price: High to Low</option>
+                                        <option value="newest" <?php echo $sortBy == 'newest' ? 'selected' : ''; ?>>Newest First</option>
+                                        <option value="popular" <?php echo $sortBy == 'popular' ? 'selected' : ''; ?>>Most Popular</option>
+                                        <option value="rating" <?php echo $sortBy == 'rating' ? 'selected' : ''; ?>>Top Rated</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <select class="select_js show" id="per_page">
+                                        <option value="12" <?php echo $perPage == 12 ? 'selected' : ''; ?>>Show: 12</option>
+                                        <option value="24" <?php echo $perPage == 24 ? 'selected' : ''; ?>>Show: 24</option>
+                                        <option value="48" <?php echo $perPage == 48 ? 'selected' : ''; ?>>Show: 48</option>
+                                        <option value="96" <?php echo $perPage == 96 ? 'selected' : ''; ?>>Show: 96</option>
+                                    </select>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <!--=========================
-        PAGE BANNER START
-    ==========================-->
 
-
-    <!--============================
-        SHOP PAGE START
-    =============================-->
-    <section class="shop_page mt_100 mb_100">
-        <div class="container">
-            <div class="row">
-                <div class="col-xxl-2 col-lg-4 col-xl-3">
-                    <div id="sticky_sidebar">
-                        <div class="shop_filter_btn d-lg-none"> Filter </div>
-                        <div class="shop_filter_area">
-                            <div class="sidebar_range">
-                                <h3>Price Range</h3>
-                                <div class="range_slider"></div>
-                            </div>
-                            <div class="sidebar_status">
-                                <h3>Product Status</h3>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        On sale
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                    <label class="form-check-label" for="flexCheckChecked">
-                                        In Stock
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="sidebar_category">
-                                <h3>Categories</h3>
-                                <ul>
-                                    <?php foreach ($sidebarMain as $mainCat) : ?>
-                                        <li>
-                                            <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>">
-                                                <?php echo htmlspecialchars($mainCat['name']); ?>
-                                                <?php if (isset($mainCat['total_products'])) : ?>
-                                                    <span><?php echo (int) $mainCat['total_products']; ?></span>
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- Grid View -->
+                    <div class="tab-pane fade show active" id="grid-view" role="tabpanel">
+                        <div class="row" id="products-grid">
+                            <?php if (!empty($products)): ?>
+                                <?php foreach ($products as $product): ?>
+                                    <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
+                                        <div class="product_item_2 product_item">
+                                            <div class="product_img">
+                                                <img src="<?= get_product_image($product, 'main') ?>"
+                                                    alt="<?php echo htmlspecialchars($product['name']); ?>" class="img-fluid w-100">
+                                                <ul class="discount_list">
+                                                    <?php if ($product['is_new']): ?>
+                                                        <li class="new"> new</li>
+                                                    <?php endif; ?>
+                                                    <?php if ($product['is_on_sale'] && $product['mrp'] > $product['base_retail_price']): ?>
+                                                        <li class="discount"> -<?php echo round((($product['mrp'] - $product['base_retail_price']) / $product['mrp']) * 100); ?>%</li>
+                                                    <?php endif; ?>
+                                                </ul>
+                                                <ul class="btn_list">
+                                                    <li>
+                                                        <a href="#">
+                                                            <img src="assets/images/love_icon_white.svg" class="add-to-wishlist" alt="Love" data-id="<?php echo $product['id']; ?>"
+                                                                class="img-fluid">
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <img src="assets/images/cart_icon_white.svg" class="add-to-cart" alt="Love" data-id="<?php echo $product['id']; ?>"
+                                                                class="img-fluid">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product_text">
+                                                <a class="title" href="shop_details.php?id=<?= encrypt_id($product['id']) ?>">
+                                                    <?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?>
+                                                </a>
+                                                <p class="price">
+                                                    ₹<?php echo number_format($product['base_retail_price'], 2); ?>
+                                                    <?php if ($product['mrp'] > $product['base_retail_price']): ?>
+                                                        <del>₹<?php echo number_format($product['mrp'], 2); ?></del>
+                                                    <?php endif; ?>
+                                                </p>
+                                                <p class="rating">
+                                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                        <i class="fas fa-star<?php echo $i <= round($product['average_rating']) ? '' : '-o'; ?>"></i>
+                                                    <?php endfor; ?>
+                                                    <span>(<?php echo $product['review_count']; ?> reviews)</span>
+                                                </p>
+                                                <?php if (!empty($product['color'])): ?>
+                                                    <ul class="color">
+                                                        <li style="background: <?php echo getColorCode($product['color']); ?>"></li>
+                                                    </ul>
                                                 <?php endif; ?>
-                                            </a>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                            <div class="sidebar_color">
-                                <h3>Filter by Color</h3>
-                                <ul>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="color_1"
-                                                style="background-color: #DB4437;">
-                                            <label class="form-check-label" for="color_1">
-                                                Red
-                                            </label>
+                                            </div>
+                                            <?php if ($product['stock_quantity'] <= 0): ?>
+                                                <div class="out_of_stock">
+                                                    <p>out of stock</p>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                        <span>03</span>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" checked
-                                                id="color_2" style="background-color: #41CF0F;">
-                                            <label class="form-check-label" for="color_2">
-                                                green
-                                            </label>
-                                        </div>
-                                        <span>17</span>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="color_3"
-                                                style="background-color: #8e8e8e;">
-                                            <label class="form-check-label" for="color_3">
-                                                gray
-                                            </label>
-                                        </div>
-                                        <span>06</span>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" checked
-                                                id="color_4" style="background-color: #ffa500;">
-                                            <label class="form-check-label" for="color_4">
-                                                Orange
-                                            </label>
-                                        </div>
-                                        <span>09</span>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="color_5"
-                                                style="background-color: #B615FD;">
-                                            <label class="form-check-label" for="color_5">
-                                                purple
-                                            </label>
-                                        </div>
-                                        <span>42</span>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="color_6"
-                                                style="background-color: #FFD747;">
-                                            <label class="form-check-label" for="color_6">
-                                                Yellow
-                                            </label>
-                                        </div>
-                                        <span>23</span>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="color_7"
-                                                style="background-color: #AB9774;">
-                                            <label class="form-check-label" for="color_7">
-                                                Olive
-                                            </label>
-                                        </div>
-                                        <span>06</span>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="color_8"
-                                                style="background-color: #1C58F2;">
-                                            <label class="form-check-label" for="color_8">
-                                                Dark Blue
-                                            </label>
-                                        </div>
-                                        <span>25</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="sidebar_rating">
-                                <h3>Rating</h3>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-                                    <label class="form-check-label" for="defaultCheck4">
-                                        <i class="fas fa-star" aria-hidden="true"></i>
-                                        5 star
-                                    </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="col-12 text-center">
+                                    <div class="empty-state">
+                                        <i class="fas fa-box-open"></i>
+                                        <h3>No Products Found</h3>
+                                        <p>Try adjusting your filters or browse other categories.</p>
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
-                                    <label class="form-check-label" for="defaultCheck5">
-                                        <i class="fas fa-star" aria-hidden="true"></i>
-                                        4 star or above
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
-                                    <label class="form-check-label" for="defaultCheck6">
-                                        <i class="fas fa-star" aria-hidden="true"></i>
-                                        3 star or above
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck7">
-                                    <label class="form-check-label" for="defaultCheck7">
-                                        <i class="fas fa-star" aria-hidden="true"></i>
-                                        2 star or above
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck8">
-                                    <label class="form-check-label" for="defaultCheck8">
-                                        <i class="fas fa-star" aria-hidden="true"></i>
-                                        1 star or above
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="sidebar_related_product">
-                                <h3>Top Rated Products</h3>
-                                <ul>
-                                    <li>
-                                        <a href="shop_details.php" class="img">
-                                            <img src="assets/images/product_18.png" alt="Product" class="img-fluid">
-                                        </a>
-                                        <div class="text">
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(29)</span>
-                                            </p>
-                                            <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                            <p class="price">₹59.00</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="shop_details.php" class="img">
-                                            <img src="assets/images/product_23.png" alt="Product" class="img-fluid">
-                                        </a>
-                                        <div class="text">
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(12)</span>
-                                            </p>
-                                            <a class="title" href="shop_details.php">Kid's dresses for summer</a>
-                                            <p class="price">₹54.00</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="shop_details.php" class="img">
-                                            <img src="assets/images/product_13.png" alt="Product" class="img-fluid">
-                                        </a>
-                                        <div class="text">
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(09)</span>
-                                            </p>
-                                            <a class="title" href="shop_details.php">Sharee Petticoat For Women</a>
-                                            <p class="price">₹28.00</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="shop_details.php" class="img">
-                                            <img src="assets/images/product_7.png" alt="Product" class="img-fluid">
-                                        </a>
-                                        <div class="text">
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(35)</span>
-                                            </p>
-                                            <a class="title" href="shop_details.php">Denim 2 Quarter Pant</a>
-                                            <p class="price">₹54.00</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                            <?php endif; ?>
                         </div>
-                    </div>
-                </div>
-                <div class="col-xxl-10 col-lg-8 col-xl-9">
-                    <div class="product_page_top">
-                        <div class="row">
-                            <div class="col-4 col-xl-6 col-md-6">
-                                <div class="product_page_top_button">
-                                    <nav>
-                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                                data-bs-target="#nav-home" type="button" role="tab"
-                                                aria-controls="nav-home" aria-selected="true">
-                                                <i class="fas fa-th"></i>
-                                            </button>
-                                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
-                                                data-bs-target="#nav-profile" type="button" role="tab"
-                                                aria-controls="nav-profile" aria-selected="false">
-                                                <i class="fas fa-list-ul"></i>
-                                            </button>
-                                        </div>
-                                    </nav>
-                                    <p>Showing 1–14 of 26 results</p>
-                                </div>
-                            </div>
-                            <div class="col-8 col-xl-6 col-md-6">
-                                <ul class="product_page_sorting">
-                                    <li>
-                                        <select class="select_js">
-                                            <option>Default Sorting</option>
-                                            <option>Low to Hight</option>
-                                            <option>High to Low</option>
-                                            <option>New Added</option>
-                                            <option>On Sale</option>
-                                        </select>
-                                    </li>
-                                    <li>
-                                        <select class="select_js show">
-                                            <option>Show: 12</option>
-                                            <option>Show: 16</option>
-                                            <option>Show: 20</option>
-                                            <option>Show: 24</option>
-                                            <option>Show: 26</option>
-                                        </select>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                            aria-labelledby="nav-home-tab" tabindex="0">
-                            <div class="row">
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_23.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php"> Kid's dresses for summer</a>
-                                            <p class="price">₹70.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(44 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_18.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                            <p class="price">₹88.00 </p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>(20 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_7.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Denim 2 Quarter Pant</a>
-                                            <p class="price">₹40.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(20 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                        <div class="out_of_stock">
-                                            <p>out of stock</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_9.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="discount"> <b>-</b> 45%</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Men's Denim combo set</a>
-                                            <p class="price">₹47.00 <del>₹50.00</del></p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(17 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_10.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Women's Western Party Dress</a>
-                                            <p class="price">₹43.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>(22 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_11.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                                <li class="discount"> <b>-</b> 75%</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                            <p class="price">₹75.00 <del>₹69.00</del></p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(58 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_17.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Denim Jeans Pants For Men</a>
-                                            <p class="price">₹71.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>(20 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_12.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Half Sleeve Tops for Women</a>
-                                            <p class="price">₹29.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(44 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_13.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Sharee Petticoat For Women</a>
-                                            <p class="price">₹56.00 </p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>(98 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_14.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="discount"> <b>-</b> 49%</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Jeans Pants For Women</a>
-                                            <p class="price">₹49.00 <del>₹39.00</del></p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(44 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_16.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                            <p class="price">₹33.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(20 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_15.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                                <li class="discount"> <b>-</b> 75%</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Denim Shirt For Men</a>
-                                            <p class="price">₹40.00 <del>₹48.00</del></p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(20 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_18.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                                            <p class="price">₹88.00 </p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>(20 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_19.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Men's premium formal shirt</a>
-                                            <p class="price">₹46.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(17 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_20.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                            <p class="price">₹46.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                                <span>(22 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                                <li style="background:#1C58F2"></li>
-                                                <li style="background:#ffa500"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
-                                    <div class="product_item_2 product_item">
-                                        <div class="product_img">
-                                            <img src="assets/images/product_4.png" alt="Product"
-                                                class="img-fluid w-100">
-                                            <ul class="discount_list">
-                                                <li class="new"> new</li>
-                                            </ul>
-                                            <ul class="btn_list">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product_text">
-                                            <a class="title" href="shop_details.php">Comfortable Sports Sneakers</a>
-                                            <p class="price">₹75.00</p>
-                                            <p class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>(58 reviews)</span>
-                                            </p>
-                                            <ul class="color">
-                                                <li class="active" style="background:#DB4437"></li>
-                                                <li style="background:#638C34"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Pagination -->
+                        <?php if ($totalPages > 1): ?>
                             <div class="row">
                                 <div class="pagination_area">
-                                    <nav aria-label="...">
-                                        <ul class="pagination justify-content-start mt_50">
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-start mt_50" id="pagination">
+                                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="#" data-page="<?php echo $page - 1; ?>">
                                                     <i class="far fa-arrow-left"></i>
                                                 </a>
                                             </li>
-                                            <li class="page-item">
-                                                <a class="page-link active" href="#">01</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">02</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">03</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">
+                                            <?php
+                                            $startPage = max(1, $page - 2);
+                                            $endPage = min($totalPages, $page + 2);
+                                            if ($startPage > 1): ?>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#" data-page="1">1</a>
+                                                </li>
+                                                <?php if ($startPage > 2): ?>
+                                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+
+                                            <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="#" data-page="<?php echo $i; ?>"><?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+
+                                            <?php if ($endPage < $totalPages): ?>
+                                                <?php if ($endPage < $totalPages - 1): ?>
+                                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                <?php endif; ?>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#" data-page="<?php echo $totalPages; ?>"><?php echo $totalPages; ?></a>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <li class="page-item <?php echo $page >= $totalPages ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="#" data-page="<?php echo $page + 1; ?>">
                                                     <i class="far fa-arrow-right"></i>
                                                 </a>
                                             </li>
@@ -1176,479 +374,526 @@
                                     </nav>
                                 </div>
                             </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- List View -->
+                    <div class="tab-pane fade" id="list-view" role="tabpanel">
+                        <div class="row" id="products-list">
+                            <?php foreach ($products as $product): ?>
+                                <div class="col-12">
+                                    <div class="product_list_item product_item_2 product_item">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-5 col-sm-6 col-xxl-4">
+                                                <div class="product_img">
+                                                    <img src="<?php echo !empty($product['main_image']) ? 'uploads/products/main/' . $product['main_image'] : 'assets/images/product_placeholder.jpg'; ?>"
+                                                        alt="<?php echo htmlspecialchars($product['name']); ?>" class="img-fluid w-100">
+                                                    <ul class="discount_list">
+                                                        <?php if ($product['is_new']): ?>
+                                                            <li class="new"> new</li>
+                                                        <?php endif; ?>
+                                                        <?php if ($product['is_on_sale'] && $product['mrp'] > $product['base_retail_price']): ?>
+                                                            <li class="discount"> -<?php echo round((($product['mrp'] - $product['base_retail_price']) / $product['mrp']) * 100); ?>%</li>
+                                                        <?php endif; ?>
+                                                    </ul>
+                                                    <ul class="btn_list">
+                                                        <li>
+                                                            <a href="#">
+                                                                <img src="assets/images/love_icon_white.svg" class="add-to-wishlist" alt="Love" data-id="<?php echo $product['id']; ?>"
+                                                                    class="img-fluid">
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <img src="assets/images/cart_icon_white.svg" class="add-to-cart" alt="Love" data-id="<?php echo $product['id']; ?>"
+                                                                    class="img-fluid">
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7 col-sm-6 col-xxl-8">
+                                                <div class="product_text">
+                                                    <a class="title"
+                                                        href="shop_details.php?id=<?= encrypt_id($product['id']) ?>">
+                                                        <?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?>
+                                                    </a>
+                                                    <p class="rating">
+                                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                            <i class="fas fa-star<?php echo $i <= round($product['average_rating']) ? '' : '-o'; ?>"></i>
+                                                        <?php endfor; ?>
+                                                        <span>(<?php echo $product['review_count']; ?> reviews)</span>
+                                                    </p>
+                                                    <p class="price">
+                                                        ₹<?php echo number_format($product['base_retail_price'], 2); ?>
+                                                        <?php if ($product['mrp'] > $product['base_retail_price']): ?>
+                                                            <del>₹<?php echo number_format($product['mrp'], 2); ?></del>
+                                                        <?php endif; ?>
+                                                    </p>
+                                                    <?php if (!empty($product['color'])): ?>
+                                                        <ul class="color">
+                                                            <li style="background: <?php echo getColorCode($product['color']); ?>"></li>
+                                                        </ul>
+                                                    <?php endif; ?>
+                                                    <p class="short_description"><?php echo htmlspecialchars(substr($product['short_description'] ?: $product['description'], 0, 150)) . '...'; ?></p>
+                                                    <a class="common_btn add-to-cart" href="#" data-id="<?php echo $product['id']; ?>">add to cart <i class="fas fa-long-arrow-right"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
-                            tabindex="0">
-                            <div class="row">
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_23.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="discount_list">
-                                                        <li class="new"> new</li>
-                                                    </ul>
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Full Sleeve Hoodie
-                                                        Jacket</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(20 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹88.00</p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_7.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Denim 2 Quarter Pant</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(93 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹65.00</p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_9.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Men's Denim combo set</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(16 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹72.00</p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_17.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="discount_list">
-                                                        <li class="new"> new</li>
-                                                        <li class="discount"> <b>-</b> 75%</li>
-                                                    </ul>
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Denim Jeans Pants For
-                                                        Men</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(27 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹50.00 <del>₹60.00</del></p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_23.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="discount_list">
-                                                        <li class="new"> new</li>
-                                                    </ul>
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Full Sleeve Hoodie
-                                                        Jacket</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(20 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹88.00</p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_7.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Denim 2 Quarter Pant</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(93 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹65.00</p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_9.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Men's Denim combo set</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(16 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹72.00</p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xxl-10 col-sm-12">
-                                    <div class="product_list_item product_item_2 product_item">
-                                        <div class=" row align-items-center">
-                                            <div class="col-md-5 col-sm-6 col-xxl-4">
-                                                <div class="product_img">
-                                                    <img src="assets/images/product_17.png" alt="Product"
-                                                        class="img-fluid w-100">
-                                                    <ul class="discount_list">
-                                                        <li class="new"> new</li>
-                                                        <li class="discount"> <b>-</b> 75%</li>
-                                                    </ul>
-                                                    <ul class="btn_list">
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/compare_icon_white.svg"
-                                                                    alt="Compare" class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                                    class="img-fluid">
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7 col-sm-6 col-xxl-8">
-                                                <div class="product_text">
-                                                    <a class="title" href="shop_details.php">Denim Jeans Pants For
-                                                        Men</a>
-                                                    <p class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span>(27 reviews)</span>
-                                                    </p>
-                                                    <p class="price">₹50.00 <del>₹60.00</del></p>
-                                                    <ul class="color">
-                                                        <li class="active" style="background:#DB4437"></li>
-                                                        <li style="background:#638C34"></li>
-                                                        <li style="background:#1C58F2"></li>
-                                                        <li style="background:#ffa500"></li>
-                                                    </ul>
-                                                    <p class="short_description">Lorem ipsum dolor sit amet consectetur,
-                                                        adipisicing elit. Exercitationem inventore libero accusantium ex
-                                                        ipsam, provident voluptas facere nemo, quas assumenda
-                                                        reprehenderit nihil ratione quaerat ad.</p>
-                                                    <a class="common_btn" href="shop_details.php">add to cart <i
-                                                            class="fas fa-long-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <!-- List View Pagination -->
+                        <?php if ($totalPages > 1): ?>
                             <div class="row">
                                 <div class="pagination_area">
-                                    <nav aria-label="...">
-                                        <ul class="pagination justify-content-start mt_50">
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">
-                                                    <i class="far fa-arrow-left"></i>
-                                                </a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link active" href="#">01</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">02</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">03</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">
-                                                    <i class="far fa-arrow-right"></i>
-                                                </a>
-                                            </li>
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-start mt_50" id="pagination-list">
+                                            <!-- Same pagination as grid view -->
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--============================
-        SHOP PAGE END
-    =============================-->
+    </div>
+</section>
+
+<style>
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin: 40px 0;
+    }
+
+    .empty-state i {
+        font-size: 60px;
+        color: #dee2e6;
+        margin-bottom: 15px;
+    }
+
+    .empty-state h3 {
+        margin-bottom: 10px;
+        color: #495057;
+    }
+
+    .price-inputs {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .price-inputs input {
+        width: 80px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .btn-sm {
+        padding: 5px 12px;
+        background: #1a685b;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-sm:hover {
+        background: #0f4f44;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 40px;
+    }
+
+    .loading i {
+        font-size: 40px;
+        color: #1a685b;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        let isLoading = false;
+
+        // Function to get current filters
+        function getFilters() {
+            let colors = [];
+            $('.color-filter:checked').each(function() {
+                colors.push($(this).val());
+            });
+
+            let ratings = [];
+            $('.rating-filter:checked').each(function() {
+                ratings.push($(this).val());
+            });
+
+            let stock = '';
+            if ($('#stock_in_stock').is(':checked')) {
+                stock = 'in_stock';
+            } else if ($('#stock_out_of_stock').is(':checked')) {
+                stock = 'out_of_stock';
+            }
+
+            return {
+                min_price: $('#min_price_input').val() || 0,
+                max_price: $('#max_price_input').val() || 100000,
+                colors: colors.join(','),
+                ratings: ratings.join(','),
+                stock: stock,
+                sort: $('#sort_by').val(),
+                per_page: $('#per_page').val(),
+                page: 1
+            };
+        }
+
+        // Function to load products via AJAX
+        function loadProducts() {
+            if (isLoading) return;
+            isLoading = true;
+
+            $('#products-grid, #products-list').html('<div class="col-12 text-center loading"><i class="fas fa-spinner fa-spin"></i> Loading products...</div>');
+
+            let filters = getFilters();
+            let urlParams = new URLSearchParams(window.location.search);
+
+            // Add category parameters
+            if (urlParams.has('sub')) {
+                filters.sub = urlParams.get('sub');
+            }
+            if (urlParams.has('category')) {
+                filters.category = urlParams.get('category');
+            }
+
+            $.ajax({
+                url: 'ajax/get_products.php',
+                type: 'GET',
+                data: filters,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        updateProductsGrid(response.products);
+                        updateProductsList(response.products);
+                        updatePagination(response.total_pages, response.current_page);
+                        updateProductCount(response.total, response.per_page, response.current_page);
+                    }
+                    isLoading = false;
+                },
+                error: function() {
+                    isLoading = false;
+                    $('#products-grid, #products-list').html('<div class="col-12 text-center"><p class="text-danger">Error loading products. Please try again.</p></div>');
+                }
+            });
+        }
+
+        // Update grid view
+        function updateProductsGrid(products) {
+            let html = '';
+            if (products.length === 0) {
+                html = '<div class="col-12 text-center"><div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filters or browse other categories.</p></div></div>';
+            } else {
+                products.forEach(product => {
+                    let discount = '';
+                    if (product.is_on_sale && product.mrp > product.retail_price) {
+                        let percent = Math.round(((product.mrp - product.retail_price) / product.mrp) * 100);
+                        discount = `<li class="discount"> -${percent}%</li>`;
+                    }
+
+                    let stockBadge = '';
+                    if (product.stock_quantity <= 0) {
+                        stockBadge = '<div class="out_of_stock"><p>out of stock</p></div>';
+                    }
+
+                    let ratingHtml = '';
+                    for (let i = 1; i <= 5; i++) {
+                        ratingHtml += `<i class="fas fa-star${i <= Math.round(product.avg_rating) ? '' : '-o'}"></i>`;
+                    }
+
+                    html += `
+                    <div class="col-xxl-3 col-6 col-md-4 col-lg-6 col-xl-4 wow fadeInUp">
+                        <div class="product_item_2 product_item">
+                            <div class="product_img">
+                                <img src="${product.main_image || 'assets/images/product_placeholder.jpg'}" alt="${product.name}" class="img-fluid w-100">
+                                <ul class="discount_list">
+                                    ${product.is_new ? '<li class="new"> new</li>' : ''}
+                                    ${discount}
+                                </ul>
+                                <ul class="btn_list">
+                                    <li><a href="#" class="add-to-wishlist" data-id="${product.id}"><i class="fas fa-heart"></i></a></li>
+                                    <li><a href="#" class="add-to-cart" data-id="${product.id}"><i class="fas fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="product_text">
+                                <a class="title" href="shop_details.php?id=<?= encrypt_id($product['id']) ?>">
+                                    <?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?>
+                                </a>
+                                <p class="price">₹<?= floatval($product['retail_price']) ?>
+                                    <?= $product['mrp'] > $product['retail_price'] ? "<del>₹" . floatval($product['mrp']) . "</del>" : '' ?>
+                                </p>
+                                <p class="rating"><?= $ratingHtml ?> <span>(<?= $product['review_count'] ?> reviews)</span></p>
+                                <?= $product['color'] ? `<ul class="color"><li style="background: ${getColorCode($product['color'])}"></li></ul>` : '' ?>       
+                            </div>
+                            ${stockBadge}
+                        </div>
+                    </div>
+                `;
+                });
+            }
+            $('#products-grid').html(html);
+        }
+
+        // Update list view
+        function updateProductsList(products) {
+            let html = '';
+            if (products.length === 0) {
+                html = '<div class="col-12 text-center"><div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filters or browse other categories.</p></div></div>';
+            } else {
+                products.forEach(product => {
+                    let discount = '';
+                    if (product.is_on_sale && product.mrp > product.retail_price) {
+                        let percent = Math.round(((product.mrp - product.retail_price) / product.mrp) * 100);
+                        discount = `<li class="discount"> -${percent}%</li>`;
+                    }
+
+                    let ratingHtml = '';
+                    for (let i = 1; i <= 5; i++) {
+                        ratingHtml += `<i class="fas fa-star${i <= Math.round(product.avg_rating) ? '' : '-o'}"></i>`;
+                    }
+
+                    html += `
+                    <div class="col-12">
+                        <div class="product_list_item product_item_2 product_item">
+                            <div class="row align-items-center">
+                                <div class="col-md-5 col-sm-6 col-xxl-4">
+                                    <div class="product_img">
+                                        <img src="${product.main_image || 'assets/images/product_placeholder.jpg'}" alt="${product.name}" class="img-fluid w-100">
+                                        <ul class="discount_list">
+                                            ${product.is_new ? '<li class="new"> new</li>' : ''}
+                                            ${discount}
+                                        </ul>
+                                        <ul class="btn_list">
+                                            <li><a href="#" class="quick-view" data-id="${product.id}"><i class="fas fa-eye"></i></a></li>
+                                            <li><a href="#" class="add-to-wishlist" data-id="${product.id}"><i class="fas fa-heart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-sm-6 col-xxl-8">
+                                    <div class="product_text">
+                                        <a class="title" href="shop_details.php?id=<?= encrypt_id($product['id']) ?>">
+                                            <?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?>
+                                        </a>
+                                        <p class="rating"><?= $ratingHtml ?> <span>(<?= $product['review_count'] ?> reviews)</span></p>
+                                        <p class="price">₹<?= floatval($product['retail_price']) ?>
+                                            <?= $product['mrp'] > $product['retail_price'] ? "<del>₹" . floatval($product['mrp']) . "</del>" : '' ?>
+                                        </p>
+                                        <?= $product['color'] ? `<ul class="color"><li style="background: ${getColorCode($product['color'])}"></li></ul>` : '' ?>
+                                        <p class="short_description">
+                                            <?= htmlspecialchars($product['short_description'] || $product['description'], ENT_QUOTES, 'UTF-8') ?>
+                                        </p>
+                                        <a class="common_btn add-to-cart" href="#" data-id="<?= encrypt_id($product['id']) ?>">add to cart <i class="fas fa-long-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                });
+            }
+            $('#products-list').html(html);
+        }
+
+        // Update pagination
+        function updatePagination(totalPages, currentPage) {
+            let paginationHtml = '';
+
+            paginationHtml += `<li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage - 1}"><i class="far fa-arrow-left"></i></a>
+        </li>`;
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            if (startPage > 1) {
+                paginationHtml += `<li class="page-item"><a class="page-link" href="#" data-page="1">01</a></li>`;
+                if (startPage > 2) {
+                    paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHtml += `<li class="page-item ${i == currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${String(i).padStart(2, '0')}</a>
+            </li>`;
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+                paginationHtml += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a></li>`;
+            }
+
+            paginationHtml += `<li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage + 1}"><i class="far fa-arrow-right"></i></a>
+        </li>`;
+
+            $('#pagination, #pagination-list').html(paginationHtml);
+
+            // Bind pagination click events
+            $('.page-link').on('click', function(e) {
+                e.preventDefault();
+                let page = $(this).data('page');
+                if (page && page > 0) {
+                    let filters = getFilters();
+                    filters.page = page;
+                    // Reload with new page
+                    loadProducts();
+                }
+            });
+        }
+
+        // Update product count
+        function updateProductCount(total, perPage, currentPage) {
+            let start = ((currentPage - 1) * perPage) + 1;
+            let end = Math.min(currentPage * perPage, total);
+            $('.product_page_top_button p').text(`Showing ${start}–${end} of ${total} results`);
+        }
+
+        // Helper function to get color code
+        function getColorCode(color) {
+            const colorMap = {
+                'red': '#DB4437',
+                'green': '#41CF0F',
+                'gray': '#8e8e8e',
+                'orange': '#ffa500',
+                'purple': '#B615FD',
+                'yellow': '#FFD747',
+                'olive': '#AB9774',
+                'dark blue': '#1C58F2',
+                'blue': '#1C58F2',
+                'black': '#000000',
+                'white': '#FFFFFF',
+                'brown': '#8B4513',
+                'pink': '#FF69B4'
+            };
+            return colorMap[color.toLowerCase()] || '#6c757d';
+        }
+
+        // Apply price filter
+        $('#apply_price_filter').on('click', function() {
+            loadProducts();
+        });
+
+        // Filter change events
+        $('.color-filter, .rating-filter, .stock-filter, #sort_by, #per_page').on('change', function() {
+            loadProducts();
+        });
+
+        // Price input enter key
+        $('#min_price_input, #max_price_input').on('keypress', function(e) {
+            if (e.which === 13) {
+                loadProducts();
+            }
+        });
+
+        // Quick view functionality
+        $(document).on('click', '.quick-view', function(e) {
+            e.preventDefault();
+            let productId = $(this).data('id');
+            // Implement quick view modal here
+            alert('Quick view for product ID: ' + productId);
+        });
+
+        // Add to wishlist
+        $(document).on('click', '.add-to-wishlist', function(e) {
+            e.preventDefault();
+            let productId = $(this).data('id');
+            $.ajax({
+                url: 'ajax/add_to_wishlist.php',
+                type: 'POST',
+                data: {
+                    product_id: productId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Product added to wishlist!');
+                    } else {
+                        alert('Please login to add to wishlist');
+                    }
+                }
+            });
+        });
+
+        // Add to cart
+        $(document).on('click', '.add-to-cart', function(e) {
+            e.preventDefault();
+            let productId = $(this).data('id');
+            $.ajax({
+                url: 'ajax/add_to_cart.php',
+                type: 'POST',
+                data: {
+                    product_id: productId,
+                    quantity: 1
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Product added to cart!');
+                        updateCartCount();
+                    }
+                }
+            });
+        });
+
+        // Update cart count
+        function updateCartCount() {
+            $.get('ajax/get_cart_count.php', function(data) {
+                $('.cart-count').text(data.count);
+            });
+        }
+
+        // Range slider initialization (using noUiSlider or similar)
+        if (typeof noUiSlider !== 'undefined') {
+            let slider = document.getElementById('price-slider');
+            if (slider) {
+                noUiSlider.create(slider, {
+                    start: [<?php echo $minPrice; ?>, <?php echo $maxPrice == 100000 ? $priceRange['max'] : $maxPrice; ?>],
+                    connect: true,
+                    range: {
+                        'min': <?php echo $priceRange['min']; ?>,
+                        'max': <?php echo $priceRange['max']; ?>
+                    }
+                });
+
+                slider.noUiSlider.on('update', function(values) {
+                    $('#min_price_input').val(Math.round(values[0]));
+                    $('#max_price_input').val(Math.round(values[1]));
+                });
+            }
+        }
+    });
+</script>
+
 <?php include "footer.php"; ?>

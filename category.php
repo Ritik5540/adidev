@@ -9,191 +9,82 @@ $page_meta = [
     'keywords'    => 'Adidev, product categories, bulk, wholesale',
 ];
 
-$mainCategories = get_main_categories_for_menu();
-$subCategories  = get_sub_categories_grouped_by_main(
-    array_map(
-        static fn(array $c): int => (int) $c['id'],
-        $mainCategories
-    )
-);
-
 include "header.php";
 ?>
- <!--=========================
+<!--=========================
         PAGE BANNER START
     ==========================-->
-    <section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
-        <div class="page_banner_overlay">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page_banner_text wow fadeInUp">
-                            <h1>Category</h1>
-                            <ul>
-                                <li><a href="#"><i class="fal fa-home-lg"></i> Home</a></li>
-                                <li><a href="#">Category</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--=========================
-        PAGE BANNER START
-    ==========================-->
-
-
-    <!--============================
-        CATEGORY PAGE START
-    =============================-->
-    <section class="category_page category_2 mt_75 mb_95">
+<section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
+    <div class="page_banner_overlay">
         <div class="container">
             <div class="row">
-                <?php foreach ($mainCategories as $mainCat) : ?>
-                    <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                        <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>" class="category_item">
-                            <div class="img">
-                                <?php
-                                $thumb = !empty($mainCat['thumbnail_image'])
-                                    ? htmlspecialchars($mainCat['thumbnail_image'])
-                                    : 'assets/images/category_img_1.png';
-                                ?>
-                                <img src="<?php echo $thumb; ?>" alt="Category" class="img-fluid w-100">
-                            </div>
-                            <h3><?php echo htmlspecialchars($mainCat['name']); ?></h3>
-                        </a>
-                    </div>
-                    <?php
-                    $subForMain = $subCategories[(int) $mainCat['id']] ?? [];
-                    foreach ($subForMain as $subCat) :
-                    ?>
-                        <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                            <a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>" class="category_item">
-                                <div class="img">
-                                    <?php
-                                    $img = !empty($subCat['image'])
-                                        ? htmlspecialchars($subCat['image'])
-                                        : $thumb;
-                                    ?>
-                                    <img src="<?php echo $img; ?>" alt="Category" class="img-fluid w-100">
-                                </div>
-                                <h3><?php echo htmlspecialchars($subCat['name']); ?></h3>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_5.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>kids fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_6.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>kids fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_7.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>kids fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_2.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3> Men's Fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_3.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>women's Fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_1.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>kids fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_2.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3> Men's Fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_3.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>women's Fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_1.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>kids fashion</h3>
-                    </a>
-                </div>
-                <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
-                    <a href="shop.php" class="category_item">
-                        <div class="img">
-                            <img src="assets/images/category_img_4.png" alt="Category" class="img-fluid w-100">
-                        </div>
-                        <h3>kids fashion</h3>
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="pagination_area">
-                    <nav aria-label="...">
-                        <ul class="pagination justify-content-center mt_50">
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="far fa-arrow-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link active" href="#">01</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">02</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">03</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="far fa-arrow-right"></i>
-                                </a>
-                            </li>
+                <div class="col-12">
+                    <div class="page_banner_text wow fadeInUp">
+                        <h1>Category</h1>
+                        <ul>
+                            <li><a href="#"><i class="fal fa-home-lg"></i> Home</a></li>
+                            <li><a href="#">Category</a></li>
                         </ul>
-                    </nav>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--============================
+    </div>
+</section>
+<!--=========================
+        PAGE BANNER START
+    ==========================-->
+
+
+<!--============================
+        CATEGORY PAGE START
+    =============================-->
+<section class="category_page category_2 mt_75 mb_95">
+    <div class="container">
+        <div class="row">
+
+            <?php if (!empty($header_sub_categories)) : ?>
+
+                <?php foreach ($header_sub_categories as $mainId => $subCats) : ?>
+
+                    <?php if (!empty($subCats)) : ?>
+                        <?php foreach ($subCats as $subCat) : ?>
+
+                            <?php
+                            $img = !empty($subCat['image'])
+                                ? htmlspecialchars($subCat['image'])
+                                : $thumb;
+
+                            $name = htmlspecialchars($subCat['name'] ?? 'Category');
+                            $slug = urlencode($subCat['slug'] ?? '');
+                            ?>
+
+                            <div class="col-xl-2 col-6 col-sm-4 col-md-3 wow fadeInUp">
+                                <a href="shop.php?sub=<?= $slug; ?>" class="category_item">
+                                    <div class="img">
+                                        <img src="./uploads/categories/subcategories/<?= $img; ?>"
+                                            alt="<?= $name; ?>"
+                                            class="img-fluid w-100">
+                                    </div>
+                                    <h3><?= $name; ?></h3>
+                                </a>
+                            </div>
+
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+
+            <?php else : ?>
+                <div class="col-12 text-center">
+                    <h3>No sub categories found</h3>
+                </div>
+            <?php endif; ?>
+
+        </div>
+    </div>
+</section>
+<!--============================
         CATEGORY PAGE END
     =============================-->
 

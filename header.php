@@ -33,8 +33,9 @@ $footer_sub_categories = get_sub_categories_grouped_by_main(
     ''
 );
 $trending_sub_categories = get_trending_every_sub_categories_5_products_randomly();
-$flash_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale' => 0], 20);
-$special_products = get_products(['is_featured' => 1, 'is_new' => 0, 'is_on_sale' => 0], 6);
+$best_selling_products = get_best_selling_products(3);
+$new_arrivals = get_new_arrival_products(5);
+$favorite_products = get_recommended_products(15);
 ?>
 <!DOCTYPE html>
 <html lang="en">

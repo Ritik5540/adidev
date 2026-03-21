@@ -37,6 +37,7 @@ define('ADIDEV_SESSION_TIMEOUT', 60 * 60); // 1 hour
 
 // Checkout/payment session lifetime (5 minutes)
 define('ADIDEV_CHECKOUT_TIMEOUT', 5 * 60);
+define('ADIDEV_ENCRYPTION_KEY', '*zou3b_D]RhEOz{jDP(N6B<KKz+I9!iK'); // change this
 
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > ADIDEV_SESSION_TIMEOUT) {
     // Session expired due to inactivity
