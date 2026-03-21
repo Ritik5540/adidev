@@ -41,10 +41,8 @@
                     <div class="contact_info wow fadeInUp">
                         <span><img src="assets/images/mail_icon_black.png" alt="Mail" class="img-fluid"></span>
                         <h3>Email Us</h3>
-                        <a href="mailto:care@adidevmanufacturing.com
-">care@adidevmanufacturing.com
-</a>
-                       
+                        <a href="mailto:care@adidevmanufacturing.com">care@adidevmanufacturing.com</a>
+                        <a href="mailto:support@adidevmanufacturing.com">support@adidevmanufacturing.com</a>
                     </div>
                 </div>
                 <div class="col-xl-4 col-md-6">

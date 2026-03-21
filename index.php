@@ -192,9 +192,9 @@
                                     <?php
                                     $img = !empty($subCat['image'])
                                         ? htmlspecialchars($subCat['image'])
-                                        : 'assets/images/category_img_2.png';
+                                        : 'assets/images/subcat/apparel-men.png';
                                     ?>
-                                    <img src="<?php echo $img; ?>" alt="Category" class="img-fluid w-100">
+                                    <img src="./uploads/categories/subcategories/<?php echo $img; ?>" alt="Category" class="img-fluid w-100">
                                 </div>
                                 <h3><?php echo htmlspecialchars($subCat['name']); ?></h3>
                             </a>
@@ -214,7 +214,6 @@
 <!--============================
         CATEGORY 2 END
     ==============================-->
-
 
 <!--============================
         TRENDING PRODUCT 2 START
@@ -244,7 +243,7 @@
                                 <div class="col-xl-1-5 col-6 col-md-4 col-xl-3">
                                     <div class="product_item_2 product_item">
                                         <div class="product_img">
-                                            <img src="assets/images/product_7.png" alt="Product"
+                                            <img src="<?= get_product_image($sub_category_product, 'main') ?>" alt="Product"
                                                 class="img-fluid w-100">
                                             <ul class="discount_list">
                                                 <li class="new"> <?php echo htmlspecialchars($sub_category_product['sub_category_name']); ?></li>
@@ -356,7 +355,6 @@
         TRENDING PRODUCT 2 END
     ==============================-->
 
-
 <!--================================
         BEST SELLING PRODUCT 2 START
     ==================================-->
@@ -377,42 +375,28 @@
         <div class="row mt_15">
             <div class="col-xl-7">
                 <div class="row">
-                    <div class="col-xl-4 col-sm-6 col-md-4 wow fadeInUp">
-                        <div class="best_selling_product_item">
-                            <img src="assets/images/best_sell_pro_img_1.jpg" alt="best sell"
-                                class="img-fluid w-100">
-                            <div class="text">
-                                <a class="title" href="shop_details.php">Men's trendy casual shoes</a>
-                                <p class="price">₹89.00 <del>₹12.00</del></p>
-                                <a class="buy_btn" href="shop_details.php">buy now <i
-                                        class="far fa-arrow-up"></i></a>
+                    <?php if (!empty($best_selling_products)) : ?>
+                        <?php foreach ($best_selling_products as $product) : ?>
+                            <div class="col-xl-4 col-sm-6 col-md-4 wow fadeInUp">
+                                <div class="best_selling_product_item">
+                                    <img src="<?= get_product_image($product, 'main', 24) ?>" alt="best sell"
+                                        class="img-fluid w-100">
+                                    <div class="text">
+                                        <a class="title" href="shop_details.php"><?php echo htmlspecialchars($product['name']); ?></a>
+                                        <p class="price">₹<?php echo htmlspecialchars($product['base_retail_price']); ?> <del>₹<?php echo htmlspecialchars($product['mrp']); ?></del></p>
+                                        <a class="buy_btn" href="shop_details.php">buy now <i
+                                                class="far fa-arrow-up"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <div class="col-12">
+                            <div class="text-center">
+                                <h3>No products found</h3>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6 col-md-4 wow fadeInUp">
-                        <div class="best_selling_product_item">
-                            <img src="assets/images/best_sell_pro_img_2.jpg" alt="best sell"
-                                class="img-fluid w-100">
-                            <div class="text">
-                                <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                <p class="price">₹75.00 <del>₹99.00</del></p>
-                                <a class="buy_btn" href="shop_details.php">buy now <i
-                                        class="far fa-arrow-up"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6 col-md-4 wow fadeInUp">
-                        <div class="best_selling_product_item">
-                            <img src="assets/images/best_sell_pro_img_3.jpg" alt="best sell"
-                                class="img-fluid w-100">
-                            <div class="text">
-                                <a class="title" href="shop_details.php">Men's Casual Winter Jacket</a>
-                                <p class="price">₹60.00 <del>₹65.00</del></p>
-                                <a class="buy_btn" href="shop_details.php">buy now <i
-                                        class="far fa-arrow-up"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="col-xl-5 wow fadeInRight">
@@ -452,228 +436,78 @@
             </div>
         </div>
         <div class="row mt_15">
-            <div class="col-xl-1-5 col-6 col-md-4 col-xl-3 wow fadeInUp">
-                <div class="product_item_2 product_item">
-                    <div class="product_img">
-                        <img src="assets/images/product_18.png" alt="Product" class="img-fluid w-100">
-                        <ul class="discount_list">
-                            <li class="new"> new</li>
-                        </ul>
-                        <ul class="btn_list">
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/compare_icon_white.svg" alt="Compare" class="img-fluid">
+            <?php if (!empty($new_arrivals)) : ?>
+
+                <?php foreach ($new_arrivals as $product) : ?>
+                    <div class="col-xl-1-5 col-6 col-md-4 col-xl-3 wow fadeInUp">
+                        <div class="product_item_2 product_item">
+
+                            <div class="product_img">
+                                <img src="<?= get_product_image($product, 'main', 30) ?>" alt="Product" class="img-fluid w-100">
+
+                                <ul class="discount_list">
+                                    <li class="new">new</li>
+                                </ul>
+
+                                <ul class="btn_list">
+                                    <li>
+                                        <a href="wishlist.php?slug=<?= urlencode($product['slug']) ?>">
+                                            <img src="assets/images/love_icon_white.svg" class="img-fluid">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cart.php?slug=<?= urlencode($product['slug']) ?>">
+                                            <img src="assets/images/cart_icon_white.svg" class="img-fluid">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="product_text">
+                                <a class="title" href="shop_details.php">
+                                    <?= htmlspecialchars($product['name']) ?>
                                 </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/love_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/cart_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                        </ul>
+
+                                <p class="price">
+                                    ₹<?= htmlspecialchars($product['base_retail_price']) ?>
+                                    <del>₹<?= htmlspecialchars($product['mrp']) ?></del>
+                                </p>
+
+                                <?php
+                                $rating = get_average_product_rating($product['id']);
+                                $fullStars = floor($rating);
+                                $halfStar  = ($rating - $fullStars) >= 0.5;
+                                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                ?>
+
+                                <p class="rating">
+                                    <?php for ($i = 0; $i < $fullStars; $i++): ?>
+                                        <i class="fas fa-star"></i>
+                                    <?php endfor; ?>
+
+                                    <?php if ($halfStar): ?>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    <?php endif; ?>
+
+                                    <?php for ($i = 0; $i < $emptyStars; $i++): ?>
+                                        <i class="far fa-star"></i>
+                                    <?php endfor; ?>
+
+                                    <span>(<?= (int)get_total_product_reviews_count($product['id']) ?> reviews)</span>
+                                </p>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="product_text">
-                        <a class="title" href="shop_details.php">Full Sleeve Hoodie Jacket</a>
-                        <p class="price">₹88.00 </p>
-                        <p class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>(20 reviews)</span>
-                        </p>
-                        <ul class="color">
-                            <li class="active" style="background:#DB4437"></li>
-                            <li style="background:#638C34"></li>
-                            <li style="background:#1C58F2"></li>
-                            <li style="background:#ffa500"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-1-5 col-6 col-md-4 col-xl-3 wow fadeInUp">
-                <div class="product_item_2 product_item">
-                    <div class="product_img">
-                        <img src="assets/images/product_19.png" alt="Product" class="img-fluid w-100">
-                        <ul class="discount_list">
-                            <li class="new"> new</li>
-                        </ul>
-                        <ul class="btn_list">
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/compare_icon_white.svg" alt="Compare" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/love_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/cart_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product_text">
-                        <a class="title" href="shop_details.php">Men's premium formal shirt</a>
-                        <p class="price">₹46.00</p>
-                        <p class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(17 reviews)</span>
-                        </p>
-                        <ul class="color">
-                            <li class="active" style="background:#DB4437"></li>
-                            <li style="background:#638C34"></li>
-                            <li style="background:#ffa500"></li>
-                        </ul>
+                <?php endforeach; ?>
+
+            <?php else : ?>
+                <div class="col-12">
+                    <div class="text-center">
+                        <h3>No products found</h3>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-1-5 col-6 col-md-4 col-xl-3 wow fadeInUp">
-                <div class="product_item_2 product_item">
-                    <div class="product_img">
-                        <img src="assets/images/product_20.png" alt="Product" class="img-fluid w-100">
-                        <ul class="discount_list">
-                            <li class="new"> new</li>
-                        </ul>
-                        <ul class="btn_list">
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/compare_icon_white.svg" alt="Compare" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/love_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/cart_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product_text">
-                        <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                        <p class="price">₹46.00</p>
-                        <p class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <i class="far fa-star"></i>
-                            <span>(22 reviews)</span>
-                        </p>
-                        <ul class="color">
-                            <li class="active" style="background:#DB4437"></li>
-                            <li style="background:#638C34"></li>
-                            <li style="background:#1C58F2"></li>
-                            <li style="background:#ffa500"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-1-5 col-6 col-md-4 col-xl-3 wow fadeInUp">
-                <div class="product_item_2 product_item">
-                    <div class="product_img">
-                        <img src="assets/images/product_4.png" alt="Product" class="img-fluid w-100">
-                        <ul class="discount_list">
-                            <li class="new"> new</li>
-                        </ul>
-                        <ul class="btn_list">
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/compare_icon_white.svg" alt="Compare" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/love_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/cart_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product_text">
-                        <a class="title" href="shop_details.php">Comfortable Sports Sneakers</a>
-                        <p class="price">₹75.00</p>
-                        <p class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>(58 reviews)</span>
-                        </p>
-                        <ul class="color">
-                            <li class="active" style="background:#DB4437"></li>
-                            <li style="background:#638C34"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-1-5 col-6 col-md-4 col-xl-3 wow fadeInUp">
-                <div class="product_item_2 product_item">
-                    <div class="product_img">
-                        <img src="assets/images/product_23.png" alt="Product" class="img-fluid w-100">
-                        <ul class="discount_list">
-                            <li class="new"> new</li>
-                        </ul>
-                        <ul class="btn_list">
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/compare_icon_white.svg" alt="Compare" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/love_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="assets/images/cart_icon_white.svg" alt="Love" class="img-fluid">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product_text">
-                        <a class="title" href="shop_details.php"> Kid's dresses for summer</a>
-                        <p class="price">₹70.00</p>
-                        <p class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(44 reviews)</span>
-                        </p>
-                        <ul class="color">
-                            <li class="active" style="background:#DB4437"></li>
-                            <li style="background:#638C34"></li>
-                            <li style="background:#1C58F2"></li>
-                            <li style="background:#ffa500"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
@@ -707,214 +541,84 @@
                         </div>
                     </div>
                     <div class="row mt_40 favourite_product_2_slider">
-                        <div class="col-xl-3 wow fadeInUp">
-                            <div class="product_item_2 product_item">
-                                <div class="product_img">
-                                    <img src="assets/images/product_22.png" alt="Product" class="img-fluid w-100">
-                                    <ul class="discount_list">
-                                        <li class="new">new</li>
-                                    </ul>
-                                    <ul class="btn_list">
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                    class="img-fluid">
+                        <?php if (!empty($favorite_products)) : ?>
+                            <?php foreach ($favorite_products as $product) : ?>
+                                <div class="col-xl-1-5 col-6 col-md-4 col-xl-3">
+                                    <div class="product_item_2 product_item">
+
+                                        <div class="product_img">
+                                            <img src="<?= get_product_image($product, 'main', 30) ?>"
+                                                alt="Product" class="img-fluid w-100">
+
+                                            <ul class="discount_list">
+                                                <li class="new">new</li>
+                                            </ul>
+
+                                            <ul class="btn_list">
+                                                <li>
+                                                    <a href="wishlist.php?slug=<?= urlencode($product['slug']) ?>">
+                                                        <img src="assets/images/love_icon_white.svg" class="img-fluid">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.php?slug=<?= urlencode($product['slug']) ?>">
+                                                        <img src="assets/images/cart_icon_white.svg" class="img-fluid">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="product_text">
+                                            <a class="title" href="shop_details.php">
+                                                <?= htmlspecialchars($product['name']) ?>
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                    </ul>
+
+                                            <p class="price">
+                                                ₹<?= htmlspecialchars($product['base_retail_price']) ?>
+                                                <del>₹<?= htmlspecialchars($product['mrp']) ?></del>
+                                            </p>
+
+                                            <?php
+                                            $rating = get_average_product_rating($product['id']);
+                                            $fullStars = floor($rating);
+                                            $halfStar  = ($rating - $fullStars) >= 0.5;
+                                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                            ?>
+
+                                            <p class="rating">
+                                                <?php for ($i = 0; $i < $fullStars; $i++): ?>
+                                                    <i class="fas fa-star"></i>
+                                                <?php endfor; ?>
+
+                                                <?php if ($halfStar): ?>
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                <?php endif; ?>
+
+                                                <?php for ($i = 0; $i < $emptyStars; $i++): ?>
+                                                    <i class="far fa-star"></i>
+                                                <?php endfor; ?>
+
+                                                <span>(<?= (int)get_total_product_reviews_count($product['id']) ?> reviews)</span>
+                                            </p>
+                                        </div>
+
+                                    </div>
                                 </div>
-                                <div class="product_text">
-                                    <a class="title" href="shop_details.php">cherry fabric western tops</a>
-                                    <p class="price">₹54.00</p>
-                                    <p class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>(98 reviews)</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 wow fadeInUp">
-                            <div class="product_item_2 product_item">
-                                <div class="product_img">
-                                    <img src="assets/images/product_24.png" alt="Product" class="img-fluid w-100">
-                                    <ul class="btn_list">
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product_text">
-                                    <a class="title" href="shop_details.php">Women denim jacket</a>
-                                    <p class="price">₹49.00</p>
-                                    <p class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>(44 reviews)</span>
-                                    </p>
+                            <?php endforeach; ?>
+
+                        <?php else : ?>
+                            <div class="col-12">
+                                <div class="text-center">
+                                    <h3>No products found</h3>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xl-3 wow fadeInUp">
-                            <div class="product_item_2 product_item">
-                                <div class="product_img">
-                                    <img src="assets/images/product_23.png" alt="Product" class="img-fluid w-100">
-                                    <ul class="discount_list">
-                                        <li class="discount"> <b>-</b> 20%</li>
-                                    </ul>
-                                    <ul class="btn_list">
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product_text">
-                                    <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                    <p class="price">₹40.00 <del>₹48.00</del></p>
-                                    <p class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>(20 reviews)</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 wow fadeInUp">
-                            <div class="product_item_2 product_item">
-                                <div class="product_img">
-                                    <img src="assets/images/product_25.png" alt="Product" class="img-fluid w-100">
-                                    <ul class="btn_list">
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product_text">
-                                    <a class="title" href="shop_details.php">Half Sleeve Jachket for Women</a>
-                                    <p class="price">₹60.00</p>
-                                    <p class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>(57 reviews)</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 wow fadeInUp">
-                            <div class="product_item_2 product_item">
-                                <div class="product_img">
-                                    <img src="assets/images/product_26.png" alt="Product" class="img-fluid w-100">
-                                    <ul class="discount_list">
-                                        <li class="discount"> <b>-</b> 58%</li>
-                                    </ul>
-                                    <ul class="btn_list">
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/compare_icon_white.svg" alt="Compare"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="assets/images/cart_icon_white.svg" alt="Love"
-                                                    class="img-fluid">
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product_text">
-                                    <a class="title" href="shop_details.php">Kid's Western Party Dress</a>
-                                    <p class="price">₹40.00 <del>₹48.00</del></p>
-                                    <p class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>(88 reviews)</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 </section>
 <br>
