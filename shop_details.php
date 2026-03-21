@@ -555,7 +555,7 @@ include "header.php";
                     <div class="col-xl-1-5">
                         <div class="product_item_2 product_item">
                             <div class="product_img">
-                                <img src="<?php echo !empty($related['main_image']) && file_exists('/uploads/products/main/' . $related['main_image']) ? '/uploads/products/main/' . $related['main_image'] : 'assets/images/product_placeholder.jpg'; ?>"
+                                <img src="<?= get_product_image($related, 'main') ?>"
                                     alt="<?php echo htmlspecialchars($related['name']); ?>" class="img-fluid w-100">
                                 <ul class="discount_list">
                                     <?php if ($related['is_new']): ?>
