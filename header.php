@@ -108,7 +108,7 @@ $favorite_products = get_recommended_products(15);
                                 <i class="far fa-phone-alt"></i>
                             </span>
                             <h3>
-                                Hotline:
+                                <span style="color: #000000;"> Contact Us:</span>
                                 <a href="callto:+91 7369084701">
                                     <span>+91 7369084701</span>
                                 </a>
@@ -132,64 +132,20 @@ $favorite_products = get_recommended_products(15);
             <div class="row">
                 <div class="col-12 d-flex flex-wrap">
                     <div class="main_menu_area">
-                        <div class="menu_category_area">
+                         <div class="menu_category_area">
                             <a href="index.php" class="menu_logo d-none">
                                 <img src="assets/images/logo_2.png" alt="Zenis" class="img-fluid w-100">
                             </a>
-                            <div class="menu_category_bar">
-                                <p>
-                                    <span>
-                                        <img src="assets/images/bar_icon_white.svg" alt="category icon">
-                                    </span>
-                                    Browse Categories
-                                </p>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <ul class="menu_cat_item">
-                                <?php foreach ($header_main_categories as $mainCat) : ?>
-                                    <li>
-                                        <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>">
-                                            <span>
-                                                <?php
-                                                $iconPath = !empty($mainCat['icon'])
-                                                    ? htmlspecialchars($mainCat['icon'])
-                                                    : 'assets/images/category_list_icon_1.png';
-                                                ?>
-                                                <img src="<?php echo $iconPath; ?>" alt="category" class="img-fluid">
-                                            </span>
-                                            <?php echo htmlspecialchars($mainCat['name']); ?>
-                                        </a>
-                                        <?php
-                                        $mainId = (int) $mainCat['id'];
-                                        $subForMain = $header_sub_categories[$mainId] ?? [];
-                                        if (!empty($subForMain)) :
-                                        ?>
-                                            <ul class="menu_cat_droapdown">
-                                                <?php foreach ($subForMain as $subCat) : ?>
-                                                    <li>
-                                                        <a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>">
-                                                            <?php echo htmlspecialchars($subCat['name']); ?>
-                                                        </a>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        <?php endif; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                                <li class="all_category">
-                                    <a href="category.php">View All Categories <i class="far fa-arrow-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
+                         </div>
                         <ul class="menu_item">
                             <li><a href="index.php">Home</a></li>
-                            <li>
+                            <!-- <li>
                                 <a href="#">All Products <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
                                     <li><a href="shop.php">All Products</a></li>
                                     <li><a href="shop_details.php">Product Details</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
                             <!-- <li>
                                 <a href="#">Stores <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
@@ -198,6 +154,24 @@ $favorite_products = get_recommended_products(15);
                                     <li><a href="vendor_registration.php">Become a Vendor</a></li>
                                 </ul>
                             </li> -->
+                            <?php foreach ($header_main_categories as $mainCat) : ?>
+                                <li>
+                                    <a href="shop.php?category=<?php echo urlencode($mainCat['slug']); ?>">
+                                        <span>
+                                            <?php
+                                            $iconPath = !empty($mainCat['icon'])
+                                                ? htmlspecialchars($mainCat['icon'])
+                                                : 'assets/images/category_list_icon_1.png';
+                                            ?>
+                                            <img src="<?php echo $iconPath; ?>" alt="category" class="img-fluid" style="max-width: 30px !important;">
+                                        </span><?php echo htmlspecialchars($mainCat['name']); ?> <i class="fas fa-chevron-down"></i></a>
+                                    <ul class="menu_droapdown">
+                                        <?php foreach ($header_sub_categories[$mainCat['id']] as $subCat) : ?>
+                                            <li><a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>"><?php echo htmlspecialchars($subCat['name']); ?></a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                            <?php endforeach; ?>
                             <li>
                                 <a href="#">Categories <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">

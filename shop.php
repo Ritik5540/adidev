@@ -386,7 +386,7 @@ include "header.php";
                                         <div class="row align-items-center">
                                             <div class="col-md-5 col-sm-6 col-xxl-4">
                                                 <div class="product_img">
-                                                    <img src="<?php echo !empty($product['main_image']) ? 'uploads/products/main/' . $product['main_image'] : 'assets/images/product_placeholder.jpg'; ?>"
+                                                    <img src="<?= get_product_image($product, 'main') ?>"
                                                         alt="<?php echo htmlspecialchars($product['name']); ?>" class="img-fluid w-100">
                                                     <ul class="discount_list">
                                                         <?php if ($product['is_new']): ?>

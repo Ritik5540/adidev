@@ -2,10 +2,10 @@
 <!--=========================
         BANNER 2 START
     ==========================-->
-<section class="banner_2">
+<section class="banner_2" style="background-image: url('./assets/images/hero-background.jpg') !important; background-size: cover !important; background-position: center !important;">
     <div class="container">
         <div class="row">
-            <div class="col-xl-2  d-none d-xxl-block">
+            <!-- <div class="col-xl-2  d-none d-xxl-block">
                 <ul class="menu_cat_item">
                     <?php foreach ($header_main_categories as $mainCat) : ?>
                         <li>
@@ -41,8 +41,8 @@
                         <a href="category.php">View All Categories <i class="far fa-arrow-right"></i></a>
                     </li>
                 </ul>
-            </div>
-            <div class="col-xxl-7 col-lg-8">
+            </div> -->
+            <div class="col-xxl-9 col-lg-8">
                 <div class="banner_content">
                     <div class="row banner_2_slider">
                         <div class="col-xl-12">
