@@ -3310,7 +3310,9 @@ footer {
 }
 
 .main_menu_2 .menu_icon li a span {
-  background: var(--themeColorTwo);
+  background: var(--colorYellow);
+  color: #000000;
+  font-weight: 500;
 }
 
 .main_menu_2 .menu_item > li:hover > a,

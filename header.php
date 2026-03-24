@@ -138,7 +138,7 @@ $favorite_products = get_recommended_products(15);
                             </a>
                          </div>
                         <ul class="menu_item">
-                            <li><a href="index.php">Home</a></li>
+                            <li><a href="index.php"> Home</a></li>
                             <!-- <li>
                                 <a href="#">All Products <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
@@ -163,7 +163,7 @@ $favorite_products = get_recommended_products(15);
                                                 ? htmlspecialchars($mainCat['icon'])
                                                 : 'assets/images/category_list_icon_1.png';
                                             ?>
-                                            <img src="<?php echo $iconPath; ?>" alt="category" class="img-fluid" style="max-width: 30px !important;">
+                                            <img src="<?php echo $iconPath; ?>" alt="category" class="img-fluid" style="max-width: 25px !important;">
                                         </span><?php echo htmlspecialchars($mainCat['name']); ?> <i class="fas fa-chevron-down"></i></a>
                                     <ul class="menu_droapdown">
                                         <?php foreach ($header_sub_categories[$mainCat['id']] as $subCat) : ?>
@@ -202,18 +202,10 @@ $favorite_products = get_recommended_products(15);
                                 </ul>
                             </li>
                             <li><a href="about.php">About-Us</a></li>
-                            <li><a href="blog.php">Blogs</a></li>
+                            <!-- <li><a href="blog.php">Blogs</a></li> -->
                             <li><a href="contact_us.php">contact</a></li>
                         </ul>
                         <ul class="menu_icon">
-                            <li>
-                                <a href="compare.php">
-                                    <b>
-                                        <img src="assets/images/compare_black.svg" alt="Wishlist" class="img-fluid">
-                                    </b>
-                                    <span>2</span>
-                                </a>
-                            </li>
                             <li>
                                 <a href="wishlist.php">
                                     <b>
