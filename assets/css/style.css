@@ -1484,6 +1484,9 @@ header .header_support h3 a:hover {
   border: 1px solid #eee;
   position: relative;
   overflow: hidden;
+  background-image: url("../images/background_image_p.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
   transition: all linear 0.3s;
   -webkit-transition: all linear 0.3s;
   -moz-transition: all linear 0.3s;
@@ -3310,7 +3313,9 @@ footer {
 }
 
 .main_menu_2 .menu_icon li a span {
-  background: var(--themeColorTwo);
+  background: var(--colorYellow);
+  color: #000000;
+  font-weight: 500;
 }
 
 .main_menu_2 .menu_item > li:hover > a,
@@ -9574,7 +9579,9 @@ footer {
 
 .cart_page_img .img {
   max-width: 120px;
-  background: var(--lightBg2);
+  background-image: url("../images/background_image_p.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
   overflow: hidden;
   border-radius: 6px;
   -webkit-border-radius: 6px;
@@ -9666,7 +9673,9 @@ footer {
 .cart_page_summary ul li .img {
   width: 60px;
   height: 60px;
-  background: var(--lightBg2);
+  background-image: url("../images/background_image_p.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
   border-radius: 6px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;

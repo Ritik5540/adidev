@@ -91,7 +91,7 @@ include "header.php";
                         </form>
 
                         <p class="dont_account">Already have an account? <a href="sign_up.php">Sign Up</a></p>
-                        <p class="or">or</p>
+                        <!-- <p class="or">or</p>
                         <ul>
                             <li>
                                 <a href="#">
@@ -117,7 +117,7 @@ include "header.php";
                                     Twitter
                                 </a>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
             </div>

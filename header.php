@@ -32,7 +32,7 @@ $footer_sub_categories = get_sub_categories_grouped_by_main(
     'RAND()',
     ''
 );
-$trending_sub_categories = get_trending_every_sub_categories_5_products_randomly();
+$trending_sub_categories = get_trending_products_random();
 $best_selling_products = get_best_selling_products(3);
 $new_arrivals = get_new_arrival_products(5);
 $favorite_products = get_recommended_products(15);
@@ -67,6 +67,65 @@ $favorite_products = get_recommended_products(15);
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
+<style>
+    #toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    .custom-toast {
+        min-width: 250px;
+        margin-bottom: 10px;
+        padding: 12px 16px;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+    }
+
+    /* Show animation */
+    .custom-toast.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Types */
+    .custom-toast.success {
+        background: #28a745;
+    }
+
+    .custom-toast.error {
+        background: #dc3545;
+    }
+
+    .custom-toast.warning {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .custom-toast.info {
+        background: #17a2b8;
+    }
+
+    .toast-message {
+        color: #fff !important;
+    }
+
+    /* Close button */
+    .toast-close {
+        margin-left: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #fff !important;
+    }
+</style>
 
 <body class="default_home">
 
@@ -123,6 +182,8 @@ $favorite_products = get_recommended_products(15);
         HEADER END
     ==========================-->
 
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
 
     <!--=========================
         MENU 2 START
@@ -132,13 +193,13 @@ $favorite_products = get_recommended_products(15);
             <div class="row">
                 <div class="col-12 d-flex flex-wrap">
                     <div class="main_menu_area">
-                         <div class="menu_category_area">
+                        <!-- <div class="menu_category_area">
                             <a href="index.php" class="menu_logo d-none">
                                 <img src="assets/images/logo_2.png" alt="Zenis" class="img-fluid w-100">
                             </a>
-                         </div>
+                        </div> -->
                         <ul class="menu_item">
-                            <li><a href="index.php">Home</a></li>
+                            <li><a href="index.php"> Home</a></li>
                             <!-- <li>
                                 <a href="#">All Products <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
@@ -163,7 +224,7 @@ $favorite_products = get_recommended_products(15);
                                                 ? htmlspecialchars($mainCat['icon'])
                                                 : 'assets/images/category_list_icon_1.png';
                                             ?>
-                                            <img src="<?php echo $iconPath; ?>" alt="category" class="img-fluid" style="max-width: 30px !important;">
+                                            <img src="<?php echo $iconPath; ?>" alt="category" class="img-fluid" style="max-width: 25px !important;">
                                         </span><?php echo htmlspecialchars($mainCat['name']); ?> <i class="fas fa-chevron-down"></i></a>
                                     <ul class="menu_droapdown">
                                         <?php foreach ($header_sub_categories[$mainCat['id']] as $subCat) : ?>
@@ -202,33 +263,26 @@ $favorite_products = get_recommended_products(15);
                                 </ul>
                             </li>
                             <li><a href="about.php">About-Us</a></li>
-                            <li><a href="blog.php">Blogs</a></li>
+                            <!-- <li><a href="blog.php">Blogs</a></li> -->
                             <li><a href="contact_us.php">contact</a></li>
                         </ul>
                         <ul class="menu_icon">
-                            <li>
-                                <a href="compare.php">
-                                    <b>
-                                        <img src="assets/images/compare_black.svg" alt="Wishlist" class="img-fluid">
-                                    </b>
-                                    <span>2</span>
-                                </a>
-                            </li>
                             <li>
                                 <a href="wishlist.php">
                                     <b>
                                         <img src="assets/images/love_black.svg" alt="Wishlist" class="img-fluid">
                                     </b>
-                                    <span>5</span>
+                                    <span class="wishlist-count">0</span>
                                 </a>
                             </li>
                             <li>
-                                <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                                    aria-controls="offcanvasRight">
+                                <!-- <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                                    aria-controls="offcanvasRight"> -->
+                                <a href="cart.php">
                                     <b>
                                         <img src="assets/images/cart_black.svg" alt="cart" class="img-fluid">
                                     </b>
-                                    <span>3</span>
+                                    <span class="cart-count">0</span>
                                 </a>
                             </li>
                             <li>
@@ -308,78 +362,71 @@ $favorite_products = get_recommended_products(15);
             </div>
         </div>
     </nav>
+    <?php
+    $user_id = current_user_id();
+    $cart_items = $user_id ? get_user_cart($user_id) : [];
 
+    $subtotal = 0;
+    $total_qty = 0;
+    ?>
     <div class="mini_cart">
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasRightLabel"> my cart <span>(05)</span></h5>
+                <h5 class="offcanvas-title" id="offcanvasRightLabel"> my cart </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i
                         class="far fa-times"></i></button>
             </div>
             <div class="offcanvas-body">
                 <ul>
-                    <li>
-                        <a href=" shop_details.php" class="cart_img">
-                            <img src="assets/images/product_1.png" alt="product" class="img-fluid w-100">
-                        </a>
-                        <div class="cart_text">
-                            <a class="cart_title" href=" shop_details.php">Men's Fashionable Hoodie</a>
-                            <p>₹140 <del>₹150</del></p>
-                            <span><b>Color:</b> Red</span>
-                            <span><b>Size:</b> XL (Extra Large)</span>
-                        </div>
-                        <a class="del_icon" href="#"><i class="fal fa-times"></i></a>
-                    </li>
-                    <li>
-                        <a href="# shop_details.php" class="cart_img">
-                            <img src="assets/images/product_2.png" alt="product" class="img-fluid w-100">
-                        </a>
-                        <div class="cart_text">
-                            <a class="cart_title" href=" shop_details.php">Kids cotton Combo Set</a>
-                            <p>₹130 <del>₹160</del></p>
-                            <span><b>Color:</b> Orange</span>
-                            <span><b>Size:</b> M (Medium)</span>
-                        </div>
-                        <a class="del_icon" href="#"><i class="fal fa-times"></i></a>
-                    </li>
-                    <li>
-                        <a href=" shop_details.php" class="cart_img">
-                            <img src="assets/images/product_3.png" alt="product" class="img-fluid w-100">
-                        </a>
-                        <div class="cart_text">
-                            <a class="cart_title" href=" shop_details.php">Women's Western Party Dress</a>
-                            <p>₹90 <del>₹100</del></p>
-                            <span><b>Color:</b> Purple</span>
-                            <span><b>Size:</b> S (Small)</span>
-                        </div>
-                        <a class="del_icon" href="#"><i class="fal fa-times"></i></a>
-                    </li>
-                    <li>
-                        <a href=" shop_details.php" class="cart_img">
-                            <img src="assets/images/product_4.png" alt="product" class="img-fluid w-100">
-                        </a>
-                        <div class="cart_text">
-                            <a class="cart_title" href=" shop_details.php">Men's trendy formal shoes</a>
-                            <p>₹140</p>
-                            <span><b>Color:</b> Blue</span>
-                            <span><b>Size:</b> XL (Extra Large)</span>
-                        </div>
-                        <a class="del_icon" href="#"><i class="fal fa-times"></i></a>
-                    </li>
-                    <li>
-                        <a href=" shop_details.php" class="cart_img">
-                            <img src="assets/images/product_5.png" alt="product" class="img-fluid w-100">
-                        </a>
-                        <div class="cart_text">
-                            <a class="cart_title" href=" shop_details.php">Kid's Western Party Dress</a>
-                            <p>₹99.00</p>
-                            <span><b>Color:</b> Black</span>
-                            <span><b>Size:</b> L (Large)</span>
-                        </div>
-                        <a class="del_icon" href="#"><i class="fal fa-times"></i></a>
-                    </li>
+                    <?php if (!empty($cart_items)) : ?>
+
+                        <?php foreach ($cart_items as $item) :
+                            $subtotal += ($item['unit_price'] * $item['quantity']);
+                            $total_qty += $item['quantity'];
+                        ?>
+                            <li>
+                                <a href="shop_details.php?id=<?= (int)$item['product_id'] ?>" class="cart_img">
+                                    <img src="<?= get_product_image($item, 'main') ?>"
+                                        class="img-fluid w-100">
+                                </a>
+
+                                <div class="cart_text">
+                                    <a class="cart_title" href="shop_details.php?id=<?= (int)$item['product_id'] ?>">
+                                        <?= htmlspecialchars($item['name']) ?>
+                                    </a>
+
+                                    <p>
+                                        ₹<?= number_format($item['unit_price'], 2) ?>
+                                        × <?= $item['quantity'] ?>
+                                    </p>
+                                    <?= $total = $item['unit_price'] * $item['quantity']; ?>
+                                    <p><b>Total:</b> ₹<?= number_format($total, 2) ?></p>
+
+                                    <?php if (!empty($item['color'])) : ?>
+                                        <span><b>Color:</b> <?= htmlspecialchars($item['color']) ?></span>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($item['size'])) : ?>
+                                        <span><b>Size:</b> <?= htmlspecialchars($item['size']) ?></span>
+                                    <?php endif; ?>
+                                </div>
+
+                                <a class="del_icon remove-from-cart"
+                                    href="javascript:void(0)"
+                                    data-id="<?= $item['id'] ?>">
+                                    <i class="fal fa-times"></i>
+                                </a>
+                            </li>
+
+                        <?php endforeach; ?>
+
+                    <?php else : ?>
+
+                        <li class="text-center">No items in cart</li>
+
+                    <?php endif; ?>
                 </ul>
-                <h5>sub total <span>₹429.00</span></h5>
+                <h5>sub total <span>₹<?= number_format($subtotal, 2) ?></span></h5>
                 <div class="minicart_btn_area">
                     <a class="common_btn" href="cart.php">view cart</a>
                 </div>
@@ -400,22 +447,22 @@ $favorite_products = get_recommended_products(15);
                     class="fal fa-times"></i></button>
             <div class="offcanvas-body">
                 <ul class="mobile_menu_header d-flex flex-wrap">
-                    <li>
+                    <!-- <li>
                         <a href="compare.php">
                             <b> <img src="assets/images/compare_black.svg" alt="Wishlist" class="img-fluid"> </b>
                             <span>2</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="wishlist.php">
                             <b> <img src="assets/images/love_black.svg" alt="Wishlist" class="img-fluid"></b>
-                            <span>4</span>
+                            <span class="wishlist-count">0</span>
                         </a>
                     </li>
                     <li>
                         <a href="cart.php">
                             <b><img src="assets/images/cart_black.svg" alt="cart" class="img-fluid"></b>
-                            <span>5</span>
+                            <span class="cart-count">0</span>
                         </a>
                     </li>
                     <li>

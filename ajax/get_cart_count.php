@@ -1,37 +1,44 @@
 <?php
-// ajax/get_cart_count.php
-session_start();
+// ajax/get_counts.php
+
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../catalog_functions.php';
 
 header('Content-Type: application/json');
 
-$session_id = session_id();
-$user_id = $_SESSION['user_id'] ?? null;
+$cart_count = 0;
+$wishlist_count = 0;
 
-$count = 0;
+if (is_logged_in()) {
 
-if ($user_id) {
-    $stmt = db_execute("SELECT SUM(ci.quantity) as total 
-                        FROM cart_items ci 
-                        JOIN carts c ON ci.cart_id = c.id 
-                        WHERE c.user_id = ? AND c.status = 'active'", 'i', [$user_id]);
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        $count = (int) $row['total'];
-    }
+    $user_id = current_user_id();
+
+    $stmt = db_execute(
+        "SELECT COALESCE(SUM(ci.quantity), 0) as total
+         FROM cart_items ci
+         JOIN carts c ON ci.cart_id = c.id
+         WHERE c.user_id = ? AND c.status = 'active'",
+        'i',
+        [$user_id]
+    );
+
+    $cart_count = (int) ($stmt->get_result()->fetch_assoc()['total'] ?? 0);
     $stmt->close();
-} else {
-    $stmt = db_execute("SELECT SUM(ci.quantity) as total 
-                        FROM cart_items ci 
-                        JOIN carts c ON ci.cart_id = c.id 
-                        WHERE c.session_id = ? AND c.status = 'active'", 's', [$session_id]);
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        $count = (int) $row['total'];
-    }
+
+    $stmt = db_execute(
+        "SELECT COUNT(*) as total 
+         FROM user_wishlist 
+         WHERE user_id = ?",
+        'i',
+        [$user_id]
+    );
+
+    $wishlist_count = (int) ($stmt->get_result()->fetch_assoc()['total'] ?? 0);
     $stmt->close();
 }
 
-echo json_encode(['success' => true, 'count' => $count]);
-?>
+echo json_encode([
+    'success' => true,
+    'cart_count' => $cart_count,
+    'wishlist_count' => $wishlist_count
+]);
