@@ -33,7 +33,7 @@ include "header.php";
                             to keep you informed about its progress.
                         </p>
                         <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
-                            <a href="index.php" class="common_btn go_btn">
+                            <a href="/" class="common_btn go_btn">
                                 go to home
                             </a>
                             <a href="track_order.php" class="common_btn">
@@ -53,7 +53,7 @@ include "header.php";
                             quas doloribus similique fugit iure voluptatem neque in.
                         </p>
                         <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
-                            <a href="index.php" class="common_btn">
+                            <a href="/" class="common_btn">
                                 go to home
                                 <i class="fas fa-long-arrow-right"></i>
                             </a>

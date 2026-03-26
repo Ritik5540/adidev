@@ -118,7 +118,7 @@ include "header.php";
                     <div class="page_banner_text wow fadeInUp">
                         <h1><?php echo $currentCategory ? htmlspecialchars($currentCategory['name']) : 'Shop'; ?></h1>
                         <ul>
-                            <li><a href="index.php"><i class="fal fa-home-lg"></i> Home</a></li>
+                            <li><a href="/"><i class="fal fa-home-lg"></i> Home</a></li>
                             <li><a href="#"><?php echo $currentCategory ? htmlspecialchars($currentCategory['name']) : 'Shop'; ?></a></li>
                         </ul>
                     </div>

@@ -194,12 +194,12 @@ $favorite_products = get_recommended_products(15);
                 <div class="col-12 d-flex flex-wrap">
                     <div class="main_menu_area">
                         <!-- <div class="menu_category_area">
-                            <a href="index.php" class="menu_logo d-none">
+                            <a href="/" class="menu_logo d-none">
                                 <img src="assets/images/logo_2.png" alt="Zenis" class="img-fluid w-100">
                             </a>
                         </div> -->
                         <ul class="menu_item">
-                            <li><a href="index.php"> Home</a></li>
+                            <li><a href="/"> Home</a></li>
                             <!-- <li>
                                 <a href="#">All Products <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
@@ -510,7 +510,7 @@ $favorite_products = get_recommended_products(15);
                         <div class="tab-pane fade" id="pills-profile" role="tabpanel"
                             aria-labelledby="pills-profile-tab" tabindex="0">
                             <ul class="main_mobile_menu">
-                                <li><a href="index.php">Home</a></li>
+                                <li><a href="/">Home</a></li>
                                 <li class="mobile_dropdown">
                                     <a href="shop.php">Products</a>
                                     <ul class="inner_menu">

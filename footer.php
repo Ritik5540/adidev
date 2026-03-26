@@ -6,7 +6,7 @@
          <div class="row justify-content-between">
              <div class="col-xl-3 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay=".7s">
                  <div class="footer_2_logo_area">
-                     <a class="footer_logo" href="index.php">
+                     <a class="footer_logo" href="/">
                          <img src="assets/images/logo_2.png" alt="Adidev Manufacturing Pvt. Ltd." class="img-fluid w-100">
                      </a>
                      <p>didev Manufacturing Sales And Services Private Limited, a active private limited company, was established on 06 May 2025 in Ranchi, Jharkhand, India.</p>

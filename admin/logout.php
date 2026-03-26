@@ -487,7 +487,7 @@ if ($timeout) {
                 Login Again
             </a>
 
-            <a href="index.php" class="btn btn-secondary">
+            <a href="/" class="btn btn-secondary">
                 <i class="fas fa-home"></i>
                 Go to Homepage
             </a>
