@@ -155,7 +155,7 @@ include "header.php";
                     <div class="page_banner_text wow fadeInUp">
                         <h1><?php echo htmlspecialchars($product['name']); ?></h1>
                         <ul>
-                            <li><a href="index.php"><i class="fal fa-home-lg"></i> Home</a></li>
+                            <li><a href="/"><i class="fal fa-home-lg"></i> Home</a></li>
                             <li><a href="shop.php">Shop</a></li>
                             <li><a href="shop.php?category=<?php echo $product['main_category_slug']; ?>"><?php echo htmlspecialchars($product['main_category_name']); ?></a></li>
                             <li><a href="shop.php?sub=<?php echo $product['sub_category_slug']; ?>"><?php echo htmlspecialchars($product['sub_category_name']); ?></a></li>

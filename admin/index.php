@@ -891,7 +891,7 @@ if ($page == 'logout') {
                     </form>
 
                     <div class="back-to-login">
-                        <a href="index.php" class="back-link">
+                        <a href="/" class="back-link">
                             <i class="fas fa-arrow-left"></i> Back to Login
                         </a>
                     </div>

@@ -10,7 +10,7 @@
                         <div class="page_banner_text wow fadeInUp">
                             <h1>Become a Vendor</h1>
                             <ul>
-                                <li><a href="index.php"><i class="fal fa-home-lg"></i> Home</a></li>
+                                <li><a href="/"><i class="fal fa-home-lg"></i> Home</a></li>
                                 <li><a href="#">Become a Vendor</a></li>
                             </ul>
                         </div>
