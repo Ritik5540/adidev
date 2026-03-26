@@ -137,7 +137,7 @@ $favorite_products = get_recommended_products(15);
             <div class="row align-items-center">
                 <div class="col-lg-2">
                     <div class="header_logo_area">
-                        <a href="index.php" class="header_logo">
+                        <a href="/" class="header_logo">
                             <img src="assets/images/logo_2.png" alt="Adidev Manufacturing Pvt. Ltd." class="img-fluid w-100">
                         </a>
                         <div class="mobile_menu_icon d-block d-lg-none" data-bs-toggle="offcanvas"
