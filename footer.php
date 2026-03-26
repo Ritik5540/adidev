@@ -119,9 +119,42 @@
         SCROLL BUTTON END
     ===========================-->
 
-
  <!--jquery library js-->
  <script src="assets/js/jquery-3.7.1.min.js"></script>
+ <script>
+     function updateCounts() {
+         $.ajax({
+             url: 'ajax/get_cart_count.php',
+             type: 'GET',
+             dataType: 'json',
+             cache: false,
+             success: function(res) {
+                 if (res.success) {
+                     $('.cart-count').text(res.cart_count || 0);
+                     $('.wishlist-count').text(res.wishlist_count || 0);
+                 }
+             },
+             error: function() {
+                 console.warn('Count fetch failed');
+             }
+         });
+     }
+
+     updateCounts();
+
+     // Remove from wishlist
+     $(document).on('click', '.remove-from-wishlist', function() {
+         let id = $(this).data('id');
+
+         $.post('ajax/remove_from_wishlist.php', {
+             product_id: id
+         }, function(res) {
+             if (res.success) {
+                 location.reload();
+             }
+         }, 'json');
+     });
+ </script>
  <!--bootstrap js-->
  <script src="assets/js/bootstrap.bundle.min.js"></script>
  <!--font-awesome js-->
@@ -156,6 +189,7 @@
  <!--multiple image upload js-->
  <script src="assets/js/multiple-image-video.js"></script>
  <!--main/custom js-->
+ <script src="assets/js/product.js"></script>
  <script src="assets/js/custom.js"></script>
 
  </body>

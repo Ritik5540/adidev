@@ -171,6 +171,9 @@ function get_products($filters = [])
         }
     }
 
+    $conditions[] = 'p.main_image IS NOT NULL';
+    $conditions[] = "p.main_image != ''";
+
     // Sort order
     $orderBy = 'p.id DESC';
     switch ($filters['sort_by'] ?? 'default') {
@@ -377,13 +380,14 @@ function get_best_selling_products($limit = 3)
  */
 function get_new_arrival_products($limit = 5)
 {
-    $conditions = ['p.is_active = 1'];
-    $params = [];
-    $types = '';
+    // ✅ Common condition (reuse everywhere)
+    $baseCondition = "
+        p.is_active = 1
+        AND p.main_image IS NOT NULL
+        AND p.main_image != ''
+    ";
 
-    // First try products marked as new
-    $conditions[] = 'p.is_new = 1';
-
+    // 🔥 1. Get NEW products
     $sql = "SELECT 
                 p.*,
                 sc.name AS sub_category_name,
@@ -392,41 +396,41 @@ function get_new_arrival_products($limit = 5)
             FROM products p
             LEFT JOIN sub_categories sc ON p.sub_category_id = sc.id
             LEFT JOIN main_categories mc ON sc.main_category_id = mc.id
-            WHERE p.is_active = 1 AND p.is_new = 1
+            WHERE $baseCondition AND p.is_new = 1
             ORDER BY p.created_at DESC
             LIMIT ?";
 
-    $params[] = $limit;
-    $types .= 'i';
-
-    $stmt = db_execute($sql, $types, $params);
-    $result = $stmt->get_result();
-    $products = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt = db_execute($sql, 'i', [$limit]);
+    $products = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    // If we have enough new products, return them
+    // ✅ Enough mil gaya → return
     if (count($products) >= $limit) {
         return $products;
     }
 
-    // If not enough new products, get recent products (last 30 days)
+    // 🔥 2. Recent products (last 30 days)
     $remaining = $limit - count($products);
     $existingIds = array_column($products, 'id');
 
-    $recentConditions = ['p.is_active = 1', 'p.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)'];
-    $recentParams = [];
-    $recentTypes = '';
+    $conditions = [
+        $baseCondition,
+        "p.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)"
+    ];
+
+    $params = [];
+    $types  = '';
 
     if (!empty($existingIds)) {
         $placeholders = implode(',', array_fill(0, count($existingIds), '?'));
-        $recentConditions[] = "p.id NOT IN ($placeholders)";
+        $conditions[] = "p.id NOT IN ($placeholders)";
         foreach ($existingIds as $id) {
-            $recentParams[] = $id;
-            $recentTypes .= 'i';
+            $params[] = $id;
+            $types .= 'i';
         }
     }
 
-    $whereClause = 'WHERE ' . implode(' AND ', $recentConditions);
+    $where = 'WHERE ' . implode(' AND ', $conditions);
 
     $sql = "SELECT 
                 p.*,
@@ -436,37 +440,37 @@ function get_new_arrival_products($limit = 5)
             FROM products p
             LEFT JOIN sub_categories sc ON p.sub_category_id = sc.id
             LEFT JOIN main_categories mc ON sc.main_category_id = mc.id
-            $whereClause
+            $where
             ORDER BY p.created_at DESC
             LIMIT ?";
 
-    $recentParams[] = $remaining;
-    $recentTypes .= 'i';
+    $params[] = $remaining;
+    $types .= 'i';
 
-    $stmt = db_execute($sql, $recentTypes, $recentParams);
-    $result = $stmt->get_result();
-    $recentProducts = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt = db_execute($sql, $types, $params);
+    $recentProducts = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    // If still not enough, get random products
+    // 🔥 3. Random products (if still needed)
     if (count($recentProducts) < $remaining) {
+
         $finalRemaining = $remaining - count($recentProducts);
-        $allExistingIds = array_merge($existingIds, array_column($recentProducts, 'id'));
+        $allIds = array_merge($existingIds, array_column($recentProducts, 'id'));
 
-        $randomConditions = ['p.is_active = 1'];
-        $randomParams = [];
-        $randomTypes = '';
+        $conditions = [$baseCondition];
+        $params = [];
+        $types  = '';
 
-        if (!empty($allExistingIds)) {
-            $placeholders = implode(',', array_fill(0, count($allExistingIds), '?'));
-            $randomConditions[] = "p.id NOT IN ($placeholders)";
-            foreach ($allExistingIds as $id) {
-                $randomParams[] = $id;
-                $randomTypes .= 'i';
+        if (!empty($allIds)) {
+            $placeholders = implode(',', array_fill(0, count($allIds), '?'));
+            $conditions[] = "p.id NOT IN ($placeholders)";
+            foreach ($allIds as $id) {
+                $params[] = $id;
+                $types .= 'i';
             }
         }
 
-        $whereClause = 'WHERE ' . implode(' AND ', $randomConditions);
+        $where = 'WHERE ' . implode(' AND ', $conditions);
 
         $sql = "SELECT 
                     p.*,
@@ -476,22 +480,20 @@ function get_new_arrival_products($limit = 5)
                 FROM products p
                 LEFT JOIN sub_categories sc ON p.sub_category_id = sc.id
                 LEFT JOIN main_categories mc ON sc.main_category_id = mc.id
-                $whereClause
+                $where
                 ORDER BY RAND()
                 LIMIT ?";
 
-        $randomParams[] = $finalRemaining;
-        $randomTypes .= 'i';
+        $params[] = $finalRemaining;
+        $types .= 'i';
 
-        $stmt = db_execute($sql, $randomTypes, $randomParams);
-        $result = $stmt->get_result();
-        $randomProducts = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt = db_execute($sql, $types, $params);
+        $randomProducts = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
         $recentProducts = array_merge($recentProducts, $randomProducts);
     }
 
-    // Merge new products with recent products
     return array_merge($products, $recentProducts);
 }
 
@@ -518,7 +520,14 @@ function get_featured_products($limit = 5)
  */
 function get_recommended_products($limit = 15, $excludeId = null)
 {
-    $conditions = ['p.is_active = 1'];
+    // ✅ Common base condition
+    $baseCondition = "
+        p.is_active = 1
+        AND p.main_image IS NOT NULL
+        AND p.main_image != ''
+    ";
+
+    $conditions = [$baseCondition];
     $params = [];
     $types = '';
 
@@ -530,7 +539,7 @@ function get_recommended_products($limit = 15, $excludeId = null)
 
     $whereClause = 'WHERE ' . implode(' AND ', $conditions);
 
-    // Try to get products with good ratings first (4+ stars)
+    // 🔥 1. High rated products (4+)
     $sql = "SELECT 
                 p.*,
                 sc.name AS sub_category_name,
@@ -547,36 +556,36 @@ function get_recommended_products($limit = 15, $excludeId = null)
     $types .= 'i';
 
     $stmt = db_execute($sql, $types, $params);
-    $result = $stmt->get_result();
-    $products = $result->fetch_all(MYSQLI_ASSOC);
+    $products = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    // If we have enough rated products, return them
+    // ✅ Enough mil gaya
     if (count($products) >= $limit) {
         return $products;
     }
 
-    // If not enough rated products, get remaining from random
+    // 🔥 2. Random fallback
     $remaining = $limit - count($products);
     $existingIds = array_column($products, 'id');
+
     if ($excludeId !== null && !in_array($excludeId, $existingIds)) {
         $existingIds[] = $excludeId;
     }
 
-    $randomConditions = ['p.is_active = 1'];
-    $randomParams = [];
-    $randomTypes = '';
+    $conditions = [$baseCondition];
+    $params = [];
+    $types = '';
 
     if (!empty($existingIds)) {
         $placeholders = implode(',', array_fill(0, count($existingIds), '?'));
-        $randomConditions[] = "p.id NOT IN ($placeholders)";
+        $conditions[] = "p.id NOT IN ($placeholders)";
         foreach ($existingIds as $id) {
-            $randomParams[] = $id;
-            $randomTypes .= 'i';
+            $params[] = $id;
+            $types .= 'i';
         }
     }
 
-    $whereClause = 'WHERE ' . implode(' AND ', $randomConditions);
+    $whereClause = 'WHERE ' . implode(' AND ', $conditions);
 
     $sql = "SELECT 
                 p.*,
@@ -590,15 +599,13 @@ function get_recommended_products($limit = 15, $excludeId = null)
             ORDER BY RAND()
             LIMIT ?";
 
-    $randomParams[] = $remaining;
-    $randomTypes .= 'i';
+    $params[] = $remaining;
+    $types .= 'i';
 
-    $stmt = db_execute($sql, $randomTypes, $randomParams);
-    $result = $stmt->get_result();
-    $randomProducts = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt = db_execute($sql, $types, $params);
+    $randomProducts = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    // Merge both arrays
     return array_merge($products, $randomProducts);
 }
 
@@ -805,54 +812,33 @@ function get_average_product_rating(int $productId): float
  * Get Trending Every Sub Categories 5 products randomly
  *
  */
-function get_trending_every_sub_categories_5_products_randomly(): array
+function get_trending_products_random($limit = 15): array
 {
-    $products = [];
-
     $stmt = db_execute("
-        SELECT id 
-        FROM sub_categories
-        WHERE is_active = 1
+        SELECT 
+            p.*,
+            sc.name AS sub_category_name,
+            mc.name AS main_category_name
+        FROM products p
+        JOIN sub_categories sc ON sc.id = p.sub_category_id
+        JOIN main_categories mc ON mc.id = sc.main_category_id
+        WHERE 
+            p.is_active = 1
+            AND sc.is_active = 1
+
+            -- ✅ only products with image
+            AND p.main_image IS NOT NULL
+            AND p.main_image != ''
+
         ORDER BY RAND()
-        LIMIT 5
-    ");
+        LIMIT ?
+    ", 'i', [$limit]);
 
     $result = $stmt->get_result();
-    $subCategories = $result->fetch_all(MYSQLI_ASSOC);
+    $products = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    if (!$subCategories) {
-        return [];
-    }
-
-    $subIds = array_column($subCategories, 'id');
-
-    foreach ($subIds as $subId) {
-
-        $stmt = db_execute("
-            SELECT 
-                p.*,
-                sc.name AS sub_category_name,
-                mc.name AS main_category_name
-            FROM products p
-            JOIN sub_categories sc ON sc.id = p.sub_category_id
-            JOIN main_categories mc ON mc.id = sc.main_category_id
-            WHERE 
-                p.is_active = 1
-                AND sc.is_active = 1
-                AND p.sub_category_id = ?
-            ORDER BY RAND()
-            LIMIT 3
-        ", 'i', [$subId]);
-
-        $result = $stmt->get_result();
-        $rows   = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        $products = array_merge($products, $rows);
-    }
-    shuffle($products);
-    return $products;
+    return $products ?: [];
 }
 
 /**
@@ -922,6 +908,9 @@ function get_productsBySubCat($filters = [])
         $params[] = $searchTerm;
         $types .= 'sss';
     }
+
+    $conditions[] = 'p.main_image IS NOT NULL';
+    $conditions[] = "p.main_image != ''";
 
     // Sort order
     $orderBy = 'p.id DESC';
@@ -1388,7 +1377,7 @@ function generate_product_image_with_shadow($text, $width = 500, $height = 500, 
  * @param string $type Image type (main, hover, thumbnail)
  * @return string Image URL or data URI
  */
-function get_product_image($product, $type = 'main' , $fontSize = 30)
+function get_product_image($product, $type = 'main', $fontSize = 30)
 {
     $imagePath = '';
 
@@ -1445,6 +1434,143 @@ function get_product_thumbnail($product, $size = 'small')
     $bgColor = $colors[($product['id'] ?? 1) % count($colors)];
 
     return generate_product_image($productName, $width, $height, $bgColor);
+}
+
+function get_user_wishlist_items(int $user_id): array
+{
+    $stmt = db_execute(
+        "SELECT 
+            p.id,
+            p.name,
+            p.base_retail_price AS price,
+            p.main_image,
+            p.color,
+            p.size
+         FROM user_wishlist w
+         JOIN products p ON w.product_id = p.id
+         WHERE w.user_id = ?
+         ORDER BY w.created_at DESC",
+        'i',
+        [$user_id]
+    );
+
+    $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    return $items ?: [];
+}
+
+function render_empty_wishlist(): void
+{
+    echo '
+    <tr>
+        <td colspan="6" class="text-center">
+            <div class="empty_wishlist">
+                <h4>No items in your wishlist</h4>
+                <p>Add products you like to your wishlist</p> <br>
+                <a href="shop.php" class="common_btn">Continue Shopping</a>
+            </div>
+        </td>
+    </tr>';
+}
+
+function get_user_cart(int $user_id): array
+{
+    $stmt = db_execute(
+        "SELECT 
+            ci.id,
+            ci.product_id,
+            ci.quantity,
+            ci.unit_price,
+            ci.total_price,
+            p.name,
+            p.main_image,
+            p.color,
+            p.size
+         FROM cart_items ci
+         JOIN carts c ON ci.cart_id = c.id
+         JOIN products p ON ci.product_id = p.id
+         WHERE c.user_id = ? AND c.status = 'active'
+         ORDER BY ci.id DESC",
+        'i',
+        [$user_id]
+    );
+
+    $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    return $items ?: [];
+}
+
+function render_empty_cart(): void
+{
+    echo '
+    <tr>
+        <td colspan="7" class="text-center">
+            <div class="empty_cart">
+                <h4>Your cart is empty</h4>
+                <p>Add some products to continue shopping</p> <br>
+                <a href="shop.php" class="common_btn">Continue Shopping</a>
+            </div>
+        </td>
+    </tr>';
+}
+
+function update_cart_totals(int $cart_id): void
+{
+    // Get totals from cart_items
+    $stmt = db_execute(
+        "SELECT 
+            COUNT(*) as total_items,
+            COALESCE(SUM(quantity),0) as total_quantity,
+            COALESCE(SUM(total_price),0) as subtotal
+         FROM cart_items
+         WHERE cart_id = ?",
+        'i',
+        [$cart_id]
+    );
+
+    $row = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    $total_items    = (int) $row['total_items'];
+    $total_quantity = (int) $row['total_quantity'];
+    $subtotal       = (float) $row['subtotal'];
+
+    // Basic calculation (customize later)
+    $discount = 0;
+    if ($total_quantity >= 10 || $subtotal >= 1000) {
+        $shipping = 0;
+    } else {
+        $shipping = 50;
+    }
+    $tax      = 0;
+    $grand_total = $subtotal - $discount + $shipping + $tax;
+
+    // Update cart
+    db_execute(
+        "UPDATE carts SET
+            total_items = ?,
+            total_quantity = ?,
+            subtotal = ?,
+            discount_amount = ?,
+            shipping_amount = ?,
+            tax_amount = ?,
+            grand_total = ?,
+            updated_at = NOW()
+         WHERE id = ?",
+        'iiddiddi',
+        [
+            $total_items,
+            $total_quantity,
+            $subtotal,
+            $discount,
+            $shipping,
+            $tax,
+            $grand_total,
+            $cart_id
+        ]
+    );
 }
 
 function encrypt_id($id)

@@ -56,13 +56,18 @@ foreach ($products as $product) {
         'description' => htmlspecialchars($product['description'] ?? ''),
         'retail_price' => (float) ($product['base_retail_price'] ?? 0),
         'mrp' => (float) ($product['mrp'] ?? 0),
-        'main_image' => !empty($product['main_image']) ? '../uploads/products/main/' . $product['main_image'] : null,
+        'main_image' => !empty($product['main_image']) ? './uploads/products/main/' . $product['main_image'] : get_product_image($product, 'main'),
         'average_rating' => (float) ($product['average_rating'] ?? 0),
         'review_count' => (int) ($product['review_count'] ?? 0),
         'stock_quantity' => (int) ($product['stock_quantity'] ?? 0),
         'is_new' => (bool) ($product['is_new'] ?? false),
         'is_on_sale' => (bool) ($product['is_on_sale'] ?? false),
-        'color' => !empty($product['color']) ? $product['color'] : null
+        'color' => !empty($product['color']) ? $product['color'] : null,
+        'productsss' => $product,
+        // 'image_url' => get_product_image($product, 'main'),
+        'encrypted_id' => encrypt_id($product['id']),
+        'price' => (float) ($product['base_retail_price'] ?? 0),
+        'avg_rating' => (float) ($product['average_rating'] ?? 0),
     ];
 }
 

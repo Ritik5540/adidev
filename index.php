@@ -187,7 +187,7 @@
                 <?php foreach ($header_sub_categories as $mainId => $subCats) : ?>
                     <?php foreach ($subCats as $subCat) : ?>
                         <div class="col-2 wow fadeInUp">
-                            <a href=" shop.php?sub=<?php echo urlencode($subCat['slug']); ?>" class="category_item">
+                            <a href="shop.php?sub=<?php echo urlencode($subCat['slug']); ?>" class="category_item">
                                 <div class="img">
                                     <?php
                                     $img = !empty($subCat['image'])
@@ -250,21 +250,21 @@
                                             </ul>
                                             <ul class="btn_list">
                                                 <li>
-                                                    <a href="wishlist.php?slug=<?= urlencode($sub_category_product['slug']) ?>">
-                                                        <img src="assets/images/love_icon_white.svg" alt="Love"
-                                                            class="img-fluid">
+                                                    <a href="shop.php?slug=<?= urlencode($sub_category_product['slug']) ?>">
+                                                        <img src="assets/images/love_icon_white.svg" data-id="<?php echo $sub_category_product['id']; ?>" alt="Love"
+                                                            class="img-fluid add-to-wishlist">
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="cart.php?slug=<?= urlencode($sub_category_product['slug']) ?>">
-                                                        <img src="assets/images/cart_icon_white.svg" alt="Cart"
-                                                            class="img-fluid">
+                                                    <a href="shop.php?slug=<?= urlencode($sub_category_product['slug']) ?>">
+                                                        <img src="assets/images/cart_icon_white.svg" data-id="<?php echo $sub_category_product['id']; ?>" alt="Cart"
+                                                            class="img-fluid add-to-cart">
                                                     </a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="product_text">
-                                            <a class="title" href="shop_details.php"><?php echo htmlspecialchars($sub_category_product['name']); ?></a>
+                                            <a class="title" href="shop_details.php?id=<?= encrypt_id($sub_category_product['id']) ?>"><?php echo htmlspecialchars($sub_category_product['name']); ?></a> <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span>
                                             <p class="price">₹<?php echo htmlspecialchars($sub_category_product['base_retail_price']); ?> <del>₹<?php echo htmlspecialchars($sub_category_product['mrp']); ?></del></p>
                                             <?php
                                             $reviews = get_product_reviews($sub_category_product['id']);
@@ -288,7 +288,7 @@
 
                                                 <span>(<?= (int)get_total_product_reviews_count($sub_category_product['id']) ?> reviews)</span>
                                             </p>
-                                            <ul class="product_variants_items_box">
+                                            <!-- <ul class="product_variants_items_box">
 
                                                 <?php
                                                 $variants = get_product_variants($sub_category_product['id']);
@@ -302,15 +302,15 @@
                                                 $extraCount = $totalVariants > 2 ? $totalVariants - 2 : 0;
                                                 ?>
 
-                                                <?php foreach ($visible as $variant): ?>
+                                                <?php #foreach ($visible as $variant): ?>
 
                                                     <li class="product_variants_item">
-                                                        <a href="shop.php?slug=<?= urlencode($sub_category_product['slug']) ?>"
-                                                            title="Size: <?= htmlspecialchars($variant['size']) ?> | Price: ₹<?= htmlspecialchars($variant['retail_price']) ?>">
+                                                        <a href="shop.php?slug=<?php #urlencode($sub_category_product['slug']) ?>"
+                                                            title="Size: <?php #htmlspecialchars($variant['size']) ?> | Price: ₹<?php #htmlspecialchars($variant['retail_price']) ?>">
 
                                                             <img
-                                                                src="<?= htmlspecialchars($variant['image'] ?? 'assets/images/product_1.png') ?>"
-                                                                alt="<?= htmlspecialchars($variant['size']) ?>"
+                                                                src="<?php #htmlspecialchars($variant['image'] ?? 'assets/images/product_1.png') ?>"
+                                                                alt="<?php #htmlspecialchars($variant['size']) ?>"
                                                                 loading="lazy"
                                                                 width="30"
                                                                 height="30">
@@ -318,20 +318,20 @@
                                                         </a>
                                                     </li>
 
-                                                <?php endforeach; ?>
+                                                <?php #endforeach; ?>
 
 
-                                                <?php if ($extraCount > 0): ?>
+                                                <?php #if ($extraCount > 0): ?>
 
                                                     <li class="variant_more">
-                                                        <a href="shop.php?slug=<?= urlencode($sub_category_product['slug']) ?>">
-                                                            +<?= $extraCount ?>
+                                                        <a href="shop.php?slug=<?php #urlencode($sub_category_product['slug']) ?>">
+                                                            +<?php #$extraCount ?>
                                                         </a>
                                                     </li>
 
-                                                <?php endif; ?>
+                                                <?php #endif; ?>
 
-                                            </ul>
+                                            </ul> -->
                                         </div>
                                     </div>
                                 </div>
@@ -358,7 +358,7 @@
 <!--================================
         BEST SELLING PRODUCT 2 START
     ==================================-->
-<section class="best_selling_product_2 mt_95">
+<!-- <section class="best_selling_product_2 mt_95">
     <div class="container">
         <div class="row">
             <div class="col-xl-6 col-sm-9">
@@ -368,35 +368,35 @@
             </div>
             <div class="col-xl-6 col-sm-3">
                 <div class="view_all_btn_area">
-                    <a class="view_all_btn" href=" shop.php">View all</a>
+                    <a class="view_all_btn" href="shop.php">View all</a>
                 </div>
             </div>
         </div>
         <div class="row mt_15">
             <div class="col-xl-7">
                 <div class="row">
-                    <?php if (!empty($best_selling_products)) : ?>
-                        <?php foreach ($best_selling_products as $product) : ?>
+                    <?php #if (!empty($best_selling_products)) : ?>
+                        <?php #foreach ($best_selling_products as $product) : ?>
                             <div class="col-xl-4 col-sm-6 col-md-4 wow fadeInUp">
                                 <div class="best_selling_product_item">
-                                    <img src="<?= get_product_image($product, 'main', 24) ?>" alt="best sell"
+                                    <img src="<?php #get_product_image($product, 'main', 24) ?>" alt="best sell"
                                         class="img-fluid w-100">
                                     <div class="text">
-                                        <a class="title" href="shop_details.php"><?php echo htmlspecialchars($product['name']); ?></a>
-                                        <p class="price">₹<?php echo htmlspecialchars($product['base_retail_price']); ?> <del>₹<?php echo htmlspecialchars($product['mrp']); ?></del></p>
-                                        <a class="buy_btn" href="shop_details.php">buy now <i
+                                        <a class="title" href="shop_details.php?id=<?php #encrypt_id($product['id']) ?>"><?php #echo htmlspecialchars($product['name']); ?></a>
+                                        <p class="price">₹<?php #echo htmlspecialchars($product['base_retail_price']); ?> <del>₹<?php #echo htmlspecialchars($product['mrp']); ?></del></p>
+                                        <a class="buy_btn" href="shop_details.php?id=<?php #encrypt_id($product['id']) ?>">buy now <i
                                                 class="far fa-arrow-up"></i></a>
                                     </div>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
-                    <?php else : ?>
+                        <?php #endforeach; ?>
+                    <?php #else : ?>
                         <div class="col-12">
                             <div class="text-center">
                                 <h3>No products found</h3>
                             </div>
                         </div>
-                    <?php endif; ?>
+                    <?php #endif; ?>
                 </div>
             </div>
             <div class="col-xl-5 wow fadeInRight">
@@ -412,7 +412,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!--================================
         BEST SELLING PRODUCT 2 END
     ==================================-->
@@ -431,7 +431,7 @@
             </div>
             <div class="col-xl-6 col-sm-3">
                 <div class="view_all_btn_area">
-                    <a class="view_all_btn" href=" shop.php">View all</a>
+                    <a class="view_all_btn" href="shop.php">View all</a>
                 </div>
             </div>
         </div>
@@ -452,22 +452,22 @@
                                 <ul class="btn_list">
                                     <li>
                                         <a href="wishlist.php?slug=<?= urlencode($product['slug']) ?>">
-                                            <img src="assets/images/love_icon_white.svg" class="img-fluid">
+                                            <img src="assets/images/love_icon_white.svg" data-id="<?php echo $product['id']; ?>" class="img-fluid add-to-wishlist">
                                         </a>
                                     </li>
                                     <li>
                                         <a href="cart.php?slug=<?= urlencode($product['slug']) ?>">
-                                            <img src="assets/images/cart_icon_white.svg" class="img-fluid">
+                                            <img src="assets/images/cart_icon_white.svg" data-id="<?php echo $product['id']; ?>" class="img-fluid add-to-cart">
                                         </a>
                                     </li>
                                 </ul>
                             </div>
 
                             <div class="product_text">
-                                <a class="title" href="shop_details.php">
+                                <a class="title" href="shop_details.php?id=<?= encrypt_id($product['id']) ?>">
                                     <?= htmlspecialchars($product['name']) ?>
                                 </a>
-
+                                <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span>
                                 <p class="price">
                                     ₹<?= htmlspecialchars($product['base_retail_price']) ?>
                                     <del>₹<?= htmlspecialchars($product['mrp']) ?></del>
@@ -557,22 +557,22 @@
                                             <ul class="btn_list">
                                                 <li>
                                                     <a href="wishlist.php?slug=<?= urlencode($product['slug']) ?>">
-                                                        <img src="assets/images/love_icon_white.svg" class="img-fluid">
+                                                        <img src="assets/images/love_icon_white.svg"  data-id="<?php echo $product['id']; ?>" class="img-fluid add-to-wishlist">
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="cart.php?slug=<?= urlencode($product['slug']) ?>">
-                                                        <img src="assets/images/cart_icon_white.svg" class="img-fluid">
+                                                        <img src="assets/images/cart_icon_white.svg" data-id="<?php echo $product['id']; ?>" class="img-fluid add-to-cart">
                                                     </a>
                                                 </li>
                                             </ul>
                                         </div>
 
                                         <div class="product_text">
-                                            <a class="title" href="shop_details.php">
+                                            <a class="title" href="shop_details.php?id=<?= encrypt_id($product['id']) ?>">
                                                 <?= htmlspecialchars($product['name']) ?>
                                             </a>
-
+                                            <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span>
                                             <p class="price">
                                                 ₹<?= htmlspecialchars($product['base_retail_price']) ?>
                                                 <del>₹<?= htmlspecialchars($product['mrp']) ?></del>

@@ -79,16 +79,36 @@ $avg_rating = $product['average_rating'] ?? 0;
 
 // Fetch related products (same sub-category)
 $related_products = [];
-$stmt = db_execute("SELECT p.id, p.name, p.slug, p.base_retail_price, p.mrp, p.main_image, 
-                            p.average_rating, p.review_count, p.is_new, p.is_on_sale, p.color
-                    FROM products p
-                    WHERE p.sub_category_id = ? AND p.id != ? AND p.is_active = 1
-                    ORDER BY RAND()
-                    LIMIT 6", 'ii', [$product['sub_category_id'], $product_id]);
+
+$stmt = db_execute("
+    SELECT 
+        p.id, 
+        p.name, 
+        p.slug, 
+        p.base_retail_price, 
+        p.mrp, 
+        p.main_image, 
+        p.average_rating, 
+        p.review_count, 
+        p.is_new, 
+        p.is_on_sale, 
+        p.color
+    FROM products p
+    WHERE 
+        p.sub_category_id = ?
+        AND p.id != ?
+        AND p.is_active = 1
+
+        -- ✅ only products with image
+        AND p.main_image IS NOT NULL
+        AND p.main_image != ''
+
+    ORDER BY RAND()
+    LIMIT 6
+", 'ii', [$product['sub_category_id'], $product_id]);
+
 $result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-    $related_products[] = $row;
-}
+$related_products = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
 // Helper function to format price
@@ -228,10 +248,12 @@ include "header.php";
                                 <p class="stock <?php echo $product['stock_quantity'] > 0 ? 'in_stock' : 'out_stock'; ?>">
                                     <?php echo $product['stock_quantity'] > 0 ? 'In Stock' : 'Out of Stock'; ?>
                                 </p>
+                                <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span> &nbsp; &nbsp;
                                 <p class="rating">
                                     <?php echo getStarRating($avg_rating); ?>
                                     <span>(<?php echo $reviews_count; ?> reviews)</span>
                                 </p>
+                                
                             </div>
                             <h3 class="price">
                                 <?php echo formatPrice($product['base_retail_price']); ?>
@@ -275,13 +297,13 @@ include "header.php";
 
                             <!-- Quantity and Add to Cart -->
                             <div class="d-flex flex-wrap align-items-center">
-                                <div class="details_qty_input">
+                                <!-- <div class="details_qty_input">
                                     <button class="minus"><i class="fal fa-minus"></i></button>
                                     <input type="text" id="quantity" value="1">
                                     <button class="plus"><i class="fal fa-plus"></i></button>
-                                </div>
+                                </div> -->
                                 <div class="details_btn_area">
-                                    <a class="common_btn buy_now" href="#" data-id="<?php echo $product['id']; ?>">Buy Now <i class="fas fa-long-arrow-right"></i></a>
+                                    <!-- <a class="common_btn buy_now" href="#" data-id="<?php echo $product['id']; ?>">Buy Now <i class="fas fa-long-arrow-right"></i></a> -->
                                     <a class="common_btn add-to-cart" href="#" data-id="<?php echo $product['id']; ?>">Add to cart <i class="fas fa-long-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -290,9 +312,9 @@ include "header.php";
                                 <li>
                                     <a href="#" class="add-to-wishlist" data-id="<?php echo $product['id']; ?>"> <i class="fal fa-heart"></i> Add Wishlist </a>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <a href="#"><i class="fal fa-exchange"></i> Compare</a>
-                                </li>
+                                </li> -->
                             </ul>
 
                             <ul class="details_tags_sku">
@@ -458,14 +480,14 @@ include "header.php";
                     <div class="shop_details_sidebar">
                         <div class="shop_details_sidebar_info">
                             <ul>
-                                <li>
+                                <!-- <li>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
                                         </svg>
                                     </span>
                                     Shipping worldwide
-                                </li>
+                                </li> -->
                                 <li>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -572,7 +594,7 @@ include "header.php";
                                 </ul>
                             </div>
                             <div class="product_text">
-                                <a class="title" href="shop_details.php?id=<?php echo $related['id']; ?>"><?php echo htmlspecialchars($related['name']); ?></a>
+                                <a class="title" href="shop_details.php?id=<?= encrypt_id($related['id']) ?>"><?php echo htmlspecialchars($related['name']); ?></a>
                                 <p class="price">
                                     <?php echo formatPrice($related['base_retail_price']); ?>
                                     <?php if ($related['mrp'] > $related['base_retail_price']): ?>
