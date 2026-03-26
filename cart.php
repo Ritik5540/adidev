@@ -126,7 +126,7 @@
 
                                              <!-- remove -->
                                              <td class="cart_page_action">
-                                                 <a href="javascript:void(0)" class="remove-item">
+                                                 <a href="#" data-id="<?php echo $item['id']; ?>" class="remove-item">
                                                      <i class="fal fa-times"></i> Remove
                                                  </a>
                                              </td>
