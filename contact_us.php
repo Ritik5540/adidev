@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="row mt_75">
-                <div class="col-lg-5">
+                <!-- <div class="col-lg-5">
                     <div class="contact_img wow fadeInLeft">
                         <img src="assets/images/contact_message.jpg" alt="contact" class="img-fluid w-100">
                         <div class="contact_hotline">
@@ -70,8 +70,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-7">
+                </div> -->
+                <div class="col-lg-12">
                     <div class="contact_form wow fadeInRight">
                         <h2>Get In Touch 👋</h2>
                         <form action="#">
