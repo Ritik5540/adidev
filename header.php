@@ -19,7 +19,7 @@ $header_sub_categories  = get_sub_categories_grouped_by_main(
         static fn(array $c): int => (int) $c['id'],
         $header_main_categories
     ),
-    30,
+    50,
     'name',
     'ASC'
 );
