@@ -1,120 +1,83 @@
 <?php include "header.php"; ?>
- <!--=========================
+<!--=========================
         PAGE BANNER START
     ==========================-->
-    <section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
-        <div class="page_banner_overlay">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page_banner_text wow fadeInUp">
-                            <h1>Return Policy</h1>
-                            <ul>
-                                <li><a href="#"><i class="fal fa-home-lg"></i> Home</a></li>
-                                <li><a href="#">Return Policy</a></li>
-                            </ul>
-                        </div>
+<section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
+    <div class="page_banner_overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page_banner_text wow fadeInUp">
+                        <h1>Return Policy</h1>
+                        <ul>
+                            <li><a href="#"><i class="fal fa-home-lg"></i> Home</a></li>
+                            <li><a href="#">Return Policy</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--=========================
+    </div>
+</section>
+<!--=========================
         PAGE BANNER START
     ==========================-->
 
 
-    <!--=============================
+<!--=============================
         RETURN POLICY START
     ==============================-->
-    <section class="return_policy mt_55 mb_100">
-        <div class="container">
-            <div class="row wow fadeInUp">
-                <div class="col-12">
-                    <div class="privacy_policy_text">
-                        <h3>Who we are</h3>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam
-                            detection. An anonymized string created from your email address (also called a hash) may be
-                            provided to the Gravatar service to see if you are using it. The Gravatar service
-                            privacy policy is available here. created from your email address (also called a hash) may.
-                        </p>
-                        <h3>Comments</h3>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam detection. An
-                            anonymized string created from your email address (also called a hash) may be provided to
-                            the Gravatar service to see if you are using it.
-                        </p>
-                        <ul>
-                            <li>Isitors to the website can download and extract any location data</li>
-                            <li>Gravatar service privacy policy is available here. created from your email address</li>
-                            <li>These are for your convenience so that you do not have to fill in
-                                your details again</li>
-                        </ul>
-                        <h3>Media</h3>
-                        <p>If you leave a comment on our site you may opt-in to saving your name, email address and
-                            website in cookies. These are for your convenience so that you do not have to fill in your
-                            details again when you leave another comment. These cookies will last for one year. If you
-                            visit our login page, we will set a temporary cookie to determine if your brow ser accepts
-                            cookies. This cookie contains no personal data and is discarded when you close your browser.
-                            When you log in, we will also set up several cookies to save your login information and your
-                            screen display choices. Login cookies last for two days, and screen options cookies last for
-                            a year</p>
-                        <ul>
-                            <li>You should avoid uploading images with embedded location</li>
-                            <li>Isitors to the website can download and extract any location data</li>
-                            <li>Gravatar service privacy policy is available here. created from your email address</li>
-                            <li>When visitors leave comments on the site we collect the data shown in the comments</li>
-                            <li>These are for your convenience so that you do not have to fill in
-                                your details again</li>
-                        </ul>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam detection. An
-                            anonymized string created from your email address (also called a hash) may be provided to
-                            the Gravatar service to see if you are using it.
-                        </p>
-                        <h3>Cookies</h3>
-                        <p>If you leave a comment on our site you may opt-in to saving your name, email address and
-                            website in cookies. These are for your convenience so that you do not have to fill in your
-                            details again when you leave another comment. These cookies will last for one year. If you
-                            visit our login page, we will set a temporary cookie to determine if your brow ser accepts
-                            cookies. This cookie contains no personal data and is discarded when you close your browser.
-                            When you log in, we will also set up several cookies to save your login information and your
-                            screen display choices. Login cookies last for two days, and screen options cookies last for
-                            a year.</p>
-                        <h3>Embedded content from other websites</h3>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam dete
-                            ction. Suggested text: Articles on this site may include embedded content (e.g. videos,
-                            images, articles, etc.). Embedded content from other websites behaves in the exact
-                            same way as if the visitor has visited the other website. These websites may collect data
-                            about you, use cookies, embed additional third-party tracking, and monitor your in
-                            teraction with that embedded content, including tracking your interaction with the embedded
-                            content if you have an account and are logged in to that website.</p>
-                        <h3>How long we retain your data</h3>
-                        <p>If you leave a comment, the comment and its metadata are retained indefinitely. This is so we
-                            can recognize and approve any follow-up comments automatically instead
-                            of holding them in a moderation queue. For users that register on our website (if any), we
-                            also store the personal information they provide in their user profile. All users can
-                            see, edit, or delete their personal information at any time (except they cannot change their
-                            username). Website administrators can also see and edit that information.</p>
-                        <ul>
-                            <li>You should avoid uploading images with embedded location</li>
-                            <li>Isitors to the website can download and extract any location data</li>
-                            <li>Gravatar service privacy policy is available here. created from your email address</li>
-                        </ul>
-                        <h3>What rights you have over your data</h3>
-                        <p>If you have an account on this site, or have left comments, you can request to receive an
-                            exported file of the personal data we hold about you, including any data you have provided
-                            to us. You can also request that we erase any personal data we hold about you. This does not
-                            include any data we are obliged to keep for administrative.</p>
-                    </div>
+<section class="privacy_policy mt_55 mb_100">
+    <div class="container">
+        <div class="row wow fadeInUp">
+            <div class="col-12">
+                <div class="privacy_policy_text">
+
+                    <p class="text-end">Last Updated: <?php echo date('F j, Y', strtotime('-2 days')); ?></p>
+
+                    <h3>Return & Refund Policy for Adidev Manufacturing Pvt. Ltd.</h3>
+                    <p>At Adidev Manufacturing Pvt. Ltd., we strive to provide high-quality products and a smooth shopping experience. This Return & Refund Policy explains the conditions under which returns, replacements, and refunds are accepted for purchases made on our ecommerce website.</p>
+
+                    <h4>Eligibility for Returns</h4>
+                    <ul>
+                        <li>Products must be returned within 7 days of delivery</li>
+                        <li>Items must be unused, undamaged, and in original packaging</li>
+                        <li>Proof of purchase (order ID/invoice) is required</li>
+                        <li>Returns are accepted only for damaged, defective, or incorrect items</li>
+                    </ul>
+
+                    <h4>Non-Returnable Items</h4>
+                    <ul>
+                        <li>Used or damaged products (not due to our fault)</li>
+                        <li>Products without original packaging or tags</li>
+                        <li>Customized or special-order items</li>
+                        <li>Clearance or sale items (unless defective)</li>
+                    </ul>
+
+                    <h4>Return Process</h4>
+                    <p>To initiate a return, contact our support team with your order details and reason for return. Once approved, we will provide instructions for pickup or shipping the item back.</p>
+
+                    <h4>Refund Policy</h4>
+                    <p>After receiving and inspecting the returned product, we will notify you of the approval or rejection of your refund. Approved refunds will be processed within 5–7 business days to your original payment method.</p>
+
+                    <h4>Replacement Policy</h4>
+                    <p>In case of damaged or defective items, we may offer a replacement instead of a refund, depending on product availability.</p>
+
+                    <h4>Shipping Charges</h4>
+                    <p>Shipping charges are non-refundable unless the return is due to our error (damaged, defective, or incorrect product). Return shipping costs may be borne by the customer unless stated otherwise.</p>
+
+                    <h4>Cancellation Policy</h4>
+                    <p>Orders can be canceled before they are shipped. Once shipped, cancellation is not possible, but you may request a return after delivery.</p>
+
+                    <h4>Contact Us</h4>
+                    <p>If you have any questions regarding returns or refunds, please contact us at
+                        <a href="mailto:care@adidevmanufacturing.com">care@adidevmanufacturing.com</a>.
+                    </p>
+
                 </div>
             </div>
         </div>
-    </section>
-    <!--=============================
-        RETURN POLICY END
-    ==============================-->
+    </div>
+</section>
 
 <?php include "footer.php"; ?>

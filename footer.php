@@ -48,11 +48,10 @@
                  <div class="footer_link">
                      <h3>Quick Links</h3>
                      <ul>
-                         <li><a href="#">Privacy Ploicy</a></li>
-                         <li><a href="#">Terms and Condition</a></li>
-                         <li><a href="#">Return Policy</a></li>
-                         <li><a href="#">FAQ's</a></li>
-                         <li><a href="#">Become a Vendor</a></li>
+                         <li><a href="privacy_policy.php">Privacy Policy</a></li>
+                         <li><a href="terms_condition.php">Terms and Condition</a></li>
+                         <li><a href="return_policy.php">Return Policy</a></li>
+                         <li><a href="faq.php">FAQ's</a></li>
                      </ul>
                  </div>
              </div>

@@ -1,121 +1,88 @@
 <?php include "header.php"; ?>
-    <!--=========================
+<!--=========================
         PAGE BANNER START
     ==========================-->
-    <section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
-        <div class="page_banner_overlay">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page_banner_text wow fadeInUp">
-                            <h1>Terms and condition</h1>
-                            <ul>
-                                <li><a href="#"><i class="fal fa-home-lg"></i> Home</a></li>
-                                <li><a href="#">Terms and condition</a></li>
-                            </ul>
-                        </div>
+<section class="page_banner" style="background: url(assets/images/page_banner_bg.jpg);">
+    <div class="page_banner_overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page_banner_text wow fadeInUp">
+                        <h1>Terms and condition</h1>
+                        <ul>
+                            <li><a href="/"><i class="fal fa-home-lg"></i> Home</a></li>
+                            <li><a href="javascript:void(0);">Terms and condition</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--=========================
+    </div>
+</section>
+<!--=========================
         PAGE BANNER START
     ==========================-->
 
 
-    <!--=============================
+<!--=============================
         TERMS AND CONDITION START
     ==============================-->
-    <section class="terms_condition mt_55 mb_100">
-        <div class="container">
-            <div class="row wow fadeInUp">
-                <div class="col-12">
-                    <div class="privacy_policy_text">
-                        <h3>Who we are</h3>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam
-                            detection. An anonymized string created from your email address (also called a hash) may be
-                            provided to the Gravatar service to see if you are using it. The Gravatar service
-                            privacy policy is available here. created from your email address (also called a hash) may.
-                        </p>
-                        <h3>Comments</h3>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam detection. An
-                            anonymized string created from your email address (also called a hash) may be provided to
-                            the Gravatar service to see if you are using it.
-                        </p>
-                        <ul>
-                            <li>Isitors to the website can download and extract any location data</li>
-                            <li>Gravatar service privacy policy is available here. created from your email address</li>
-                            <li>These are for your convenience so that you do not have to fill in
-                                your details again</li>
-                        </ul>
-                        <h3>Media</h3>
-                        <p>If you leave a comment on our site you may opt-in to saving your name, email address and
-                            website in cookies. These are for your convenience so that you do not have to fill in your
-                            details again when you leave another comment. These cookies will last for one year. If you
-                            visit our login page, we will set a temporary cookie to determine if your brow ser accepts
-                            cookies. This cookie contains no personal data and is discarded when you close your browser.
-                            When you log in, we will also set up several cookies to save your login information and your
-                            screen display choices. Login cookies last for two days, and screen options cookies last for
-                            a year</p>
-                        <ul>
-                            <li>You should avoid uploading images with embedded location</li>
-                            <li>Isitors to the website can download and extract any location data</li>
-                            <li>Gravatar service privacy policy is available here. created from your email address</li>
-                            <li>When visitors leave comments on the site we collect the data shown in the comments</li>
-                            <li>These are for your convenience so that you do not have to fill in
-                                your details again</li>
-                        </ul>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam detection. An
-                            anonymized string created from your email address (also called a hash) may be provided to
-                            the Gravatar service to see if you are using it.
-                        </p>
-                        <h3>Cookies</h3>
-                        <p>If you leave a comment on our site you may opt-in to saving your name, email address and
-                            website in cookies. These are for your convenience so that you do not have to fill in your
-                            details again when you leave another comment. These cookies will last for one year. If you
-                            visit our login page, we will set a temporary cookie to determine if your brow ser accepts
-                            cookies. This cookie contains no personal data and is discarded when you close your browser.
-                            When you log in, we will also set up several cookies to save your login information and your
-                            screen display choices. Login cookies last for two days, and screen options cookies last for
-                            a year.</p>
-                        <h3>Embedded content from other websites</h3>
-                        <p>When visitors leave comments on the site we collect the data shown in the comments form, and
-                            also the visitor’s IP address and browser user agent string to help spam dete
-                            ction. Suggested text: Articles on this site may include embedded content (e.g. videos,
-                            images, articles, etc.). Embedded content from other websites behaves in the exact
-                            same way as if the visitor has visited the other website. These websites may collect data
-                            about you, use cookies, embed additional third-party tracking, and monitor your in
-                            teraction with that embedded content, including tracking your interaction with the embedded
-                            content if you have an account and are logged in to that website.</p>
-                        <h3>How long we retain your data</h3>
-                        <p>If you leave a comment, the comment and its metadata are retained indefinitely. This is so we
-                            can recognize and approve any follow-up comments automatically instead
-                            of holding them in a moderation queue. For users that register on our website (if any), we
-                            also store the personal information they provide in their user profile. All users can
-                            see, edit, or delete their personal information at any time (except they cannot change their
-                            username). Website administrators can also see and edit that information.</p>
-                        <ul>
-                            <li>You should avoid uploading images with embedded location</li>
-                            <li>Isitors to the website can download and extract any location data</li>
-                            <li>Gravatar service privacy policy is available here. created from your email address</li>
-                        </ul>
-                        <h3>What rights you have over your data</h3>
-                        <p>If you have an account on this site, or have left comments, you can request to receive an
-                            exported file of the personal data we hold about you, including any data you have provided
-                            to us. You can also request that we erase any personal data we hold about you. This does not
-                            include any data we are obliged to keep for administrative.</p>
-                    </div>
+<section class="privacy_policy mt_55 mb_100">
+    <div class="container">
+        <div class="row wow fadeInUp">
+            <div class="col-12">
+                <div class="privacy_policy_text">
+
+                    <p class="text-end">Last Updated: <?php echo date('F j, Y', strtotime('-2 days')); ?></p>
+
+                    <h3>Terms & Conditions for Adidev Manufacturing Pvt. Ltd.</h3>
+                    <p>Welcome to Adidev Manufacturing Pvt. Ltd. By accessing or using our ecommerce website, you agree to comply with and be bound by the following Terms & Conditions. Please read them carefully before using our services.</p>
+
+                    <h4>Use of Website</h4>
+                    <p>By using this website, you confirm that you are at least 18 years old or accessing the website under the supervision of a parent or guardian. You agree not to use the website for any unlawful or prohibited activities.</p>
+
+                    <h4>Account & User Responsibilities</h4>
+                    <ul>
+                        <li>You are responsible for maintaining the confidentiality of your account details</li>
+                        <li>You agree to provide accurate and complete information during registration and checkout</li>
+                        <li>You are responsible for all activities under your account</li>
+                    </ul>
+
+                    <h4>Product Information</h4>
+                    <p>We strive to display accurate product details, descriptions, and pricing. However, errors may occur. We reserve the right to correct any errors and cancel orders if necessary.</p>
+
+                    <h4>Pricing & Payments</h4>
+                    <p>All prices listed are in INR and may include applicable taxes unless stated otherwise. Payments must be made through the available payment methods at checkout. We reserve the right to change prices without prior notice.</p>
+
+                    <h4>Order Acceptance & Cancellation</h4>
+                    <p>We reserve the right to accept or reject any order at our discretion. Orders may be canceled due to product unavailability, pricing errors, or suspected fraudulent activity.</p>
+
+                    <h4>Shipping & Delivery</h4>
+                    <p>Delivery timelines are estimates and may vary based on location and external factors. We are not responsible for delays caused by courier partners or unforeseen circumstances.</p>
+
+                    <h4>Return & Refund</h4>
+                    <p>Returns and refunds are subject to our Return & Refund Policy. Please refer to that page for detailed information.</p>
+
+                    <h4>Intellectual Property</h4>
+                    <p>All content on this website, including text, images, logos, and designs, is the property of Adidev Manufacturing Pvt. Ltd. and is protected by applicable intellectual property laws. Unauthorized use is prohibited.</p>
+
+                    <h4>Limitation of Liability</h4>
+                    <p>Adidev Manufacturing Pvt. Ltd. shall not be liable for any indirect, incidental, or consequential damages arising from the use of our website or products.</p>
+
+                    <h4>Changes to Terms</h4>
+                    <p>We reserve the right to update or modify these Terms & Conditions at any time without prior notice. Continued use of the website constitutes acceptance of the updated terms.</p>
+
+                    <h4>Governing Law</h4>
+                    <p>These Terms & Conditions shall be governed by and interpreted in accordance with the laws of India.</p>
+
+                    <h4>Contact Us</h4>
+                    <p>If you have any questions regarding these Terms & Conditions, please contact us at
+                        <a href="mailto:care@adidevmanufacturing.com">care@adidevmanufacturing.com</a>.
+                    </p>
+
                 </div>
             </div>
         </div>
-    </section>
-    <!--=============================
-        TERMS AND CONDITION END
-    ==============================-->
-
-
+    </div>
+</section>
 <?php include "footer.php"; ?>
