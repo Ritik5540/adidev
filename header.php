@@ -3,8 +3,8 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/catalog_functions.php';
 
 // Basic SEO meta defaults (can be overridden per page via $page_meta)
-$meta_title       = isset($page_meta['title']) ? (string) $page_meta['title'] : 'Adidev Manufacturing Pvt. Ltd';
-$meta_description = isset($page_meta['description']) ? (string) $page_meta['description'] : 'Adidev Manufacturing Pvt. Ltd - E-commerce platform for manufacturing, wholesale and bulk orders.';
+$meta_title       = isset($page_meta['title']) ? (string) $page_meta['title'] : 'Adidev Manufacturing Sales And Services Private Limited';
+$meta_description = isset($page_meta['description']) ? (string) $page_meta['description'] : 'Adidev Manufacturing Sales And Services Private Limited - E-commerce platform for manufacturing, wholesale and bulk orders.';
 $meta_keywords    = isset($page_meta['keywords']) ? (string) $page_meta['keywords'] : 'Adidev, manufacturing, ecommerce, bulk orders';
 
 // Build a simple current user display name
