@@ -5,8 +5,18 @@ use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
 
+// Log file path
+$logFile = __DIR__ . '/email_log.txt';
+
+function writeLog($message) {
+    global $logFile;
+    $date = date("Y-m-d H:i:s");
+    file_put_contents($logFile, "[$date] $message\n", FILE_APPEND);
+}
+
 function sendOTPEmail($recipientEmail, $name, $otp)
-{
+{   
+    writeLog("---- START MAIL PROCESS ----");
     $mailAddress = 'support@adidevmanufacturing.com';
     $mailPassword = 'adidev@0Rs';
     $mail = new PHPMailer(true);
@@ -20,6 +30,12 @@ function sendOTPEmail($recipientEmail, $name, $otp)
         $mail->Password = $mailPassword;
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
+
+        // Debug (optional but useful)
+        $mail->SMTPDebug = 2;
+        $mail->Debugoutput = function($str, $level) {
+            writeLog("SMTP DEBUG: $str");
+        };
 
         $mail->setFrom($mailAddress, 'ADIDEV LOGIN');
         $mail->addAddress($recipientEmail);
@@ -205,6 +221,15 @@ function sendOTPEmail($recipientEmail, $name, $otp)
 
         </body>
         </html>';
+        if ($mail->send()) {
+            writeLog("MAIL SENT SUCCESSFULLY to $recipientEmail");
+        } else {
+            writeLog("MAIL FAILED: " . $mail->ErrorInfo);
+        }
+
+        writeLog("---- END MAIL PROCESS ----");
+
     } catch (Exception $e) {
+        writeLog("EXCEPTION ERROR: " . $mail->ErrorInfo);
     }
 }

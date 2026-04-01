@@ -35,8 +35,8 @@
 
                     <p class="text-end">Last Updated: <?php echo date('F j, Y', strtotime('-2 days')); ?></p>
 
-                    <h3>Terms & Conditions for Adidev Manufacturing Pvt. Ltd.</h3>
-                    <p>Welcome to Adidev Manufacturing Pvt. Ltd. By accessing or using our ecommerce website, you agree to comply with and be bound by the following Terms & Conditions. Please read them carefully before using our services.</p>
+                    <h3>Terms & Conditions for ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED</h3>
+                    <p>Welcome to ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED By accessing or using our ecommerce website, you agree to comply with and be bound by the following Terms & Conditions. Please read them carefully before using our services.</p>
 
                     <h4>Use of Website</h4>
                     <p>By using this website, you confirm that you are at least 18 years old or accessing the website under the supervision of a parent or guardian. You agree not to use the website for any unlawful or prohibited activities.</p>
@@ -64,10 +64,10 @@
                     <p>Returns and refunds are subject to our Return & Refund Policy. Please refer to that page for detailed information.</p>
 
                     <h4>Intellectual Property</h4>
-                    <p>All content on this website, including text, images, logos, and designs, is the property of Adidev Manufacturing Pvt. Ltd. and is protected by applicable intellectual property laws. Unauthorized use is prohibited.</p>
+                    <p>All content on this website, including text, images, logos, and designs, is the property of ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED and is protected by applicable intellectual property laws. Unauthorized use is prohibited.</p>
 
                     <h4>Limitation of Liability</h4>
-                    <p>Adidev Manufacturing Pvt. Ltd. shall not be liable for any indirect, incidental, or consequential damages arising from the use of our website or products.</p>
+                    <p>ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED shall not be liable for any indirect, incidental, or consequential damages arising from the use of our website or products.</p>
 
                     <h4>Changes to Terms</h4>
                     <p>We reserve the right to update or modify these Terms & Conditions at any time without prior notice. Continued use of the website constitutes acceptance of the updated terms.</p>
