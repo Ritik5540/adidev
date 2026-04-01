@@ -45,8 +45,7 @@ $favorite_products = get_recommended_products(15);
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($meta_title); ?></title>
     <meta name="description" content="<?php echo htmlspecialchars($meta_description); ?>">
     <meta name="keywords" content="<?php echo htmlspecialchars($meta_keywords); ?>">
@@ -138,7 +137,7 @@ $favorite_products = get_recommended_products(15);
                 <div class="col-lg-2">
                     <div class="header_logo_area">
                         <a href="/" class="header_logo">
-                            <img src="assets/images/logo_2.png" alt="Adidev Manufacturing Pvt. Ltd." class="img-fluid w-100">
+                            <img src="assets/images/logo_2.png" alt="ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED" class="img-fluid w-100">
                         </a>
                         <div class="mobile_menu_icon d-block d-lg-none" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">

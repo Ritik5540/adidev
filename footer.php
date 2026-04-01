@@ -7,9 +7,9 @@
              <div class="col-xl-3 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay=".7s">
                  <div class="footer_2_logo_area">
                      <a class="footer_logo" href="/">
-                         <img src="assets/images/logo_2.png" alt="Adidev Manufacturing Pvt. Ltd." class="img-fluid w-100">
+                         <img src="assets/images/logo_2.png" alt="ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED" class="img-fluid w-100">
                      </a>
-                     <p>didev Manufacturing Sales And Services Private Limited, a active private limited company, was established on 06 May 2025 in Ranchi, Jharkhand, India.</p>
+                     <p>ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED, a active private limited company, was established on 06 May 2025 in Ranchi, Jharkhand, India.</p>
                      <ul>
                          <li><span>Follow :</span></li>
                          <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
@@ -80,7 +80,7 @@
          <div class="row">
              <div class="col-12">
                  <div class="footer_copyright mt_75">
-                     <p>Copyright @ <b>Adidev Manufacturing Pvt. Ltd</b> 2025. All right reserved.</p>
+                     <p>Copyright @ <b>ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED</b> 2025. All right reserved.</p>
                      <ul class="payment">
                          <li>Payment by :</li>
                          <li>
