@@ -35,11 +35,11 @@
 
                     <p class="text-end">Last Updated: <?php echo date('F j, Y', strtotime('-2 days')); ?></p>
 
-                    <h3>About Us - ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED</h3>
-                    <p>Welcome to ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED, your trusted destination for high-quality products at competitive prices. We are an ecommerce-driven manufacturing company committed to delivering excellence, reliability, and customer satisfaction.</p>
+                    <h3>About Us - Adidev Manufacturing Sales And Services Private Limited</h3>
+                    <p>Welcome to Adidev Manufacturing Sales And Services Private Limited, your trusted destination for high-quality products at competitive prices. We are an ecommerce-driven manufacturing company committed to delivering excellence, reliability, and customer satisfaction.</p>
 
                     <h4>Who We Are</h4>
-                    <p>ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED is dedicated to manufacturing and supplying quality products that meet modern customer needs. With a focus on innovation and efficiency, we aim to bridge the gap between quality manufacturing and seamless online shopping.</p>
+                    <p>Adidev Manufacturing Sales And Services Private Limited is dedicated to manufacturing and supplying quality products that meet modern customer needs. With a focus on innovation and efficiency, we aim to bridge the gap between quality manufacturing and seamless online shopping.</p>
 
                     <h4>Our Mission</h4>
                     <p>Our mission is to provide premium-quality products with transparency, affordability, and fast delivery. We strive to build long-term relationships with our customers by ensuring trust and satisfaction in every purchase.</p>
