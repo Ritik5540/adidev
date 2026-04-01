@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // SEO meta for this page
 $page_meta = [
-    'title'       => 'Sign In | Adidev Manufacturing Pvt. Ltd',
+    'title'       => 'Sign In | Adidev Manufacturing Sales And Services Private Limited',
     'description' => 'Sign in to your Adidev account to manage orders, wishlist, and bulk inquiries.',
     'keywords'    => 'Adidev, sign in, login, customer account',
 ];
