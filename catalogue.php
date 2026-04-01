@@ -3,10 +3,18 @@
 // Product Catalogue Generator with A4 Grid Layout - 12 Products per Page
 
 // Database connection
-$host = 'localhost';
-$dbname = '20260307_adidev';
-$username = 'root';
-$password = '';
+
+if($_SERVER['SERVER_NAME'] == 'localhost'){
+    $host = '127.0.0.1';
+    $username = 'root';
+    $password = '';
+    $dbname = '20260307_adidev'; // Change here if your database name differs
+}else{
+    $host = 'localhost';
+    $username = 'u409719797_ecomadidev';
+    $password = 'w=hA8A+2';
+    $dbname = 'u409719797_ecomadidev'; // Change here if your database name differs
+}
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
