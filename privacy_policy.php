@@ -34,9 +34,9 @@
                 <div class="privacy_policy_text">
                     <p class="text-end">Last Updated: <?php echo date('F j, Y', strtotime('-2 days')); ?></p>
                     
-                    <h3>Privacy Policy for ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED</h3>
+                    <h3>Privacy Policy for Adidev Manufacturing Sales And Services Private Limited</h3>
                     <p>
-                        Welcome to ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED This Privacy Policy explains how we collect, use, store, 
+                        Welcome to Adidev Manufacturing Sales And Services Private Limited This Privacy Policy explains how we collect, use, store, 
                         and protect your personal information when you visit our ecommerce website or purchase our products.
                     </p>
 
@@ -76,7 +76,7 @@
 
                     <h4>Data Security</h4>
                     <p>
-                        ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED implements appropriate technical and organizational measures to 
+                        Adidev Manufacturing Sales And Services Private Limited implements appropriate technical and organizational measures to 
                         safeguard your data against unauthorized access, misuse, or disclosure.
                     </p>
 

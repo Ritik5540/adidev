@@ -35,8 +35,8 @@
 
                     <p class="text-end">Last Updated: <?php echo date('F j, Y', strtotime('-2 days')); ?></p>
 
-                    <h3>Return & Refund Policy for ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED</h3>
-                    <p>At ADIDEV MANUFACTURING SALES AND SERVICES PRIVATE LIMITED, we strive to provide high-quality products and a smooth shopping experience. This Return & Refund Policy explains the conditions under which returns, replacements, and refunds are accepted for purchases made on our ecommerce website.</p>
+                    <h3>Return & Refund Policy for Adidev Manufacturing Sales And Services Private Limited</h3>
+                    <p>At Adidev Manufacturing Sales And Services Private Limited, we strive to provide high-quality products and a smooth shopping experience. This Return & Refund Policy explains the conditions under which returns, replacements, and refunds are accepted for purchases made on our ecommerce website.</p>
 
                     <h4>Eligibility for Returns</h4>
                     <ul>
