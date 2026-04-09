@@ -55,9 +55,11 @@
                      <div class="table-responsive">
                          <table class="table">
                              <tbody>
-
+                                <?php $user_id = current_user_id() ?? 0;
+                                    $currency = get_user_currency($user_id);
+                                ?>
                                  <?php if (!empty($cart_items)) : ?>
-
+                                    
                                      <?php foreach ($cart_items as $item) : ?>
 
                                          <tr>
@@ -84,7 +86,7 @@
                                                  </a>
 
                                                  <p>
-                                                     ₹<?= number_format($item['unit_price'], 2) ?>
+                                                     <?= pricing_format($item['unit_price'], $currency) ?>
                                                  </p>
 
                                                  <?php if (!empty($item['color'])) : ?>
@@ -99,7 +101,7 @@
                                              <!-- price -->
                                              <td class="cart_page_price">
                                                  <h3 class="unit-price" data-price="<?= $item['unit_price'] ?>">
-                                                     ₹<?= number_format($item['unit_price'], 2) ?>
+                                                     <?= pricing_format($item['unit_price'], $currency) ?>
                                                  </h3>
                                              </td>
 
@@ -120,13 +122,13 @@
                                              <!-- total -->
                                              <td class="cart_page_total">
                                                  <h3 class="row-total">
-                                                     ₹<?= number_format($item['unit_price'] * $item['quantity'], 2) ?>
+                                                     <?= pricing_format($item['unit_price'] * $item['quantity'], $currency) ?>
                                                  </h3>
                                              </td>
 
                                              <!-- remove -->
                                              <td class="cart_page_action">
-                                                 <a href="#" data-id="<?php echo $item['id']; ?>" class="remove-item">
+                                                 <a href="#" data-id="<?php echo $item['id']; ?>" class="remove-from-cart">
                                                      <i class="fal fa-times"></i> Remove
                                                  </a>
                                              </td>
@@ -172,6 +174,7 @@
          let subtotal = 0;
          let billingHTML = '';
          let cartData = [];
+         let currency = '<?= $currency ?>';
 
          let rows = document.querySelectorAll("tbody tr");
 
@@ -196,7 +199,7 @@
              // update row total
              let totalEl = row.querySelector(".row-total");
              if (totalEl) {
-                 totalEl.innerText = "₹" + rowTotal.toFixed(2);
+                 totalEl.innerText = pricing_format(rowTotal, currency);
              }
 
              // default: all OR selected
@@ -225,7 +228,7 @@
                     </a>
                     <div class="text">
                         <p class="title">${name}</p>
-                        <p>₹${price.toFixed(2)} × ${qty}</p>
+                        <p>${pricing_format(price, currency)} × ${qty}</p>
                         <p>${color}</p>
                     </div>
                 </li>
@@ -243,8 +246,8 @@
 
          // update UI
          document.getElementById("billing-items").innerHTML = billingHTML;
-         document.getElementById("billing-subtotal").innerText = "₹" + subtotal.toFixed(2);
-         document.getElementById("billing-total").innerText = "₹" + subtotal.toFixed(2);
+         document.getElementById("billing-subtotal").innerText = pricing_format(subtotal, currency);
+         document.getElementById("billing-total").innerText = pricing_format(subtotal, currency);
      }
 
 

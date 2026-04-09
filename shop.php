@@ -75,9 +75,10 @@ if ($subCategoryId !== null) {
 if ($mainCategoryId !== null) {
     $filters['main_category_id'] = $mainCategoryId;
 }
-
+$user_id = current_user_id() ?? 0;
+$currency = get_user_currency($user_id);
 // Get products and total count
-$products = get_productsBySubCat($filters);
+$products = get_productsBySubCat($filters , $currency);
 $totalProducts = get_products_count($filters);
 $totalPages = ceil($totalProducts / $perPage);
 
@@ -290,9 +291,9 @@ include "header.php";
                                                 </a>
                                                 <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span>
                                                 <p class="price">
-                                                    ₹<?php echo number_format($product['base_retail_price'], 2); ?>
+                                                    <?= pricing_format($product['base_retail_price'], $currency) ?>
                                                     <?php if ($product['mrp'] > $product['base_retail_price']): ?>
-                                                        <del>₹<?php echo number_format($product['mrp'], 2); ?></del>
+                                                        <del><?= pricing_format($product['mrp'], $currency) ?></del>
                                                     <?php endif; ?>
                                                 </p>
                                                 <p class="rating">

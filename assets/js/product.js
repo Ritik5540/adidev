@@ -1,5 +1,25 @@
 $(document).ready(function () {
   let isLoading = false;
+  const currency = $("meta[name='currency']").attr("content") || "INR";
+
+  function pricing_format(amount, currency = 'INR') {
+
+    amount = parseFloat(amount || 0);
+
+    if (currency === 'USD') {
+        // US format
+        return '$' + amount.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // Default INR
+    return '₹' + amount.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+  }
 
   // Function to get current filters
   function getFilters() {
@@ -137,8 +157,8 @@ $(document).ready(function () {
                             </a>
 
                             <p class="price">
-                                ₹${product.price}
-                                ${product.mrp > product.price ? `<del>₹${product.mrp}</del>` : ""}
+                                ${pricing_format(product.price, currency)}
+                                ${product.mrp > product.price ? `<del>${pricing_format(product.mrp, currency)}</del>` : ""}
                             </p>
 
                             <p class="rating">
@@ -216,8 +236,8 @@ $(document).ready(function () {
                             </a>
 
                             <p class="price">
-                                ₹${product.price}
-                                ${product.mrp > product.price ? `<del>₹${product.mrp}</del>` : ""}
+                                ${pricing_format(product.price, currency)}
+                                ${product.mrp > product.price ? `<del>${pricing_format(product.mrp, currency)}</del>` : ""}
                             </p>
 
                             <p class="rating">

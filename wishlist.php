@@ -65,8 +65,9 @@
                     <div class="table-responsive">
                         <table class="table">
                             <?php
-                            $user_id = current_user_id();
-                            $wishlist_items = $user_id ? get_user_wishlist_items($user_id) : [];
+                            $user_id = current_user_id() ?? 0;
+                            $currency = get_user_currency($user_id);
+                            $wishlist_items = $user_id ? get_user_wishlist_items($user_id , $currency) : [];
                             ?>
 
                             <tbody>
@@ -88,7 +89,7 @@
                                                     <?= htmlspecialchars($product['name']) ?>
                                                 </a>
 
-                                                <p>₹<?= number_format($product['price'], 2) ?></p>
+                                                <p><?= pricing_format($product['price'], $currency) ?></p>
 
                                                 <?php if (!empty($product['color'])) : ?>
                                                     <span><b>Color:</b> <?= htmlspecialchars($product['color']) ?></span>
@@ -100,7 +101,7 @@
                                             </td>
 
                                             <td class="cart_page_price">
-                                                <h3>₹<?= number_format($product['price'], 2) ?></h3>
+                                                <h3><?= pricing_format($product['price'], $currency) ?></h3>
                                             </td>
 
                                             <td class="cart_page_quantity">

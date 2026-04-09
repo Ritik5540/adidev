@@ -90,6 +90,7 @@ function register_user(array $data, array &$errors): bool
     $_SESSION['user_id']   = (int) $newUserId;
     $_SESSION['user_name'] = $display_name;
     $_SESSION['user_email'] = $email;
+    $_SESSION['currency'] = 'INR'; // Default currency, can be made dynamic later
 
     return true;
 }
@@ -118,7 +119,7 @@ function login_user(string $email, string $password, array &$errors): bool
     }
 
     $stmt = db_execute(
-        'SELECT id, first_name, last_name, email, password_hash, is_active, is_blocked
+        'SELECT id, first_name, last_name, email, password_hash, is_active, is_blocked , currency
          FROM users
          WHERE email = ?',
         's',
@@ -150,6 +151,7 @@ function login_user(string $email, string $password, array &$errors): bool
     $_SESSION['user_id']    = (int) $user['id'];
     $_SESSION['user_name']  = $display_name;
     $_SESSION['user_email'] = $user['email'];
+    $_SESSION['currency']   = $user['currency']; // Default currency, can be made dynamic later
 
     // Update last login info
     db_execute(

@@ -39,8 +39,11 @@ if (isset($_GET['sub']) && !empty($_GET['sub'])) {
     }
 }
 
+$user_id = current_user_id() ?? 0;
+$currency = get_user_currency($user_id);
+
 // Get products
-$products = get_products($filters);
+$products = get_products($filters , $currency);
 $total = get_products_count($filters);
 $totalPages = ceil($total / ($filters['limit']));
 $currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;

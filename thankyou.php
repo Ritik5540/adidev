@@ -11,12 +11,13 @@ if (!is_logged_in()) {
 
 // Get order number from URL
 $order_number = isset($_GET['order_id']) ? trim($_GET['order_id']) : '';
+$paymentstatus = isset($_GET['payment']) ? trim($_GET['payment']) : '';
 
 if (empty($order_number)) {
     redirect('orders.php');
 }
 
-$user_id = current_user_id();
+$user_id = current_user_id() ?? 0;
 
 // Fetch order details with order number
 $order_query = "SELECT o.*, 
@@ -45,6 +46,41 @@ $items_result = mysqli_query($GLOBALS['mysqli'], $items_query);
 $invoice_query = "SELECT * FROM invoices WHERE order_id = {$order['id']} LIMIT 1";
 $invoice_result = mysqli_query($GLOBALS['mysqli'], $invoice_query);
 $invoice = mysqli_fetch_assoc($invoice_result);
+
+// Determine page title and message based on payment status
+$is_payment_success = ($paymentstatus == 'success');
+$is_payment_failed = ($paymentstatus == 'failed');
+$is_payment_pending = (!$is_payment_success && !$is_payment_failed && $order['payment_status'] == 'pending');
+
+if ($is_payment_success) {
+    $page_title = "Payment Successful - Order Confirmed";
+    $header_icon = "fa-check-circle";
+    $header_color = "linear-gradient(135deg, #28a745 0%, #20c997 100%)";
+    $header_title = "Payment Successful!";
+    $header_message = "Your payment has been received and order is confirmed";
+    $show_retry_button = false;
+} elseif ($is_payment_failed) {
+    $page_title = "Payment Failed - Order Not Confirmed";
+    $header_icon = "fa-times-circle";
+    $header_color = "linear-gradient(135deg, #dc3545 0%, #c82333 100%)";
+    $header_title = "Payment Failed!";
+    $header_message = "Your payment could not be processed. Please try again.";
+    $show_retry_button = true;
+} elseif ($order['payment_method'] == 'cod') {
+    $page_title = "Order Placed - Cash on Delivery";
+    $header_icon = "fa-truck";
+    $header_color = "linear-gradient(135deg, #ffc107 0%, #ff9800 100%)";
+    $header_title = "Order Placed Successfully!";
+    $header_message = "Your order has been placed. You'll pay cash on delivery.";
+    $show_retry_button = false;
+} else {
+    $page_title = "Order Received - Awaiting Payment";
+    $header_icon = "fa-clock";
+    $header_color = "linear-gradient(135deg, #17a2b8 0%, #138496 100%)";
+    $header_title = "Order Received!";
+    $header_message = "Your order has been received. Awaiting payment confirmation.";
+    $show_retry_button = false;
+}
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +88,7 @@ $invoice = mysqli_fetch_assoc($invoice_result);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You - Order Confirmation | Adidev</title>
+    <title><?php echo $page_title; ?> | Adidev</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -80,7 +116,7 @@ $invoice = mysqli_fetch_assoc($invoice_result);
         }
         
         .thankyou-header {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: <?php echo $header_color; ?>;
             color: white;
             padding: 40px;
             text-align: center;
@@ -225,7 +261,7 @@ $invoice = mysqli_fetch_assoc($invoice_result);
             color: #856404;
         }
         
-        .payment-badge.card {
+        .payment-badge.card, .payment-badge.online {
             background: #d1ecf1;
             color: #0c5460;
         }
@@ -243,19 +279,48 @@ $invoice = mysqli_fetch_assoc($invoice_result);
             font-weight: 600;
         }
         
-        .status-pending {
+        .status-pending, .status-pending_payment {
             background: #fff3cd;
             color: #856404;
         }
         
-        .status-processing {
+        .status-processing, .status-payment_received {
             background: #cfe2ff;
             color: #084298;
         }
         
-        .status-completed {
+        .status-completed, .status-delivered {
             background: #d1e7dd;
             color: #0f5132;
+        }
+        
+        .status-payment_failed, .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .alert-box {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-danger-custom {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+        
+        .alert-warning-custom {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+        
+        .alert-success-custom {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
         }
         
         .action-buttons {
@@ -284,6 +349,17 @@ $invoice = mysqli_fetch_assoc($invoice_result);
             box-shadow: 0 5px 15px rgba(40,167,69,0.3);
         }
         
+        .btn-custom-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+        
+        .btn-custom-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
         .btn-custom-outline {
             background: transparent;
             color: #28a745;
@@ -292,6 +368,18 @@ $invoice = mysqli_fetch_assoc($invoice_result);
         
         .btn-custom-outline:hover {
             background: #28a745;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-custom-outline-danger {
+            background: transparent;
+            color: #dc3545;
+            border: 2px solid #dc3545;
+        }
+        
+        .btn-custom-outline-danger:hover {
+            background: #dc3545;
             color: white;
             transform: translateY(-2px);
         }
@@ -333,10 +421,36 @@ $invoice = mysqli_fetch_assoc($invoice_result);
                 <div class="col-lg-8">
                     <div class="thankyou-card">
                         <div class="thankyou-header">
-                            <i class="fas fa-check-circle"></i>
-                            <h2>Thank You for Your Order!</h2>
-                            <p>Your order has been placed successfully</p>
+                            <i class="fas <?php echo $header_icon; ?>"></i>
+                            <h2><?php echo $header_title; ?></h2>
+                            <p><?php echo $header_message; ?></p>
                         </div>
+                        
+                        <?php if ($is_payment_failed): ?>
+                        <div class="alert-box alert-danger-custom" style="margin: 20px 40px 0 40px;">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Payment Failed!</strong> Your payment could not be processed. Possible reasons:
+                            <ul class="mt-2 mb-0">
+                                <li>Insufficient funds in your account</li>
+                                <li>Incorrect payment details entered</li>
+                                <li>Bank server timeout or technical issue</li>
+                                <li>Transaction declined by bank</li>
+                            </ul>
+                            <p class="mt-2 mb-0"><strong>Order #<?php echo htmlspecialchars($order['order_number']); ?></strong> has been created but not confirmed until payment is received.</p>
+                        </div>
+                        <?php elseif ($is_payment_pending && $order['payment_method'] == 'online'): ?>
+                        <div class="alert-box alert-warning-custom" style="margin: 20px 40px 0 40px;">
+                            <i class="fas fa-hourglass-half me-2"></i>
+                            <strong>Payment Pending!</strong> Your order has been created but payment is yet to be confirmed.
+                            <p class="mt-2 mb-0">Once payment is confirmed, you will receive an email notification.</p>
+                        </div>
+                        <?php elseif ($is_payment_success): ?>
+                        <div class="alert-box alert-success-custom" style="margin: 20px 40px 0 40px;">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Payment Confirmed!</strong> Your payment has been successfully received.
+                            <p class="mt-2 mb-0">You will receive an order confirmation email shortly.</p>
+                        </div>
+                        <?php endif; ?>
                         
                         <div class="order-info">
                             <h4><i class="fas fa-shopping-bag me-2"></i>Order Details</h4>
@@ -368,7 +482,7 @@ $invoice = mysqli_fetch_assoc($invoice_result);
                                 <?php while($item = mysqli_fetch_assoc($items_result)): ?>
                                     <div class="item-card">
                                         <?php if (!empty($item['product_image'])): ?>
-                                            <img src="<?php echo htmlspecialchars($item['product_image']); ?>" alt="<?php echo htmlspecialchars($item['product_name']); ?>" class="item-image">
+                                            <img src="<?= get_product_image($item, 'main') ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="item-image">
                                         <?php else: ?>
                                             <div class="item-image bg-light d-flex align-items-center justify-content-center">
                                                 <i class="fas fa-image fa-2x text-secondary"></i>
@@ -396,10 +510,6 @@ $invoice = mysqli_fetch_assoc($invoice_result);
                             <div class="info-row">
                                 <span class="info-label">Subtotal:</span>
                                 <span class="info-value">₹<?php echo number_format($order['subtotal'], 2); ?></span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Tax (GST 18%):</span>
-                                <span class="info-value">₹<?php echo number_format($order['tax_amount'], 2); ?></span>
                             </div>
                             <?php if ($order['shipping_amount'] > 0): ?>
                             <div class="info-row">
@@ -429,7 +539,7 @@ $invoice = mysqli_fetch_assoc($invoice_result);
                                 <span class="info-label">Payment Status:</span>
                                 <span class="info-value">
                                     <span class="status-badge status-<?php echo $order['payment_status']; ?>">
-                                        <?php echo ucfirst($order['payment_status']); ?>
+                                        <?php echo ucfirst(str_replace('_', ' ', $order['payment_status'])); ?>
                                     </span>
                                 </span>
                             </div>
@@ -442,10 +552,15 @@ $invoice = mysqli_fetch_assoc($invoice_result);
                         </div>
                         
                         <div class="action-buttons">
+                            <?php if ($show_retry_button): ?>
+                            <button onclick="retryPayment('<?php echo $order['order_number']; ?>', '<?php echo $order['grand_total']; ?>')" class="btn btn-custom btn-custom-danger">
+                                <i class="fas fa-credit-card me-2"></i>Retry Payment
+                            </button>
+                            <?php endif; ?>
                             <a href="orders.php" class="btn btn-custom btn-custom-outline">
                                 <i class="fas fa-list me-2"></i>View All Orders
                             </a>
-                            <a href="shop.php" class="btn btn-custom btn-custom-primary">
+                            <a href="shop.php" class="btn btn-custom <?php echo $show_retry_button ? 'btn-custom-outline' : 'btn-custom-primary'; ?>">
                                 <i class="fas fa-shopping-cart me-2"></i>Continue Shopping
                             </a>
                         </div>
@@ -457,5 +572,25 @@ $invoice = mysqli_fetch_assoc($invoice_result);
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function retryPayment(orderNumber, amount) {
+            if (confirm('Do you want to retry payment for order #' + orderNumber + '? Amount: ₹' + amount)) {
+                // Create a form to submit payment again
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'retry-payment.php';
+                
+                var orderInput = document.createElement('input');
+                orderInput.type = 'hidden';
+                orderInput.name = 'order_number';
+                orderInput.value = orderNumber;
+                form.appendChild(orderInput);
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 </body>
 </html>
