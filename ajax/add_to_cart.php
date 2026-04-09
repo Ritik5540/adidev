@@ -25,7 +25,7 @@ if ($product_id <= 0) {
 }
 
 $stmt = db_execute(
-    "SELECT id, name, product_code, base_retail_price, main_image, stock_quantity, track_inventory 
+    "SELECT id, name, product_code, base_retail_price, usd_base_retail_price, main_image, stock_quantity, track_inventory 
      FROM products 
      WHERE id = ? AND is_active = 1 
      LIMIT 1",
@@ -48,6 +48,7 @@ if (!empty($product['track_inventory']) && $product['stock_quantity'] < $quantit
 
 $user_id   = current_user_id();
 $session_id = session_id();
+$currency = get_user_currency($user_id); // Default to USD if not set
 
 // Get or create cart (optimized)
 $stmt = db_execute(
@@ -73,7 +74,7 @@ if ($cart) {
 }
 
 $stmt = db_execute(
-    "SELECT id, quantity FROM cart_items 
+    "SELECT id, quantity, unit_price FROM cart_items 
      WHERE cart_id = ? AND product_id = ? 
      LIMIT 1",
     'ii',
@@ -83,15 +84,21 @@ $stmt = db_execute(
 $item = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
+if($currency === 'USD') {
+    $product['base_retail_price'] = $product['usd_base_retail_price'];
+}
+
 if ($item) {
     $new_qty = $item['quantity'] + $quantity;
-
+    // FIX: Update total_price as well when quantity changes
+    $new_total_price = $item['unit_price'] * $new_qty;
+    
     db_execute(
         "UPDATE cart_items 
-         SET quantity = ?, updated_at = NOW() 
+         SET quantity = ?, total_price = ?, updated_at = NOW() 
          WHERE id = ?",
-        'ii',
-        [$new_qty, $item['id']]
+        'idi',
+        [$new_qty, $new_total_price, $item['id']]
     );
 } else {
     db_execute(
@@ -113,7 +120,7 @@ if ($item) {
 }
 
 // After insert/update cart_items
-update_cart_totals($cart_id);
+update_cart_totals($cart_id , $currency);
 
 echo json_encode([
     'success' => true,

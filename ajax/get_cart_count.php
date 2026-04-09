@@ -11,7 +11,7 @@ $wishlist_count = 0;
 
 if (is_logged_in()) {
 
-    $user_id = current_user_id();
+    $user_id = current_user_id() ?? 0;
 
     $stmt = db_execute(
         "SELECT COALESCE(SUM(ci.quantity), 0) as total

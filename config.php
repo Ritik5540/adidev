@@ -2,12 +2,12 @@
 // Core configuration and database bootstrap for Adidev E‑Commerce
 
 // --- Database connection settings (adjust for your local setup) ---
-if($_SERVER['SERVER_NAME'] == 'localhost'){
+if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $DB_HOST = '127.0.0.1';
     $DB_USER = 'root';
     $DB_PASS = '';
     $DB_NAME = '20260307_adidev'; // Change here if your database name differs
-}else{
+} else {
     $DB_HOST = 'localhost';
     $DB_USER = 'u409719797_ecomadidev';
     $DB_PASS = 'w=hA8A+2';
@@ -173,5 +173,3 @@ function ensure_checkout_session_valid(): void
         redirect('cart.php?checkout_timeout=1');
     }
 }
-
-

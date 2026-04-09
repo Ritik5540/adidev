@@ -5,6 +5,35 @@ use FontLib\Font;
 
 require_once __DIR__ . '/config.php';
 
+function get_user_currency(int $user_id): string
+{
+    $stmt = db_execute('SELECT currency FROM users WHERE id = ? LIMIT 1', 'i', [$user_id]);
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+
+    return $row['currency'] ?? 'INR';
+}
+
+function get_user_details(int $user_id): ?array
+{
+    $stmt = db_execute('SELECT id, first_name, last_name, email, phone, display_name, currency FROM users WHERE id = ? LIMIT 1', 'i', [$user_id]);
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
+
+    return $user ?: null;
+}
+
+function pricing_format($amount, $currency = 'INR'): string
+{
+    if ($currency === 'USD') {
+        return '$' . number_format($amount, 2);
+    }
+    // Default to INR formatting
+    return '₹' . number_format($amount, 2);
+}
+
 /**
  * Get active main categories that should appear in menus.
  *
@@ -124,8 +153,17 @@ function get_primary_image_for_product(int $productId): ?string
     return null;
 }
 
-function get_products($filters = [])
-{
+function get_products($filters = [], $currency = 'INR')
+{    
+    // 🔥 Currency based column select
+    $priceColumn = ($currency === 'USD') 
+        ? 'p.usd_base_retail_price' 
+        : 'p.base_retail_price';
+
+    $mrpColumn = ($currency === 'USD') 
+        ? 'p.usd_mrp' 
+        : 'p.mrp';
+
     $conditions = ['p.is_active = 1'];
     $params = [];
     $types = '';
@@ -204,6 +242,8 @@ function get_products($filters = [])
 
     $sql = "SELECT 
                 p.*,
+                {$priceColumn} AS base_retail_price,
+                {$mrpColumn} AS mrp,
                 sc.name AS sub_category_name,
                 mc.name AS main_category_name,
                 mc.category_code
@@ -378,8 +418,17 @@ function get_best_selling_products($limit = 3)
  * @param int $limit Number of products to return (default 5)
  * @return array
  */
-function get_new_arrival_products($limit = 5)
+function get_new_arrival_products($limit = 5, $currency = 'INR')
 {
+    // 🔥 Currency based column select
+    $priceColumn = ($currency === 'USD')
+        ? 'p.usd_base_retail_price'
+        : 'p.base_retail_price';
+
+    $mrpColumn = ($currency === 'USD')
+        ? 'p.usd_mrp'
+        : 'p.mrp';
+
     // ✅ Common condition (reuse everywhere)
     $baseCondition = "
         p.is_active = 1
@@ -390,6 +439,9 @@ function get_new_arrival_products($limit = 5)
     // 🔥 1. Get NEW products
     $sql = "SELECT 
                 p.*,
+                -- ✅ override same keys (important)
+                {$priceColumn} AS base_retail_price,
+                {$mrpColumn} AS mrp,
                 sc.name AS sub_category_name,
                 mc.name AS main_category_name,
                 mc.category_code
@@ -434,6 +486,8 @@ function get_new_arrival_products($limit = 5)
 
     $sql = "SELECT 
                 p.*,
+                {$priceColumn} AS base_retail_price,
+                {$mrpColumn} AS mrp,
                 sc.name AS sub_category_name,
                 mc.name AS main_category_name,
                 mc.category_code
@@ -474,6 +528,8 @@ function get_new_arrival_products($limit = 5)
 
         $sql = "SELECT 
                     p.*,
+                    {$priceColumn} AS base_retail_price,
+                    {$mrpColumn} AS mrp,
                     sc.name AS sub_category_name,
                     mc.name AS main_category_name,
                     mc.category_code
@@ -518,8 +574,17 @@ function get_featured_products($limit = 5)
  * @param int $excludeId Product ID to exclude (optional)
  * @return array
  */
-function get_recommended_products($limit = 15, $excludeId = null)
-{
+function get_recommended_products($limit = 15, $excludeId = null , $currency = 'INR')
+{   
+    // 🔥 Currency based column select
+    $priceColumn = ($currency === 'USD') 
+        ? 'p.usd_base_retail_price' 
+        : 'p.base_retail_price';
+
+    $mrpColumn = ($currency === 'USD') 
+        ? 'p.usd_mrp' 
+        : 'p.mrp';
+
     // ✅ Common base condition
     $baseCondition = "
         p.is_active = 1
@@ -542,6 +607,8 @@ function get_recommended_products($limit = 15, $excludeId = null)
     // 🔥 1. High rated products (4+)
     $sql = "SELECT 
                 p.*,
+                {$priceColumn} AS base_retail_price,
+                {$mrpColumn} AS mrp,
                 sc.name AS sub_category_name,
                 mc.name AS main_category_name,
                 mc.category_code
@@ -589,6 +656,8 @@ function get_recommended_products($limit = 15, $excludeId = null)
 
     $sql = "SELECT 
                 p.*,
+                {$priceColumn} AS base_retail_price,
+                {$mrpColumn} AS mrp,
                 sc.name AS sub_category_name,
                 mc.name AS main_category_name,
                 mc.category_code
@@ -812,11 +881,25 @@ function get_average_product_rating(int $productId): float
  * Get Trending Every Sub Categories 5 products randomly
  *
  */
-function get_trending_products_random($limit = 15): array
+function get_trending_products_random($limit = 15, $currency = 'INR'): array
 {
+
+    // 🔥 Currency based column select
+    $priceColumn = ($currency === 'USD')
+        ? 'p.usd_base_retail_price'
+        : 'p.base_retail_price';
+
+    $mrpColumn = ($currency === 'USD')
+        ? 'p.usd_mrp'
+        : 'p.mrp';
+
     $stmt = db_execute("
         SELECT 
             p.*,
+            -- ✅ override same keys (important)
+            {$priceColumn} AS base_retail_price,
+            {$mrpColumn} AS mrp,
+
             sc.name AS sub_category_name,
             mc.name AS main_category_name
         FROM products p
@@ -844,8 +927,17 @@ function get_trending_products_random($limit = 15): array
 /**
  * Get products with filters
  */
-function get_productsBySubCat($filters = [])
-{
+function get_productsBySubCat($filters = [] , $currency = 'INR')
+{   
+    // 🔥 Currency based column select
+    $priceColumn = ($currency === 'USD') 
+        ? 'p.usd_base_retail_price' 
+        : 'p.base_retail_price';
+
+    $mrpColumn = ($currency === 'USD') 
+        ? 'p.usd_mrp' 
+        : 'p.mrp';
+
     $conditions = ['p.is_active = 1'];
     $params = [];
     $types = '';
@@ -953,10 +1045,11 @@ function get_productsBySubCat($filters = [])
                 p.dimensions,
                 p.material,
                 p.color,
-                p.base_retail_price,
                 p.base_wholesale_price,
                 p.cost_price,
-                p.mrp,
+                -- ✅ override same keys (important)
+                {$priceColumn} AS base_retail_price,
+                {$mrpColumn} AS mrp,
                 p.selling_mode,
                 p.min_order_quantity,
                 p.max_order_quantity,
@@ -1436,13 +1529,25 @@ function get_product_thumbnail($product, $size = 'small')
     return generate_product_image($productName, $width, $height, $bgColor);
 }
 
-function get_user_wishlist_items(int $user_id): array
+function get_user_wishlist_items(int $user_id, string $currency): array
 {
+    // Normalize currency
+    $currency = strtoupper($currency);
+
+    // Price field mapping (future-proof)
+    $priceMap = [
+        'USD' => 'p.usd_base_retail_price',
+        'INR' => 'p.base_retail_price'
+    ];
+
+    // Default fallback
+    $priceField = $priceMap[$currency] ?? $priceMap['INR'];
+
     $stmt = db_execute(
         "SELECT 
             p.id,
             p.name,
-            p.base_retail_price AS price,
+            {$priceField} AS price,
             p.main_image,
             p.color,
             p.size
@@ -1483,6 +1588,7 @@ function get_user_cart(int $user_id): array
             ci.quantity,
             ci.unit_price,
             ci.total_price,
+            ci.cart_id,
             p.name,
             p.main_image,
             p.color,
@@ -1502,6 +1608,113 @@ function get_user_cart(int $user_id): array
     return $items ?: [];
 }
 
+function remove_cart_item(int $cart_item_id, int $user_id): bool
+{
+    // First, get the cart item and verify ownership
+    $stmt = db_execute(
+        "SELECT ci.cart_id FROM cart_items ci
+         JOIN carts c ON ci.cart_id = c.id
+         WHERE ci.id = ? AND c.user_id = ? AND c.status = 'active'",
+        'ii',
+        [$cart_item_id, $user_id]
+    );
+
+    $result = $stmt->get_result();
+    if ($result->num_rows === 0) {
+        $stmt->close();
+        return false; // Item not found or not owned by user
+    }
+
+    $row = $result->fetch_assoc();
+    $cart_id = $row['cart_id'];
+    $stmt->close();
+
+    // Delete the cart item
+    db_execute("DELETE FROM cart_items WHERE id = ?", 'i', [$cart_item_id]);
+
+    // Update cart totals
+    update_cart_totals($cart_id);
+
+    return true;
+}
+
+// all cart items for checkout page with product details and cart totals
+function checkout_page_cart_items(int $user_id): array
+{
+    $stmt = db_execute(
+        "SELECT 
+            ci.id,
+            ci.product_id,
+            ci.quantity,
+            ci.unit_price,
+            ci.total_price,
+            p.name,
+            p.main_image,
+            p.color,
+            p.size,
+            c.total_items,
+            c.total_quantity,
+            c.subtotal,
+            c.discount_amount,
+            c.shipping_amount,
+            c.tax_amount,
+            c.grand_total,
+            c.session_id,
+            c.id as cart_id
+         FROM cart_items ci
+         JOIN carts c ON ci.cart_id = c.id
+         JOIN products p ON ci.product_id = p.id
+         WHERE c.user_id = ? AND c.status = 'active'
+         ORDER BY ci.id DESC",
+        'i',
+        [$user_id]
+    );
+
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    if (!$result) return [];
+
+    $cart = [];
+    $items = [];
+
+    foreach ($result as $index => $row) {
+
+        // Cart data (sirf ek baar set karna hai)
+        if ($index == 0) {
+            $cart = [
+                "cart_id"        => $row['cart_id'],
+                "session_id"     => $row['session_id'],
+                "total_items"     => $row['total_items'],
+                "total_quantity"  => $row['total_quantity'],
+                "subtotal"        => $row['subtotal'],
+                "discount_amount" => $row['discount_amount'],
+                "shipping_amount" => $row['shipping_amount'],
+                "tax_amount"      => $row['tax_amount'],
+                "grand_total"     => $row['grand_total'],
+            ];
+        }
+
+        // Items array
+        $items[] = [
+            "id"          => $row['id'],
+            "product_id"  => $row['product_id'],
+            "quantity"    => $row['quantity'],
+            "unit_price"  => $row['unit_price'],
+            "total_price" => $row['total_price'],
+            "name"        => $row['name'],
+            "main_image"  => $row['main_image'],
+            "color"       => $row['color'],
+            "size"        => $row['size'],
+        ];
+    }
+
+    return [
+        "cart"  => $cart,
+        "items" => $items
+    ];
+}
+
 function render_empty_cart(): void
 {
     echo '
@@ -1516,14 +1729,20 @@ function render_empty_cart(): void
     </tr>';
 }
 
-function update_cart_totals(int $cart_id): void
+/**
+ * Update cart totals (subtotal, grand_total, etc.)
+ * 
+ * @param int $cart_id
+ * @return void
+ */
+function update_cart_totals(int $cart_id , string $currency): void
 {
     // Get totals from cart_items
     $stmt = db_execute(
         "SELECT 
             COUNT(*) as total_items,
-            COALESCE(SUM(quantity),0) as total_quantity,
-            COALESCE(SUM(total_price),0) as subtotal
+            COALESCE(SUM(quantity), 0) as total_quantity,
+            COALESCE(SUM(total_price), 0) as subtotal
          FROM cart_items
          WHERE cart_id = ?",
         'i',
@@ -1537,14 +1756,23 @@ function update_cart_totals(int $cart_id): void
     $total_quantity = (int) $row['total_quantity'];
     $subtotal       = (float) $row['subtotal'];
 
-    // Basic calculation (customize later)
-    $discount = 0;
-    if ($total_quantity >= 10 || $subtotal >= 1000) {
-        $shipping = 0;
-    } else {
-        $shipping = 50;
+    // Calculate shipping
+    $shipping = 0;
+    if ($subtotal < 1000) {
+        if($currency === 'USD') {
+            $shipping = 5; // Flat $5 shipping for orders under $1000
+        } else {
+            $shipping = 50; // Flat ₹50 shipping for orders under ₹1000
+        }
     }
-    $tax      = 0;
+
+    // Calculate discount (example logic)
+    $discount = 0;
+    if ($total_quantity >= 10) {
+        $discount = $subtotal * 0.05; // 5% discount for bulk orders
+    }
+
+    $tax = 0; // No GST as per your requirement
     $grand_total = $subtotal - $discount + $shipping + $tax;
 
     // Update cart

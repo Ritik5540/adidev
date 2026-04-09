@@ -18,25 +18,20 @@ if (!is_logged_in()) {
 }
 
 // Get POST data
-$input = json_decode(file_get_contents('php://input'), true);
-
-if (!$input || empty($input['items'])) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Cart is empty'
-    ]);
-    exit;
-}
+$input = $_POST;
 
 // Get form data
 $customer_name = trim($input['customer_name'] ?? '');
 $customer_email = trim($input['customer_email'] ?? '');
 $customer_phone = trim($input['customer_phone'] ?? '');
 $company_name = trim($input['company_name'] ?? '');
-$city = trim($input['city'] ?? '');
-$state = trim($input['state'] ?? '');
+$customer_country = trim($input['customer_country'] ?? 'India');
+$customer_city = trim($input['customer_city'] ?? '');
 $zip = trim($input['zip'] ?? '');
 $address = trim($input['address'] ?? '');
+$cart_id = (int)($input['cart_id'] ?? 0);
+$amount = (float)($input['amount'] ?? 0);
+$quantity = (int)($input['quantity'] ?? 0);
 $order_notes = trim($input['order_notes'] ?? '');
 $payment_method = trim($input['payment_method'] ?? 'cod');
 
@@ -58,22 +53,41 @@ if (!filter_var($customer_email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$user_id = current_user_id();
-$items = $input['items'];
+$user_id = current_user_id() ?? 0;
 
-// Calculate totals
-$subtotal = 0;
-$total_quantity = 0;
-$total_items = count($items);
-
-foreach ($items as $item) {
-    $item_total = $item['price'] * $item['quantity'];
-    $subtotal += $item_total;
-    $total_quantity += $item['quantity'];
+// Get cart items
+$cart_items = get_cart_items_by_cart_id($cart_id, $user_id);
+if (empty($cart_items)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Cart is empty or invalid'
+    ]);
+    exit;
 }
 
+// Calculate totals from cart items
+$subtotal = 0;
+$total_quantity = 0;
+$items_list = [];
+$product_summary = '';
+
+foreach ($cart_items as $item) {
+    $subtotal += $item['total_price'];
+    $total_quantity += $item['quantity'];
+    $items_list[] = $item;
+    $product_summary .= $item['product_name'] . ' x ' . $item['quantity'] . ', ';
+}
+$product_summary = rtrim($product_summary, ', ');
+
+// Get cart data for additional calculations
+$cart_data = get_cart_by_id($cart_id);
+$discount_amount = $cart_data['discount_amount'] ?? 0;
+$shipping_amount = $cart_data['shipping_amount'] ?? 0;
+$tax_amount = 0;
+$grand_total = $amount;
+
 // Prepare shipping address
-$full_address = mysqli_real_escape_string($GLOBALS['mysqli'], $address . ", " . $city . ", " . $state . " - " . $zip);
+$full_address = mysqli_real_escape_string($GLOBALS['mysqli'], $address . ", " . $customer_city . " - " . $zip);
 if (!empty($company_name)) {
     $full_address = mysqli_real_escape_string($GLOBALS['mysqli'], $company_name) . ", " . $full_address;
 }
@@ -83,23 +97,8 @@ $invoice_number = generate_invoice_number();
 $invoice_date = date('Y-m-d H:i:s');
 $due_date = date('Y-m-d H:i:s', strtotime('+15 days'));
 
-// Calculate GST (assuming 18% GST)
-$tax_total = $subtotal * 0.18;
-$grand_total = $subtotal + $tax_total;
-$paid_amount = 0;
-$balance_due = $grand_total;
-
-// GST details
-$gst_details = mysqli_real_escape_string($GLOBALS['mysqli'], json_encode([
-    'cgst' => $tax_total / 2,
-    'sgst' => $tax_total / 2,
-    'rate' => 18,
-    'taxable_amount' => $subtotal
-]));
-
-// Place of supply
-$place_of_supply = mysqli_real_escape_string($GLOBALS['mysqli'], $state);
-$pdf_url = null;
+$gst_details = NULL;
+$place_of_supply = mysqli_real_escape_string($GLOBALS['mysqli'], $customer_city);
 
 // Start transaction
 mysqli_begin_transaction($GLOBALS['mysqli']);
@@ -114,6 +113,8 @@ try {
     $customer_email_escaped = mysqli_real_escape_string($GLOBALS['mysqli'], $customer_email);
     $customer_phone_escaped = mysqli_real_escape_string($GLOBALS['mysqli'], $customer_phone);
     $payment_method_escaped = mysqli_real_escape_string($GLOBALS['mysqli'], $payment_method);
+    
+    $total_items = count($items_list);
 
     $order_query = "INSERT INTO orders (
         order_number, user_id, status, order_type, is_bulk_order,
@@ -129,8 +130,8 @@ try {
         '$customer_name_escaped', '$customer_email_escaped', '$customer_phone_escaped', NULL,
         '$full_address', '$full_address',
         $total_items, $total_quantity, $subtotal,
-        0.00, 0.00, 0.00,
-        0.00, $tax_total, $grand_total,
+        $discount_amount, 0.00, 0.00,
+        $shipping_amount, 0.00, $grand_total,
         0.00, $grand_total, '$payment_method_escaped', 'pending',
         '$order_notes_escaped', NOW()
     )";
@@ -142,25 +143,15 @@ try {
     $order_id = mysqli_insert_id($GLOBALS['mysqli']);
 
     // 2. Insert into order_items table
-    foreach ($items as $item) {
-        // Get product ID
-        $product_id = getProductIdByName($item['name']);
-        
-        if (!$product_id && !empty($item['product_code'])) {
-            $product_id = getProductIdByCode($item['product_code']);
-        }
-        
-        if (!$product_id) {
-            throw new Exception("Product not found: " . $item['name']);
-        }
-        
-        $product_code = mysqli_real_escape_string($GLOBALS['mysqli'], $item['product_code'] ?? '');
-        $product_name = mysqli_real_escape_string($GLOBALS['mysqli'], $item['name']);
-        $product_size = mysqli_real_escape_string($GLOBALS['mysqli'], $item['color'] ?? '');
-        $product_image = mysqli_real_escape_string($GLOBALS['mysqli'], $item['image'] ?? '');
-        $quantity = (int)$item['quantity'];
-        $unit_price = (float)$item['price'];
-        $item_total = $unit_price * $quantity;
+    foreach ($items_list as $item) {
+        $product_id = (int)$item['product_id'];
+        $product_code = mysqli_real_escape_string($GLOBALS['mysqli'], $item['product_sku'] ?? '');
+        $product_name = mysqli_real_escape_string($GLOBALS['mysqli'], $item['product_name']);
+        $product_size = mysqli_real_escape_string($GLOBALS['mysqli'], $item['product_size'] ?? '');
+        $product_image = mysqli_real_escape_string($GLOBALS['mysqli'], $item['product_image'] ?? '');
+        $item_quantity = (int)$item['quantity'];
+        $unit_price = (float)$item['unit_price'];
+        $item_total = (float)$item['total_price'];
         
         $item_query = "INSERT INTO order_items (
             order_id, product_id, product_code, product_name,
@@ -170,7 +161,7 @@ try {
         ) VALUES (
             $order_id, $product_id, '$product_code', '$product_name',
             '', '$product_size', '$product_image',
-            $quantity, $unit_price, $item_total,
+            $item_quantity, $unit_price, $item_total,
             0, 'pending', NOW()
         )";
         
@@ -188,9 +179,9 @@ try {
         is_email_sent, email_sent_at, created_at, updated_at
     ) VALUES (
         $order_id, $user_id, '$invoice_number', 'sales_invoice',
-        '$invoice_date', '$due_date', $subtotal, 0.00,
-        $tax_total, 0.00, $grand_total, $paid_amount,
-        $balance_due, '$gst_details', '$place_of_supply', NULL,
+        '$invoice_date', '$due_date', $subtotal, $discount_amount,
+        0.00, $shipping_amount, $grand_total, 0.00,
+        $grand_total, NULL, '$place_of_supply', NULL,
         0, NULL, NOW(), NOW()
     )";
     
@@ -207,19 +198,13 @@ try {
     }
 
     // 5. Clear user's cart
-    $cart_query = "SELECT id FROM carts WHERE user_id = $user_id AND status = 'active' LIMIT 1";
-    $cart_result = mysqli_query($GLOBALS['mysqli'], $cart_query);
-    
-    if ($cart_result && mysqli_num_rows($cart_result) > 0) {
-        $cart = mysqli_fetch_assoc($cart_result);
-        $cart_id = $cart['id'];
-        
-        // Update cart status
-        mysqli_query($GLOBALS['mysqli'], "UPDATE carts SET status = 'completed', updated_at = NOW() WHERE id = $cart_id");
-        
-        // Clear cart items
-        mysqli_query($GLOBALS['mysqli'], "DELETE FROM cart_items WHERE cart_id = $cart_id");
+    $cart_update_query = "UPDATE carts SET status = 'completed', updated_at = NOW() WHERE id = $cart_id";
+    if (!mysqli_query($GLOBALS['mysqli'], $cart_update_query)) {
+        throw new Exception("Failed to update cart: " . mysqli_error($GLOBALS['mysqli']));
     }
+    
+    // Clear cart items
+    mysqli_query($GLOBALS['mysqli'], "DELETE FROM cart_items WHERE cart_id = $cart_id");
 
     // Commit transaction
     mysqli_commit($GLOBALS['mysqli']);
@@ -227,15 +212,49 @@ try {
     // Send email notification
     send_order_confirmation_email($customer_email, $order_number, $order_id);
 
-    // Return success response with order_number for redirect
-    echo json_encode([
-        'success' => true,
-        'message' => 'Order placed successfully',
-        'order_id' => $order_id,
-        'order_number' => $order_number,  // This is the order number (like TSAJ98393)
-        'invoice_number' => $invoice_number,
-        'redirect_url' => 'thankyou.php?order_id=' . $order_number  // Redirect with order_number, not ID
-    ]);
+    // Handle payment method
+    if ($payment_method === 'online') {
+        // Store order data in session for Cashfree form (session is already started in config.php)
+        $_SESSION['cashfree_order'] = [
+            'order_id' => $order_id,
+            'order_number' => $order_number,
+            'amount' => $grand_total,
+            'customer_name' => $customer_name,
+            'customer_email' => $customer_email,
+            'customer_phone' => $customer_phone,
+            'product_summary' => $product_summary,
+            'address' => $address,
+            'city' => $customer_city,
+            'pincode' => $zip
+        ];
+        
+        // IMPORTANT: Commit session data before sending JSON response
+        session_write_close();
+        
+        // Return response with redirect to cashfree form
+        echo json_encode([
+            'success' => true,
+            'payment_required' => true,
+            'payment_method' => 'online',
+            'redirect_to_cashfree' => true,
+            'cashfree_form_url' => 'cashfree-redirect.php',
+            'order_id' => $order_id,
+            'order_number' => $order_number,
+            'message' => 'Redirecting to payment gateway...'
+        ]);
+    } else {
+        // COD order
+        echo json_encode([
+            'success' => true,
+            'payment_required' => false,
+            'payment_method' => 'cod',
+            'order_id' => $order_id,
+            'order_number' => $order_number,
+            'invoice_number' => $invoice_number,
+            'message' => 'Order placed successfully',
+            'redirect_url' => 'thankyou.php?order_id=' . $order_number
+        ]);
+    }
     
 } catch (Exception $e) {
     mysqli_rollback($GLOBALS['mysqli']);
@@ -249,32 +268,33 @@ try {
 }
 
 // Helper functions
-function getProductIdByName($product_name) {
-    $product_name_escaped = mysqli_real_escape_string($GLOBALS['mysqli'], $product_name);
-    $query = "SELECT id FROM products WHERE name = '$product_name_escaped' AND is_active = 1 LIMIT 1";
+function get_cart_by_id($cart_id) {
+    $query = "SELECT * FROM carts WHERE id = $cart_id LIMIT 1";
     $result = mysqli_query($GLOBALS['mysqli'], $query);
     
     if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        return $row['id'];
+        return mysqli_fetch_assoc($result);
     }
     return null;
 }
 
-function getProductIdByCode($product_code) {
-    $product_code_escaped = mysqli_real_escape_string($GLOBALS['mysqli'], $product_code);
-    $query = "SELECT id FROM products WHERE product_code = '$product_code_escaped' AND is_active = 1 LIMIT 1";
+function get_cart_items_by_cart_id($cart_id, $user_id) {
+    $query = "SELECT ci.*, p.product_code as product_sku 
+              FROM cart_items ci 
+              LEFT JOIN products p ON ci.product_id = p.id 
+              WHERE ci.cart_id = $cart_id";
     $result = mysqli_query($GLOBALS['mysqli'], $query);
     
+    $items = [];
     if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        return $row['id'];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $items[] = $row;
+        }
     }
-    return null;
+    return $items;
 }
 
 function generate_order_number() {
-    // Generate a unique order number like: ORD20260326A1B2C3
     $prefix = 'ORD';
     $date = date('Ymd');
     $random = strtoupper(substr(uniqid(), -6));
@@ -282,7 +302,6 @@ function generate_order_number() {
 }
 
 function generate_invoice_number() {
-    // Generate a unique invoice number like: INV20260326X9Y8Z7
     $prefix = 'INV';
     $date = date('Ymd');
     $random = strtoupper(substr(uniqid(), -6));
@@ -290,8 +309,6 @@ function generate_invoice_number() {
 }
 
 function send_order_confirmation_email($email, $order_number, $order_id) {
-    // You can implement email sending here
-    // Example: mail($email, "Order Confirmation - $order_number", "Your order has been placed successfully.");
     return true;
 }
 ?>

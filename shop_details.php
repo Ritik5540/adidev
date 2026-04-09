@@ -13,10 +13,24 @@ if ($product_id <= 0) {
     exit;
 }
 
+$user_id = current_user_id() ?? 0;
+$currency = get_user_currency($user_id);
+
+// 🔥 Currency based column select
+$priceColumn = ($currency === 'USD') 
+    ? 'p.usd_base_retail_price' 
+    : 'p.base_retail_price';
+
+$mrpColumn = ($currency === 'USD') 
+    ? 'p.usd_mrp' 
+    : 'p.mrp';
+
 // Fetch product details
 $product = null;
 $sql = "SELECT 
             p.*,
+            {$priceColumn} AS base_retail_price,
+            {$mrpColumn} AS mrp,
             sc.id as sub_category_id,
             sc.name as sub_category_name,
             sc.slug as sub_category_slug,
@@ -85,8 +99,8 @@ $stmt = db_execute("
         p.id, 
         p.name, 
         p.slug, 
-        p.base_retail_price, 
-        p.mrp, 
+        {$priceColumn} AS base_retail_price,
+        {$mrpColumn} AS mrp, 
         p.main_image, 
         p.average_rating, 
         p.review_count, 
@@ -256,9 +270,9 @@ include "header.php";
                                 
                             </div>
                             <h3 class="price">
-                                <?php echo formatPrice($product['base_retail_price']); ?>
+                                <?= pricing_format($product['base_retail_price'], $currency) ?>
                                 <?php if ($product['mrp'] > $product['base_retail_price']): ?>
-                                    <del><?php echo formatPrice($product['mrp']); ?></del>
+                                    <del><?= pricing_format($product['mrp'], $currency) ?></del>
                                 <?php endif; ?>
                             </h3>
                             <p class="short_description"><?php echo nl2br(htmlspecialchars($product['short_description'] ?: $product['description'])); ?></p>
@@ -596,9 +610,9 @@ include "header.php";
                             <div class="product_text">
                                 <a class="title" href="shop_details.php?id=<?= encrypt_id($related['id']) ?>"><?php echo htmlspecialchars($related['name']); ?></a>
                                 <p class="price">
-                                    <?php echo formatPrice($related['base_retail_price']); ?>
+                                    <?= pricing_format($related['base_retail_price'], $currency) ?>
                                     <?php if ($related['mrp'] > $related['base_retail_price']): ?>
-                                        <del><?php echo formatPrice($related['mrp']); ?></del>
+                                        <del><?= pricing_format($related['mrp'], $currency) ?></del>
                                     <?php endif; ?>
                                 </p>
                                 <p class="rating">

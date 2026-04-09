@@ -234,6 +234,10 @@
                 </div>
             </div>
         </div>
+        <?php
+            $user_id = current_user_id() ?? 0;
+            $currency = get_user_currency($user_id);
+        ?>
         <div class="row wow fadeInUp">
             <div class="col-12">
                 <div class="product_tabs pws_tabs_list">
@@ -265,7 +269,7 @@
                                         </div>
                                         <div class="product_text">
                                             <a class="title" href="shop_details.php?id=<?= encrypt_id($sub_category_product['id']) ?>"><?php echo htmlspecialchars($sub_category_product['name']); ?></a> <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span>
-                                            <p class="price">₹<?php echo htmlspecialchars($sub_category_product['base_retail_price']); ?> <del>₹<?php echo htmlspecialchars($sub_category_product['mrp']); ?></del></p>
+                                            <p class="price"><?php echo pricing_format($sub_category_product['base_retail_price'], $currency); ?> <del><?php echo pricing_format($sub_category_product['mrp'], $currency); ?></del></p>   
                                             <?php
                                             $reviews = get_product_reviews($sub_category_product['id']);
                                             $rating = get_average_product_rating($sub_category_product['id']);
@@ -469,8 +473,8 @@
                                 </a>
                                 <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span>
                                 <p class="price">
-                                    ₹<?= htmlspecialchars($product['base_retail_price']) ?>
-                                    <del>₹<?= htmlspecialchars($product['mrp']) ?></del>
+                                    <?= pricing_format($product['base_retail_price'], $currency) ?>
+                                    <del><?= pricing_format($product['mrp'], $currency) ?></del>
                                 </p>
 
                                 <?php
@@ -574,8 +578,8 @@
                                             </a>
                                             <span style="font-size:11px; background:#198754; color:#ffffff; padding:2px 6px; border-radius:4px;">GST Inc.</span>
                                             <p class="price">
-                                                ₹<?= htmlspecialchars($product['base_retail_price']) ?>
-                                                <del>₹<?= htmlspecialchars($product['mrp']) ?></del>
+                                                <?= pricing_format($product['base_retail_price'], $currency) ?>
+                                                 <del><?= pricing_format($product['mrp'], $currency) ?></del>
                                             </p>
 
                                             <?php

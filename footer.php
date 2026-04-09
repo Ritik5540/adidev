@@ -141,12 +141,44 @@
 
      updateCounts();
 
+     function pricing_format(amount, currency = 'INR') {
+
+         amount = parseFloat(amount || 0);
+
+         if (currency === 'USD') {
+             // US format
+             return '$' + amount.toLocaleString('en-US', {
+                 minimumFractionDigits: 2,
+                 maximumFractionDigits: 2
+             });
+         }
+
+         // Default INR
+         return '₹' + amount.toLocaleString('en-IN', {
+             minimumFractionDigits: 2,
+             maximumFractionDigits: 2
+         });
+     }
+
      // Remove from wishlist
      $(document).on('click', '.remove-from-wishlist', function() {
          let id = $(this).data('id');
 
          $.post('ajax/remove_from_wishlist.php', {
              product_id: id
+         }, function(res) {
+             if (res.success) {
+                 location.reload();
+             }
+         }, 'json');
+     });
+
+     // Remove item from add to cart
+     $(document).on('click', '.remove-from-cart', function() {
+         let id = $(this).data('id');
+
+         $.post('ajax/remove_from_cart.php', {
+             cart_item_id: id
          }, function(res) {
              if (res.success) {
                  location.reload();

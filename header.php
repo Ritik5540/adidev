@@ -12,6 +12,8 @@ $current_user_name = is_logged_in() && !empty($_SESSION['user_name'])
     ? $_SESSION['user_name']
     : 'My Account';
 
+$userCurrency = get_user_currency($_SESSION['user_id'] ?? 0);
+
 // Preload categories for header menu
 $header_main_categories = get_main_categories_for_menu();
 $header_sub_categories  = get_sub_categories_grouped_by_main(
@@ -32,10 +34,11 @@ $footer_sub_categories = get_sub_categories_grouped_by_main(
     'RAND()',
     ''
 );
-$trending_sub_categories = get_trending_products_random();
+$currency = get_user_currency($_SESSION['user_id'] ?? 0);
+$trending_sub_categories = get_trending_products_random($limit = 15 , $currency);
 $best_selling_products = get_best_selling_products(3);
-$new_arrivals = get_new_arrival_products(5);
-$favorite_products = get_recommended_products(15);
+$new_arrivals = get_new_arrival_products(5 , $currency);
+$favorite_products = get_recommended_products(15 , null, $currency);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +52,7 @@ $favorite_products = get_recommended_products(15);
     <title><?php echo htmlspecialchars($meta_title); ?></title>
     <meta name="description" content="<?php echo htmlspecialchars($meta_description); ?>">
     <meta name="keywords" content="<?php echo htmlspecialchars($meta_keywords); ?>">
+    <meta name="currency" content="<?php echo htmlspecialchars($userCurrency); ?>">
     <link rel="icon" type="image/png" href="assets/images/favicon.ico">
     <link rel="stylesheet" href="assets/css/all.min.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -173,6 +177,12 @@ $favorite_products = get_recommended_products(15);
                             </h3>
                         </div>
                     </div>
+                    <div class="topbar_right d-flex flex-wrap align-items-center justify-content-end">
+                        <select class="select_js">
+                            <option value="INR" <?php echo $userCurrency === 'INR' ? 'selected' : ''; ?>>INR</option>
+                            <option value="USD" <?php echo $userCurrency === 'USD' ? 'selected' : ''; ?>>USD</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -243,7 +253,7 @@ $favorite_products = get_recommended_products(15);
                                 </ul>
                             </li>
 
-                            <li><a href="#">pages <i class="fas fa-chevron-down"></i></a>
+                            <!-- <li><a href="#">pages <i class="fas fa-chevron-down"></i></a>
                                 <ul class="menu_droapdown">
                                     <li><a href="category.php">Category</a></li>
                                     <li><a href="cart.php">cart view</a></li>
@@ -260,7 +270,7 @@ $favorite_products = get_recommended_products(15);
                                     <li><a href=" forgot_password.php">forgot password</a></li>
                                     <li><a href="dashboard.php">Dashboard</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
                             <li><a href="about.php">About-Us</a></li>
                             <!-- <li><a href="blog.php">Blogs</a></li> -->
                             <li><a href="contact_us.php">contact</a></li>
@@ -302,7 +312,7 @@ $favorite_products = get_recommended_products(15);
                                             Dashboard
                                         </a>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="my-profile.php">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -311,8 +321,8 @@ $favorite_products = get_recommended_products(15);
                                             </svg>
                                             my account
                                         </a>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <!-- <li>
                                         <a href="dashboard_order.php">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -321,9 +331,9 @@ $favorite_products = get_recommended_products(15);
                                             </svg>
                                             my order
                                         </a>
-                                    </li>
+                                    </li> -->
                                     <li>
-                                        <a href="dashboard_wishlist.php">
+                                        <a href="wishlist.php">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -362,7 +372,7 @@ $favorite_products = get_recommended_products(15);
         </div>
     </nav>
     <?php
-    $user_id = current_user_id();
+    $user_id = current_user_id() ?? 0;
     $cart_items = $user_id ? get_user_cart($user_id) : [];
 
     $subtotal = 0;
@@ -445,6 +455,14 @@ $favorite_products = get_recommended_products(15);
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i
                     class="fal fa-times"></i></button>
             <div class="offcanvas-body">
+                <ul class="mobile_currency">
+                    <li>
+                        <select class="select_js">
+                            <option value="INR" <?php echo $userCurrency === 'INR' ? 'selected' : ''; ?>>INR</option>
+                            <option value="USD" <?php echo $userCurrency === 'USD' ? 'selected' : ''; ?>>USD</option>
+                        </select>
+                    </li>
+                </ul>
                 <ul class="mobile_menu_header d-flex flex-wrap">
                     <!-- <li>
                         <a href="compare.php">
