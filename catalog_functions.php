@@ -28,10 +28,10 @@ function get_user_details(int $user_id): ?array
 function pricing_format($amount, $currency = 'INR'): string
 {
     if ($currency === 'USD') {
-        return '$' . number_format($amount, 2);
+        return '$ ' . number_format($amount, 2);
     }
     // Default to INR formatting
-    return '₹' . number_format($amount, 2);
+    return '₹ ' . number_format($amount, 2);
 }
 
 /**
@@ -154,14 +154,14 @@ function get_primary_image_for_product(int $productId): ?string
 }
 
 function get_products($filters = [], $currency = 'INR')
-{    
+{
     // 🔥 Currency based column select
-    $priceColumn = ($currency === 'USD') 
-        ? 'p.usd_base_retail_price' 
+    $priceColumn = ($currency === 'USD')
+        ? 'p.usd_base_retail_price'
         : 'p.base_retail_price';
 
-    $mrpColumn = ($currency === 'USD') 
-        ? 'p.usd_mrp' 
+    $mrpColumn = ($currency === 'USD')
+        ? 'p.usd_mrp'
         : 'p.mrp';
 
     $conditions = ['p.is_active = 1'];
@@ -574,15 +574,15 @@ function get_featured_products($limit = 5)
  * @param int $excludeId Product ID to exclude (optional)
  * @return array
  */
-function get_recommended_products($limit = 15, $excludeId = null , $currency = 'INR')
-{   
+function get_recommended_products($limit = 15, $excludeId = null, $currency = 'INR')
+{
     // 🔥 Currency based column select
-    $priceColumn = ($currency === 'USD') 
-        ? 'p.usd_base_retail_price' 
+    $priceColumn = ($currency === 'USD')
+        ? 'p.usd_base_retail_price'
         : 'p.base_retail_price';
 
-    $mrpColumn = ($currency === 'USD') 
-        ? 'p.usd_mrp' 
+    $mrpColumn = ($currency === 'USD')
+        ? 'p.usd_mrp'
         : 'p.mrp';
 
     // ✅ Common base condition
@@ -927,15 +927,15 @@ function get_trending_products_random($limit = 15, $currency = 'INR'): array
 /**
  * Get products with filters
  */
-function get_productsBySubCat($filters = [] , $currency = 'INR')
-{   
+function get_productsBySubCat($filters = [], $currency = 'INR')
+{
     // 🔥 Currency based column select
-    $priceColumn = ($currency === 'USD') 
-        ? 'p.usd_base_retail_price' 
+    $priceColumn = ($currency === 'USD')
+        ? 'p.usd_base_retail_price'
         : 'p.base_retail_price';
 
-    $mrpColumn = ($currency === 'USD') 
-        ? 'p.usd_mrp' 
+    $mrpColumn = ($currency === 'USD')
+        ? 'p.usd_mrp'
         : 'p.mrp';
 
     $conditions = ['p.is_active = 1'];
@@ -1735,7 +1735,7 @@ function render_empty_cart(): void
  * @param int $cart_id
  * @return void
  */
-function update_cart_totals(int $cart_id , string $currency): void
+function update_cart_totals(int $cart_id, string $currency): void
 {
     // Get totals from cart_items
     $stmt = db_execute(
@@ -1759,7 +1759,7 @@ function update_cart_totals(int $cart_id , string $currency): void
     // Calculate shipping
     $shipping = 0;
     if ($subtotal < 1000) {
-        if($currency === 'USD') {
+        if ($currency === 'USD') {
             $shipping = 5; // Flat $5 shipping for orders under $1000
         } else {
             $shipping = 50; // Flat ₹50 shipping for orders under ₹1000
@@ -1799,6 +1799,49 @@ function update_cart_totals(int $cart_id , string $currency): void
             $cart_id
         ]
     );
+}
+
+function get_user_order_count(int $user_id, string $status = 'all'): int
+{
+    $query = "SELECT COUNT(*) as order_count FROM orders WHERE user_id = ?";
+    $params = [$user_id];
+    $types = 'i';
+
+    if ($status !== 'all') {
+        $query .= " AND payment_status = ?";
+        $params[] = $status;
+        $types .= 's';
+    }
+
+    $stmt = db_execute($query, $types, $params);
+    $row = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    return (int) $row['order_count'];
+}
+
+function get_user_recent_orders(int $user_id, string $status = 'all', int $limit = 5): array
+{
+    $query = "SELECT id, order_number, amount_paid, amount_due, payment_status, created_at FROM orders WHERE user_id = ?";
+    $params = [$user_id];
+    $types = 'i';
+
+    if ($status !== 'all') {
+        $query .= " AND payment_status = ?";
+        $params[] = $status;
+        $types .= 's';
+    }
+
+    $query .= " ORDER BY created_at DESC LIMIT ?";
+    $params[] = $limit;
+    $types .= 'i';
+
+    $stmt = db_execute($query, $types, $params);
+
+    $orders = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    return $orders ?: [];
 }
 
 function encrypt_id($id)

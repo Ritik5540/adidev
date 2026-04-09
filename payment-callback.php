@@ -1,6 +1,7 @@
 <?php
 // payment-callback.php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/success-mail.php';
 session_start();
 
 $secretkey = CASHFREE_SECRET_KEY;
@@ -46,6 +47,13 @@ if ($signature == $computedSignature) {
         
         // Update invoice paid amount
         mysqli_query($GLOBALS['mysqli'], "UPDATE invoices SET paid_amount = '$orderAmount' WHERE order_id = (SELECT id FROM orders WHERE order_number = '$orderId')");
+
+        // send mail to customer
+        $order_query = mysqli_query($GLOBALS['mysqli'], "SELECT * FROM orders WHERE order_number = '$orderId'");
+        if (mysqli_num_rows($order_query) > 0) {
+            $order = mysqli_fetch_assoc($order_query);
+            send_paid_email($order);
+        }
         
         // Redirect to success page
         header("Location: thankyou.php?order_id=" . $orderId . "&payment=success");

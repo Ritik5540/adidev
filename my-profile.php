@@ -130,7 +130,7 @@
                                     <input type="hidden" name="user_id" value="<?= isset($userDetails['id']) ? $userDetails['id'] : '' ?>" />
                                 </div>
                                 <div class="mb-3">
-                                    <select class="form-control form-control-lg" id="currency" name="currency">
+                                    <select class="form-control form-control-lg" id="currency" name="currency" disabled>
                                         <option value="INR" <?php echo $userDetails['currency'] === 'INR' ? 'selected' : ''; ?>>INR</option>
                                         <option value="USD" <?php echo $userDetails['currency'] === 'USD' ? 'selected' : ''; ?>>USD</option>
                                     </select>

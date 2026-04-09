@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/catalog_functions.php';
 require_login();
 
 $page_meta = [
@@ -7,6 +8,8 @@ $page_meta = [
     'description' => 'View your order history and invoices on Adidev. Access detailed information about your past purchases, including order status, payment details, and downloadable invoices for easy reference.',
     'keywords'    => 'order invoice, purchase history, Adidev invoices, order details, payment information, downloadable invoices, Adidev account, order tracking, invoice management',
 ];
+
+$allPaidOrders = get_user_recent_orders(current_user_id() ?? 0, 'paid', 5);
 include "header.php";
 ?>
 <!--=========================
@@ -122,246 +125,49 @@ include "header.php";
                                         <th>Date</th>
                                         <th>Status</th>
                                         <th>Amount</th>
-                                        <th>Action</th>
+                                        <!-- <th>Action</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>#75HJFDYD4</td>
-                                        <td>July 16, 2023</td>
-                                        <td><span class="complete">Completed</span></td>
-                                        <td>$200</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                                View
-                                            </a>
-                                            <a class="review_order" href="dashboard_order_review.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-                                                </svg>
-                                                Review
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJF6WER</td>
-                                        <td>June 23, 2023</td>
-                                        <td><span class="active">Active</span></td>
-                                        <td>$60</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
+                                    <?php if (!empty($allPaidOrders)) : ?>
 
-                                                View
-                                            </a>
-                                            <a class="cancel_order" href="dashboard_order_cancel.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M6 18 18 6M6 6l12 12" />
-                                                </svg>
-                                                Cancel
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJF457G</td>
-                                        <td>Aug 18, 2023</td>
-                                        <td><span class="complete">Completed</span></td>
-                                        <td>$180</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                                View
-                                            </a>
-                                            <a class="review_order" href="dashboard_order_review.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-                                                </svg>
-                                                Review
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJF5FKI</td>
-                                        <td>June 22, 2023</td>
-                                        <td><span class="complete">Completed</span></td>
-                                        <td>$140</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
+                                        <?php foreach ($allPaidOrders as $order) :
+                                            $isPaid = ($order['payment_status'] === 'paid');
 
-                                                View
-                                            </a>
-                                            <a class="review_order" href="dashboard_order_review.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-                                                </svg>
-                                                Review
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJF47O7</td>
-                                        <td>Jan 12, 2023</td>
-                                        <td><span class="cancel">Canceled</span></td>
-                                        <td>$80</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                                View
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJF458Y</td>
-                                        <td>May 14, 2023</td>
-                                        <td><span class="cancel">Canceled</span></td>
-                                        <td>$240</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                                View
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJFKJGT3</td>
-                                        <td>June 23, 2023</td>
-                                        <td><span class="active">Active</span></td>
-                                        <td>$200</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                                View
-                                            </a>
-                                            <a class="cancel_order" href="dashboard_order_cancel.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M6 18 18 6M6 6l12 12" />
-                                                </svg>
-                                                Cancel
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJFUUE4</td>
-                                        <td>Aug 20, 2023</td>
-                                        <td><span class="complete">Completed</span></td>
-                                        <td>$200</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                                View
-                                            </a>
-                                            <a class="review_order" href="dashboard_order_review.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-                                                </svg>
-                                                Review
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#75HJJYTSFE</td>
-                                        <td>Aug 20, 2023</td>
-                                        <td><span class="complete">Completed</span></td>
-                                        <td>$200</td>
-                                        <td>
-                                            <a href="dashboard_order_invoice.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                                View
-                                            </a>
-                                            <a class="review_order" href="dashboard_order_review.php">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-                                                </svg>
-                                                Review
-                                            </a>
-                                        </td>
-                                    </tr>
+                                            $statusClass = $isPaid ? 'complete' : 'pending';
+                                            $amountClass = $isPaid ? 'paid' : 'pending';
+
+                                            $statusText = strtoupper($order['payment_status']);
+                                            $amount = $isPaid ? $order['amount_paid'] : $order['amount_due'];
+                                        ?>
+
+                                            <tr>
+                                                <td><?= htmlspecialchars($order['order_number']) ?></td>
+
+                                                <td><?= date('d M Y', strtotime($order['created_at'])) ?></td>
+
+                                                <td >
+                                                    <span class="<?= $statusClass ?>"><?= $statusText ?></span>
+                                                </td>
+
+                                                <td>
+                                                    <span class="status <?= $amountClass ?>">
+                                                        <?= pricing_format($amount, get_user_currency(current_user_id() ?? 0)) ?>
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                        <?php endforeach; ?>
+
+                                    <?php else : ?>
+
+                                        <tr>
+                                            <td colspan="5" style="text-align: center;">
+                                                No recent orders found.
+                                            </td>
+                                        </tr>
+
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -369,7 +175,6 @@ include "header.php";
                 </div>
             </div>
         </div>
-    </div>
 </section>
 <!--============================
         DSHBOARD END
