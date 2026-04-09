@@ -21,6 +21,7 @@ function register_user(array $data, array &$errors): bool
     $phone      = trim($data['phone'] ?? '');
     $password   = $data['password'] ?? '';
     $confirm    = $data['confirm_password'] ?? '';
+    $currency    = $data['currency'] ?? 'INR';
 
     if ($first_name === '') {
         $errors[] = 'First name is required.';
@@ -61,8 +62,8 @@ function register_user(array $data, array &$errors): bool
     $display_name  = trim($first_name . ' ' . $last_name);
     $ip            = $_SERVER['REMOTE_ADDR'] ?? null;
 
-    $insertSql = 'INSERT INTO users (user_type, first_name, last_name, display_name, email, phone, password_hash, registered_from_ip)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    $insertSql = 'INSERT INTO users (user_type, first_name, last_name, display_name, email, phone, password_hash, currency, registered_from_ip)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     $insertParams = [
         'customer',
@@ -72,10 +73,11 @@ function register_user(array $data, array &$errors): bool
         $email,
         $phone,
         $password_hash,
+        $currency,
         $ip,
     ];
 
-    $insertStmt = db_execute($insertSql, 'ssssssss', $insertParams);
+    $insertStmt = db_execute($insertSql, 'sssssssss', $insertParams);
 
     if ($insertStmt->affected_rows <= 0) {
         $errors[] = 'Failed to create account. Please try again.';
