@@ -55,14 +55,14 @@
                      <div class="table-responsive">
                          <table class="table">
                              <tbody>
-                                <?php $user_id = current_user_id() ?? 0;
+                                 <?php $user_id = current_user_id() ?? 0;
                                     $currency = get_user_currency($user_id);
-                                ?>
+                                    ?>
                                  <?php if (!empty($cart_items)) : ?>
-                                    
+
                                      <?php foreach ($cart_items as $item) : ?>
 
-                                         <tr>
+                                         <tr data-product-id="<?= (int)$item['product_id'] ?>">
 
                                              <!-- checkbox -->
                                              <td class="cart_page_checkbox">
@@ -254,23 +254,55 @@
      // EVENTS
      document.addEventListener("click", function(e) {
 
+         let qtyBox = e.target.closest(".details_qty_input");
+         if (!qtyBox) return;
+
+         let input = qtyBox.querySelector(".qty-input");
+         let row = e.target.closest("tr");
+
+         // IMPORTANT: product_id pass karo (HTML me add karna padega)
+         let productId = row.getAttribute("data-product-id");
+
+         let qty = parseInt(input.value || 1);
+
+         // PLUS
          if (e.target.closest(".plus")) {
-             let input = e.target.closest(".details_qty_input").querySelector(".qty-input");
-             input.value = parseInt(input.value || 1) + 1;
-             calculateCart();
+             qty++;
+             input.value = qty;
+             updateCart(productId, 1); // increment by 1
          }
 
+         // MINUS
          if (e.target.closest(".minus")) {
-             let input = e.target.closest(".details_qty_input").querySelector(".qty-input");
-             let val = parseInt(input.value || 1);
-             if (val > 1) input.value = val - 1;
-             calculateCart();
-         }
-
-         if (e.target.classList.contains("cart-check")) {
-             calculateCart();
+             if (qty > 1) {
+                 qty--;
+                 input.value = qty;
+                 updateCart(productId, -1); // decrement by 1
+             }
          }
      });
+
+     // AJAX FUNCTION
+     function updateCart(productId, qtyChange) {
+         fetch("ajax/add_to_cart.php", {
+                 method: "POST",
+                 headers: {
+                     "Content-Type": "application/x-www-form-urlencoded"
+                 },
+                 body: `product_id=${productId}&quantity=${qtyChange}`
+             })
+             .then(res => res.json())
+             .then(data => {
+                 if (data.success) {
+                     calculateCart(); // UI update
+                 } else if (data.redirect) {
+                     window.location.href = data.redirect_url;
+                 } else {
+                     alert(data.message);
+                 }
+             })
+             .catch(err => console.error(err));
+     }
 
      document.addEventListener("input", function(e) {
          if (e.target.classList.contains("qty-input")) {

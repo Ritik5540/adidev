@@ -33,7 +33,7 @@ function send_paid_email($order)
         $mail->Port = 587;
 
         // Debug (optional but useful)
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
         $mail->Debugoutput = function ($str, $level) {
             writeLog("SMTP DEBUG: $str");
         };

@@ -17,7 +17,7 @@ if (!is_logged_in()) {
 }
 
 $product_id = (int) ($_POST['product_id'] ?? 0);
-$quantity   = max(1, (int) ($_POST['quantity'] ?? 1));
+$quantity = (int) ($_POST['quantity'] ?? 1);
 
 if ($product_id <= 0) {
     echo json_encode(['success' => false, 'message' => 'Invalid product']);
@@ -90,9 +90,14 @@ if($currency === 'USD') {
 
 if ($item) {
     $new_qty = $item['quantity'] + $quantity;
-    // FIX: Update total_price as well when quantity changes
+
+    // minimum 1 hona chahiye
+    if ($new_qty < 1) {
+        $new_qty = 1;
+    }
+
     $new_total_price = $item['unit_price'] * $new_qty;
-    
+
     db_execute(
         "UPDATE cart_items 
          SET quantity = ?, total_price = ?, updated_at = NOW() 
