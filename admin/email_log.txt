@@ -1,0 +1,1326 @@
+[2026-04-11 05:57:23] ---- START MAIL PROCESS ----
+[2026-04-11 05:57:23] SMTP DEBUG: SERVER -> CLIENT: 220 ESMTP smtp.hostinger.com
+
+[2026-04-11 05:57:23] SMTP DEBUG: CLIENT -> SERVER: EHLO adidevmanufacturing.com
+
+[2026-04-11 05:57:23] SMTP DEBUG: SERVER -> CLIENT: 250-smtp.hostinger.com
+250-PIPELINING
+250-SIZE 48811212
+250-ETRN
+250-STARTTLS
+250-AUTH PLAIN LOGIN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 CHUNKING
+
+[2026-04-11 05:57:23] SMTP DEBUG: CLIENT -> SERVER: STARTTLS
+
+[2026-04-11 05:57:23] SMTP DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+[2026-04-11 05:57:23] SMTP DEBUG: CLIENT -> SERVER: EHLO adidevmanufacturing.com
+
+[2026-04-11 05:57:23] SMTP DEBUG: SERVER -> CLIENT: 250-smtp.hostinger.com
+250-PIPELINING
+250-SIZE 48811212
+250-ETRN
+250-AUTH PLAIN LOGIN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 CHUNKING
+
+[2026-04-11 05:57:23] SMTP DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+[2026-04-11 05:57:24] SMTP DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: [credentials hidden]
+[2026-04-11 05:57:24] SMTP DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: [credentials hidden]
+[2026-04-11 05:57:24] SMTP DEBUG: SERVER -> CLIENT: 235 2.7.0 Authentication successful
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: MAIL FROM:<support@adidevmanufacturing.com>
+
+[2026-04-11 05:57:24] SMTP DEBUG: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: RCPT TO:<gouravvish.itscient@gmail.com>
+
+[2026-04-11 05:57:24] SMTP DEBUG: SERVER -> CLIENT: 250 2.1.5 Ok
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: DATA
+
+[2026-04-11 05:57:24] SMTP DEBUG: SERVER -> CLIENT: 354 End data with <CR><LF>.<CR><LF>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: Date: Sat, 11 Apr 2026 05:57:23 +0530
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: To: gouravvish.itscient@gmail.com
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: From: ADIDEV LOGIN <support@adidevmanufacturing.com>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: Subject: ADIDEV LOGIN OTP
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: Message-ID: <OoB1MS4a3TgbhYDNL8W0BaGoavdLvjQnrGZ2gEsHA@adidevmanufacturing.com>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.2 (https://github.com/PHPMailer/PHPMailer)
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: <!DOCTYPE html>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <html>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <head>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <meta charset="UTF-8">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <title>ADIDEV Login OTP</title>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <style>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         body{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         margin:0;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:0;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:#f4f7f6;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-family:Arial, Helvetica, sans-serif;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .wrapper{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         width:100%;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 15px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .container{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         max-width:600px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         margin:auto;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:#ffffff;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         border-radius:12px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         overflow:hidden;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         /* HEADER */
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .header{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background: linear-gradient(135deg,#1565c0,#0a0a2a);
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         color:#ffffff;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 20px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         position:relative;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .header h1{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         margin:0;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-size:22px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         letter-spacing:0.5px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         /* CONTENT */
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .content{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 25px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         color:#333;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-size:15px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         line-height:1.6;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .greeting{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-size:16px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         margin-bottom:10px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         /* OTP BOX */
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .otp-box{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         margin:30px 0;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .otp{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         display:inline-block;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:16px 32px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-size:32px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         letter-spacing:6px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:#0a0a2a;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         color:#ff6b35;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         border:2px dashed #ff6b35;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         border-radius:10px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         /* NOTE */
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .note{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:#fff3f8;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:14px 16px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         border-radius:6px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-size:13px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         color:#a9446a;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         margin-top:15px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         border-left:4px solid #e91e8c;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         /* BUTTON */
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .btn{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         display:inline-block;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         margin-top:20px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:12px 25px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:#1565c0;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         color:#ffffff !important;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         text-decoration:none;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         border-radius:6px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .btn:hover{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:#ff6b35;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         /* FOOTER */
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .footer{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-size:12px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         color:#888;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         padding:20px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:#f9f9f9;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .footer a{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         color:#1565c0;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         text-decoration:none;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         /* subtle glow */
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         .header::after{
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         content:"";
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         position:absolute;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         width:200px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         height:200px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         background:radial-gradient(circle,#e91e8c33,transparent);
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         top:-50px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         right:-50px;
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </style>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </head>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <body>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="wrapper">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="container">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="header">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <h1>ADIDEV Secure Login</h1>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="content">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <p class="greeting">Hello Admin User,</p>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <p>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         We received a request to log in to your ADIDEV account.  
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         Use the One-Time Password (OTP) below to continue:
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="otp-box">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="otp">125800</div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <p>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         This OTP is valid for <strong>5 minutes</strong>.  
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         For your security, do not share this code with anyone.
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="note">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         If you didn’t try to log in, you can safely ignore this email.  
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         Your account remains secure.
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <p style="margin-top:25px;">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         Thanks,<br>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <strong>ADIDEV Security Team</strong>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         <div class="footer">
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         © 2026 ADIDEV Manufacturing<br>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         This is an automated message, please do not reply.
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </body>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER:         </html>
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-11 05:57:24] SMTP DEBUG: CLIENT -> SERVER: .
+
+[2026-04-11 05:57:25] SMTP DEBUG: SERVER -> CLIENT: 250 2.0.0 Ok: queued as 4fsvd83wBWz3wgS
+
+[2026-04-11 05:57:25] SMTP DEBUG: CLIENT -> SERVER: QUIT
+
+[2026-04-11 05:57:25] SMTP DEBUG: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[2026-04-11 05:57:25] MAIL SENT SUCCESSFULLY to gouravvish.itscient@gmail.com
+[2026-04-11 05:57:25] ---- END MAIL PROCESS ----
+[2026-04-19 07:14:12] ---- START MAIL PROCESS ----
+[2026-04-19 07:14:21] SMTP DEBUG: SERVER -> CLIENT: 220 ESMTP smtp.hostinger.com
+
+[2026-04-19 07:14:21] SMTP DEBUG: CLIENT -> SERVER: EHLO localhost
+
+[2026-04-19 07:14:21] SMTP DEBUG: SERVER -> CLIENT: 250-smtp.hostinger.com
+250-PIPELINING
+250-SIZE 48811212
+250-ETRN
+250-STARTTLS
+250-AUTH PLAIN LOGIN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 CHUNKING
+
+[2026-04-19 07:14:21] SMTP DEBUG: CLIENT -> SERVER: STARTTLS
+
+[2026-04-19 07:14:21] SMTP DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+[2026-04-19 07:14:22] SMTP DEBUG: CLIENT -> SERVER: EHLO localhost
+
+[2026-04-19 07:14:22] SMTP DEBUG: SERVER -> CLIENT: 250-smtp.hostinger.com
+250-PIPELINING
+250-SIZE 48811212
+250-ETRN
+250-AUTH PLAIN LOGIN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 CHUNKING
+
+[2026-04-19 07:14:22] SMTP DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+[2026-04-19 07:14:22] SMTP DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+[2026-04-19 07:14:22] SMTP DEBUG: CLIENT -> SERVER: [credentials hidden]
+[2026-04-19 07:14:22] SMTP DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+[2026-04-19 07:14:22] SMTP DEBUG: CLIENT -> SERVER: [credentials hidden]
+[2026-04-19 07:14:23] SMTP DEBUG: SERVER -> CLIENT: 235 2.7.0 Authentication successful
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: MAIL FROM:<support@adidevmanufacturing.com>
+
+[2026-04-19 07:14:23] SMTP DEBUG: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: RCPT TO:<gouravvish.itscient@gmail.com>
+
+[2026-04-19 07:14:23] SMTP DEBUG: SERVER -> CLIENT: 250 2.1.5 Ok
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: DATA
+
+[2026-04-19 07:14:23] SMTP DEBUG: SERVER -> CLIENT: 354 End data with <CR><LF>.<CR><LF>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: Date: Sun, 19 Apr 2026 07:14:13 +0530
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: To: gouravvish.itscient@gmail.com
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: From: ADIDEV LOGIN <support@adidevmanufacturing.com>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: Subject: ADIDEV LOGIN OTP
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: Message-ID: <ltdQtxfLTslRMeR9XWbVmUG9869P2h8c6Keg0EB2GE@localhost>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.2 (https://github.com/PHPMailer/PHPMailer)
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: <!DOCTYPE html>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <html>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <head>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <meta charset="UTF-8">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <title>ADIDEV Login OTP</title>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <style>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         body{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         margin:0;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:0;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:#f4f7f6;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-family:Arial, Helvetica, sans-serif;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .wrapper{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         width:100%;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 15px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .container{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         max-width:600px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         margin:auto;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:#ffffff;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         border-radius:12px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         overflow:hidden;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         /* HEADER */
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .header{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background: linear-gradient(135deg,#1565c0,#0a0a2a);
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         color:#ffffff;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 20px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         position:relative;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .header h1{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         margin:0;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-size:22px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         letter-spacing:0.5px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         /* CONTENT */
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .content{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 25px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         color:#333;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-size:15px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         line-height:1.6;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .greeting{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-size:16px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         margin-bottom:10px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         /* OTP BOX */
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .otp-box{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         margin:30px 0;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .otp{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         display:inline-block;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:16px 32px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-size:32px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         letter-spacing:6px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:#0a0a2a;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         color:#ff6b35;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         border:2px dashed #ff6b35;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         border-radius:10px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         /* NOTE */
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .note{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:#fff3f8;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:14px 16px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         border-radius:6px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-size:13px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         color:#a9446a;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         margin-top:15px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         border-left:4px solid #e91e8c;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         /* BUTTON */
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .btn{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         display:inline-block;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         margin-top:20px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:12px 25px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:#1565c0;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         color:#ffffff !important;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         text-decoration:none;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         border-radius:6px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .btn:hover{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:#ff6b35;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         /* FOOTER */
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .footer{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-size:12px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         color:#888;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         padding:20px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:#f9f9f9;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .footer a{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         color:#1565c0;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         text-decoration:none;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         /* subtle glow */
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         .header::after{
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         content:"";
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         position:absolute;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         width:200px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         height:200px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         background:radial-gradient(circle,#e91e8c33,transparent);
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         top:-50px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         right:-50px;
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </style>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </head>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <body>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="wrapper">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="container">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="header">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <h1>ADIDEV Secure Login</h1>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="content">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <p class="greeting">Hello Admin User,</p>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <p>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         We received a request to log in to your ADIDEV account.  
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         Use the One-Time Password (OTP) below to continue:
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="otp-box">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="otp">519615</div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <p>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         This OTP is valid for <strong>5 minutes</strong>.  
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         For your security, do not share this code with anyone.
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="note">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         If you didn’t try to log in, you can safely ignore this email.  
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         Your account remains secure.
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <p style="margin-top:25px;">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         Thanks,<br>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <strong>ADIDEV Security Team</strong>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         <div class="footer">
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         © 2026 ADIDEV Manufacturing<br>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         This is an automated message, please do not reply.
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </body>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER:         </html>
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-04-19 07:14:23] SMTP DEBUG: CLIENT -> SERVER: .
+
+[2026-04-19 07:14:24] SMTP DEBUG: SERVER -> CLIENT: 250 2.0.0 Ok: queued as 4fyry807Jlz31w5
+
+[2026-04-19 07:14:24] SMTP DEBUG: CLIENT -> SERVER: QUIT
+
+[2026-04-19 07:14:24] SMTP DEBUG: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[2026-04-19 07:14:24] MAIL SENT SUCCESSFULLY to gouravvish.itscient@gmail.com
+[2026-04-19 07:14:24] ---- END MAIL PROCESS ----
+[2026-05-07 22:18:36] ---- START MAIL PROCESS ----
+[2026-05-07 22:18:48] SMTP DEBUG: SERVER -> CLIENT: 220 ESMTP smtp.hostinger.com
+
+[2026-05-07 22:18:48] SMTP DEBUG: CLIENT -> SERVER: EHLO localhost
+
+[2026-05-07 22:18:48] SMTP DEBUG: SERVER -> CLIENT: 250-smtp.hostinger.com
+250-PIPELINING
+250-SIZE 48811212
+250-ETRN
+250-STARTTLS
+250-AUTH PLAIN LOGIN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 CHUNKING
+
+[2026-05-07 22:18:48] SMTP DEBUG: CLIENT -> SERVER: STARTTLS
+
+[2026-05-07 22:18:48] SMTP DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+[2026-05-07 22:18:49] SMTP DEBUG: CLIENT -> SERVER: EHLO localhost
+
+[2026-05-07 22:18:50] SMTP DEBUG: SERVER -> CLIENT: 250-smtp.hostinger.com
+250-PIPELINING
+250-SIZE 48811212
+250-ETRN
+250-AUTH PLAIN LOGIN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 CHUNKING
+
+[2026-05-07 22:18:50] SMTP DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+[2026-05-07 22:18:50] SMTP DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+[2026-05-07 22:18:50] SMTP DEBUG: CLIENT -> SERVER: [credentials hidden]
+[2026-05-07 22:18:50] SMTP DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+[2026-05-07 22:18:50] SMTP DEBUG: CLIENT -> SERVER: [credentials hidden]
+[2026-05-07 22:18:51] SMTP DEBUG: SERVER -> CLIENT: 235 2.7.0 Authentication successful
+
+[2026-05-07 22:18:51] SMTP DEBUG: CLIENT -> SERVER: MAIL FROM:<support@adidevmanufacturing.com>
+
+[2026-05-07 22:18:51] SMTP DEBUG: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[2026-05-07 22:18:51] SMTP DEBUG: CLIENT -> SERVER: RCPT TO:<gouravvish.itscient@gmail.com>
+
+[2026-05-07 22:18:51] SMTP DEBUG: SERVER -> CLIENT: 250 2.1.5 Ok
+
+[2026-05-07 22:18:51] SMTP DEBUG: CLIENT -> SERVER: DATA
+
+[2026-05-07 22:18:52] SMTP DEBUG: SERVER -> CLIENT: 354 End data with <CR><LF>.<CR><LF>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: Date: Thu, 7 May 2026 22:18:36 +0530
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: To: gouravvish.itscient@gmail.com
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: From: ADIDEV LOGIN <support@adidevmanufacturing.com>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: Subject: ADIDEV LOGIN OTP
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: Message-ID: <eqxXNoF0FjfnPoFQDwoFyIHekEXicOSEJ7bTNH0c@localhost>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.2 (https://github.com/PHPMailer/PHPMailer)
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: <!DOCTYPE html>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <html>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <head>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <meta charset="UTF-8">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <title>ADIDEV Login OTP</title>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <style>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         body{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         margin:0;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:0;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:#f4f7f6;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-family:Arial, Helvetica, sans-serif;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .wrapper{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         width:100%;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 15px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .container{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         max-width:600px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         margin:auto;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:#ffffff;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         border-radius:12px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         overflow:hidden;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         /* HEADER */
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .header{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background: linear-gradient(135deg,#1565c0,#0a0a2a);
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         color:#ffffff;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 20px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         position:relative;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .header h1{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         margin:0;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-size:22px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         letter-spacing:0.5px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         /* CONTENT */
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .content{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:30px 25px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         color:#333;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-size:15px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         line-height:1.6;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .greeting{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-size:16px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         margin-bottom:10px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         /* OTP BOX */
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .otp-box{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         margin:30px 0;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .otp{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         display:inline-block;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:16px 32px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-size:32px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         letter-spacing:6px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:#0a0a2a;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         color:#ff6b35;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         border:2px dashed #ff6b35;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         border-radius:10px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         /* NOTE */
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .note{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:#fff3f8;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:14px 16px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         border-radius:6px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-size:13px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         color:#a9446a;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         margin-top:15px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         border-left:4px solid #e91e8c;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         /* BUTTON */
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .btn{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         display:inline-block;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         margin-top:20px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:12px 25px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:#1565c0;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         color:#ffffff !important;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         text-decoration:none;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         border-radius:6px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .btn:hover{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:#ff6b35;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         /* FOOTER */
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .footer{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         text-align:center;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-size:12px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         color:#888;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         padding:20px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:#f9f9f9;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .footer a{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         color:#1565c0;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         text-decoration:none;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         font-weight:bold;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         /* subtle glow */
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         .header::after{
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         content:"";
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         position:absolute;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         width:200px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         height:200px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         background:radial-gradient(circle,#e91e8c33,transparent);
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         top:-50px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         right:-50px;
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         }
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </style>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </head>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <body>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="wrapper">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="container">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="header">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <h1>ADIDEV Secure Login</h1>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="content">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <p class="greeting">Hello Admin User,</p>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <p>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         We received a request to log in to your ADIDEV account.  
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         Use the One-Time Password (OTP) below to continue:
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="otp-box">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="otp">196510</div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <p>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         This OTP is valid for <strong>5 minutes</strong>.  
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         For your security, do not share this code with anyone.
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="note">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         If you didn’t try to log in, you can safely ignore this email.  
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         Your account remains secure.
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <p style="margin-top:25px;">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         Thanks,<br>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <strong>ADIDEV Security Team</strong>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </p>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         <div class="footer">
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         © 2026 ADIDEV Manufacturing<br>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         This is an automated message, please do not reply.
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </div>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </body>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER:         </html>
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: 
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: .
+
+[2026-05-07 22:18:52] SMTP DEBUG: SERVER -> CLIENT: 250 2.0.0 Ok: queued as 4gBJ9V1zkkz36fh
+
+[2026-05-07 22:18:52] SMTP DEBUG: CLIENT -> SERVER: QUIT
+
+[2026-05-07 22:18:53] SMTP DEBUG: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[2026-05-07 22:18:53] MAIL SENT SUCCESSFULLY to gouravvish.itscient@gmail.com
+[2026-05-07 22:18:53] ---- END MAIL PROCESS ----
