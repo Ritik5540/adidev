@@ -819,7 +819,7 @@ if ($page == 'logout') {
         <div class="login-form-section">
             <div class="logo">
                 <i class="fas fa-layer-group"></i>
-                <h1>Agriculture CMS Panel</h1>
+                <h1>Adidev CMS Panel</h1>
             </div>
 
             <?php if ($page == 'otp'): ?>

@@ -1,8 +1,8 @@
 <?php
 // payment-callback.php
+define('ADIDEV_SKIP_SESSION', true);
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/success-mail.php';
-session_start();
 
 $secretkey = CASHFREE_SECRET_KEY;
 
@@ -14,68 +14,88 @@ $paymentMode = $_POST["paymentMode"] ?? $_GET["paymentMode"] ?? '';
 $txMsg = $_POST["txMsg"] ?? $_GET["txMsg"] ?? '';
 $txTime = $_POST["txTime"] ?? $_GET["txTime"] ?? '';
 $signature = $_POST["signature"] ?? $_GET["signature"] ?? '';
+$paymentModeForOrder = 'card';
+$paymentModeLower = strtolower((string) $paymentMode);
+if (strpos($paymentModeLower, 'upi') !== false) {
+    $paymentModeForOrder = 'upi';
+} elseif (strpos($paymentModeLower, 'wallet') !== false) {
+    $paymentModeForOrder = 'wallet';
+} elseif (strpos($paymentModeLower, 'bank') !== false) {
+    $paymentModeForOrder = 'bank_transfer';
+} elseif (strpos($paymentModeLower, 'paytm') !== false) {
+    $paymentModeForOrder = 'paytm';
+} elseif (strpos($paymentModeLower, 'razorpay') !== false) {
+    $paymentModeForOrder = 'razorpay';
+}
 
 // Verify signature
 $data = $orderId . $orderAmount . $referenceId . $txStatus . $paymentMode . $txMsg . $txTime;
 $hash_hmac = hash_hmac('sha256', $data, $secretkey, true);
 $computedSignature = base64_encode($hash_hmac);
 
-// Update payment status in payment_transaction table
-if ($signature == $computedSignature) {
-    // Update payment_transaction
-    $query = "UPDATE payment_transaction SET txns_id = '$referenceId', txns_date = '$txTime', status='$txStatus' WHERE order_id = '$orderId'";
-    mysqli_query($GLOBALS['mysqli'], $query);
-    
-    // Update orders table
-    if ($txStatus == 'SUCCESS') {
-        $update_order = "UPDATE orders SET 
-                        payment_status = 'paid',
-                        status = 'payment_received',
-                        amount_paid = '$orderAmount',
-                        paid_at = NOW(),
-                        transaction_id = '$referenceId',
-                        payment_method = '$paymentMode',
-                        payment_details = '" . mysqli_real_escape_string($GLOBALS['mysqli'], json_encode([
-                            'txStatus' => $txStatus,
-                            'paymentMode' => $paymentMode,
-                            'txMsg' => $txMsg,
-                            'txTime' => $txTime,
-                            'referenceId' => $referenceId
-                        ])) . "'
-                        WHERE order_number = '$orderId'";
-        mysqli_query($GLOBALS['mysqli'], $update_order);
-        
-        // Update invoice paid amount
-        mysqli_query($GLOBALS['mysqli'], "UPDATE invoices SET paid_amount = '$orderAmount' WHERE order_id = (SELECT id FROM orders WHERE order_number = '$orderId')");
+$redirectOrderId = urlencode($orderId);
+$paymentResult = 'error';
 
-        // send mail to customer
-        $order_query = mysqli_query($GLOBALS['mysqli'], "SELECT * FROM orders WHERE order_number = '$orderId'");
-        if (mysqli_num_rows($order_query) > 0) {
-            $order = mysqli_fetch_assoc($order_query);
+if ($orderId !== '' && hash_equals((string) $computedSignature, (string) $signature)) {
+    $paymentDetails = json_encode([
+        'txStatus' => $txStatus,
+        'paymentMode' => $paymentMode,
+        'txMsg' => $txMsg,
+        'txTime' => $txTime,
+        'referenceId' => $referenceId
+    ]);
+
+    db_execute(
+        "UPDATE payment_transaction SET txns_id = ?, txns_date = ?, status = ? WHERE order_id = ?",
+        'ssss',
+        [$referenceId, $txTime, $txStatus, $orderId]
+    )->close();
+    
+    if ($txStatus == 'SUCCESS') {
+        db_execute(
+            "UPDATE orders SET
+                payment_status = 'paid',
+                status = 'payment_received',
+                amount_paid = ?,
+                paid_at = NOW(),
+                transaction_id = ?,
+                payment_method = ?,
+                payment_details = ?
+             WHERE order_number = ?",
+            'dssss',
+            [(float) $orderAmount, $referenceId, $paymentModeForOrder, $paymentDetails, $orderId]
+        )->close();
+        
+        db_execute(
+            "UPDATE invoices SET paid_amount = ? WHERE order_id = (SELECT id FROM orders WHERE order_number = ? LIMIT 1)",
+            'ds',
+            [(float) $orderAmount, $orderId]
+        )->close();
+
+        $stmt = db_execute("SELECT * FROM orders WHERE order_number = ? LIMIT 1", 's', [$orderId]);
+        $order_query = $stmt->get_result();
+        if ($order_query && $order_query->num_rows > 0) {
+            $order = $order_query->fetch_assoc();
             send_paid_email($order);
         }
-        
-        // Redirect to success page
-        header("Location: thankyou.php?order_id=" . $orderId . "&payment=success");
+        $stmt->close();
+
+        $paymentResult = 'success';
     } else {
-        // Update failed order
-        $update_order = "UPDATE orders SET 
-                        status = 'payment_failed',
-                        payment_details = '" . mysqli_real_escape_string($GLOBALS['mysqli'], json_encode([
-                            'txStatus' => $txStatus,
-                            'paymentMode' => $paymentMode,
-                            'txMsg' => $txMsg,
-                            'txTime' => $txTime
-                        ])) . "'
-                        WHERE order_number = '$orderId'";
-        mysqli_query($GLOBALS['mysqli'], $update_order);
-        
-        // Redirect to failure page
-        header("Location: thankyou.php?order_id=" . $orderId . "&payment=failed");
+        db_execute(
+            "UPDATE orders SET
+                status = 'pending',
+                payment_status = 'failed',
+                payment_details = ?
+             WHERE order_number = ?",
+            'ss',
+            [$paymentDetails, $orderId]
+        )->close();
+
+        $paymentResult = 'failed';
     }
-} else {
-    // Signature mismatch - possible tampering
-    header("Location: thankyou.php?order_id=" . $orderId . "&payment=error");
 }
+
+header("Location: thankyou.php?order_id={$redirectOrderId}&payment={$paymentResult}");
 exit;
 ?>

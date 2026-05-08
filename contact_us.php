@@ -79,13 +79,13 @@
                                 <div class="col-md-6">
                                     <div class="single_input">
                                         <label>name</label>
-                                        <input type="text" placeholder="Vipin">
+                                        <input type="text" placeholder="Enter Your Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single_input">
                                         <label>email</label>
-                                        <input type="email" placeholder="Vipin@wciprofile.com">
+                                        <input type="email" placeholder="Enter Your Email'Id">
                                     </div>
                                 </div>
                                 <div class="col-md-6">

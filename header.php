@@ -44,8 +44,6 @@ $favorite_products = get_recommended_products(15 , null, $currency);
 <html lang="en">
 
 
-<!-- Mirrored from html.narzotech.com/zenis/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Jun 2025 15:22:05 GMT -->
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
