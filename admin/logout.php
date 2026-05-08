@@ -482,7 +482,7 @@ if ($timeout) {
         </div>
 
         <div class="action-buttons">
-            <a href="/acordi/admin" class="btn btn-primary">
+            <a href="/admin" class="btn btn-primary">
                 <i class="fas fa-sign-in-alt"></i>
                 Login Again
             </a>

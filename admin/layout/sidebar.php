@@ -36,10 +36,10 @@ include 'sidebar-data.php';
                     <i class="fas fa-plus-circle"></i>
                     <span>Add Product</span>
                 </a>
-                <a href="./bulk-pricing.php" class="submenu-item <?= isActive('bulk-pricing.php'); ?>">
+                <!-- <a href="./bulk-pricing.php" class="submenu-item <?= isActive('bulk-pricing.php'); ?>">
                     <i class="fas fa-tags"></i>
                     <span>Bulk Pricing</span>
-                </a>
+                </a> -->
             </div>
 
             <a href="#categoryMenu" class="menu-item has-submenu <?= isActive(['main-categories.php', 'sub-categories.php']); ?>" data-toggle="submenu">
@@ -60,11 +60,11 @@ include 'sidebar-data.php';
                 </a>
             </div>
 
-            <a href="./inventory.php" class="menu-item <?= isActive('inventory.php'); ?>">
+            <!-- <a href="./inventory.php" class="menu-item <?= isActive('inventory.php'); ?>">
                 <i class="fas fa-warehouse"></i>
                 <span>Inventory</span>
-                <!-- <span class="menu-badge warning">Low Stock</span> -->
-            </a>
+                <span class="menu-badge warning">Low Stock</span>
+            </a> -->
         </div>
 
         <!-- ================= ORDER MANAGEMENT SECTION ================= -->
@@ -81,9 +81,9 @@ include 'sidebar-data.php';
                 <a href="./orders.php" class="submenu-item <?= isActive('orders.php'); ?>">
                     <i class="fas fa-clock"></i>
                     <span>All Orders</span>
-                    <span class="menu-badge">8</span>
+                    <!-- <span class="menu-badge">8</span> -->
                 </a>
-                <a href="./pending-orders.php" class="submenu-item <?= isActive('pending-orders.php'); ?>">
+                <!-- <a href="./pending-orders.php" class="submenu-item <?= isActive('pending-orders.php'); ?>">
                     <i class="fas fa-hourglass-half"></i>
                     <span>Pending</span>
                     <span class="menu-badge warning">3</span>
@@ -99,16 +99,16 @@ include 'sidebar-data.php';
                 <a href="./cancelled-orders.php" class="submenu-item <?= isActive('cancelled-orders.php'); ?>">
                     <i class="fas fa-times-circle"></i>
                     <span>Cancelled</span>
-                </a>
+                </a> -->
             </div>
 
-            <a href="#bulkOrderMenu" class="menu-item has-submenu <?= isActive(['bulk-inquiries.php', 'bulk-quotations.php']); ?>" data-toggle="submenu">
+            <!-- <a href="#bulkOrderMenu" class="menu-item has-submenu <?= isActive(['bulk-inquiries.php', 'bulk-quotations.php']); ?>" data-toggle="submenu">
                 <i class="fas fa-boxes"></i>
                 <span>Bulk Orders</span> &nbsp;
                 <i class="fas fa-chevron-right submenu-icon"></i>
-                <!-- <span class="menu-badge">4</span> -->
-            </a>
-            <div class="submenu" id="bulkOrderMenu">
+                <span class="menu-badge">4</span>
+            </a> -->
+            <!-- <div class="submenu" id="bulkOrderMenu">
                 <a href="./bulk-inquiries.php" class="submenu-item <?= isActive('bulk-inquiries.php'); ?>">
                     <i class="fas fa-question-circle"></i>
                     <span>Inquiries</span>
@@ -118,18 +118,18 @@ include 'sidebar-data.php';
                     <i class="fas fa-file-invoice"></i>
                     <span>Quotations</span>
                 </a>
-            </div>
+            </div> -->
         </div>
 
         <!-- ================= CUSTOMER MANAGEMENT SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Customer Management</div>
 
             <a href="#customerMenu" class="menu-item has-submenu <?= isActive(['customers.php', 'customer-groups.php', 'customer-details.php']); ?>" data-toggle="submenu">
                 <i class="fas fa-user-friends"></i>
                 <span>Customers</span>
                 <i class="fas fa-chevron-right submenu-icon"></i>
-                <!-- <span class="menu-badge">156</span> -->
+                <span class="menu-badge">156</span>
             </a>
             <div class="submenu" id="customerMenu">
                 <a href="./customers.php" class="submenu-item <?= isActive('customers.php'); ?>">
@@ -164,17 +164,17 @@ include 'sidebar-data.php';
                     <span>Serviceable Pincodes</span>
                 </a>
             </div>
-        </div>
+        </div> -->
 
         <!-- ================= MARKETING & PROMOTIONS SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Marketing</div>
 
             <a href="#couponMenu" class="menu-item has-submenu <?= isActive(['coupons.php', 'coupon-add.php']); ?>" data-toggle="submenu">
                 <i class="fas fa-ticket-alt"></i>
                 <span>Coupons</span>
                 <i class="fas fa-chevron-right submenu-icon"></i>
-                <!-- <span class="menu-badge">5</span> -->
+                 <span class="menu-badge">5</span>
             </a>
             <div class="submenu" id="couponMenu">
                 <a href="./coupons.php" class="submenu-item <?= isActive('coupons.php'); ?>">
@@ -192,7 +192,7 @@ include 'sidebar-data.php';
                 <i class="fas fa-star"></i>
                 <span>Reviews</span>
                 <i class="fas fa-chevron-right submenu-icon"></i>
-                <!-- <span class="menu-badge">23</span> -->
+                <span class="menu-badge">23</span>
             </a>
             <div class="submenu" id="reviewMenu">
                 <a href="./reviews.php" class="submenu-item <?= isActive('reviews.php'); ?>">
@@ -210,12 +210,21 @@ include 'sidebar-data.php';
             <a href="./wishlist.php" class="menu-item <?= isActive('wishlist.php'); ?>">
                 <i class="fas fa-heart"></i>
                 <span>Wishlists</span>
-                <!-- <span class="menu-badge">45</span> -->
+                <span class="menu-badge">45</span>
+            </a>
+             
+        </div> -->
+
+        <div class="menu-section">
+            <!-- <div class="menu-section-title">Main</div> -->
+            <a href="./reviews.php" class="menu-item <?= isActive('reviews.php'); ?>">
+                <i class="fas fa-star"></i>
+                <span>Reviews</span>
             </a>
         </div>
 
         <!-- ================= FINANCE & REPORTING SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Finance</div>
 
             <a href="#invoiceMenu" class="menu-item has-submenu <?= isActive(['invoices.php']); ?>" data-toggle="submenu">
@@ -254,30 +263,30 @@ include 'sidebar-data.php';
                 <i class="fas fa-chart-line"></i>
                 <span>Price History</span>
             </a>
-        </div>
+        </div> -->
 
         <!-- ================= DOCUMENT SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Document Management</div>
 
             <a href="./documents.php" class="menu-item <?= isActive('documents.php'); ?>">
                 <i class="fas fa-file-alt"></i>
                 <span>Documents</span>
             </a>
-        </div>
+        </div> -->
 
         <!-- ================= Gallery SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Gallery Management</div>
 
             <a href="./gallery.php" class="menu-item <?= isActive('gallery.php'); ?>">
                 <i class="fas fa-images"></i>
                 <span>Gallery</span>
             </a>
-        </div>
+        </div> -->
 
         <!-- ================= SUPPORT & SERVICE SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Support</div>
 
             <a href="#ticketMenu" class="menu-item has-submenu <?= isActive(['support-tickets.php']); ?>" data-toggle="submenu">
@@ -312,10 +321,10 @@ include 'sidebar-data.php';
                     <span class="menu-badge">2</span>
                 </a>
             </div>
-        </div>
+        </div> -->
 
         <!-- ================= SYSTEM & SECURITY SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">System</div>
 
             <a href="#adminMenu" class="menu-item has-submenu <?= isActive(['admins.php', 'admin-add.php', 'roles.php']); ?>" data-toggle="submenu">
@@ -365,10 +374,10 @@ include 'sidebar-data.php';
                     <span>Risk Reports</span>
                 </a>
             </div>
-        </div>
+        </div> -->
 
         <!-- ================= NOTIFICATIONS SECTION ================= -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Notifications</div>
 
             <a href="./notifications.php" class="menu-item <?= isActive('notifications.php'); ?>">
@@ -376,10 +385,10 @@ include 'sidebar-data.php';
                 <span>All Notifications</span>
                 <span class="menu-badge">8</span>
             </a>
-        </div>
+        </div> -->
 
         <!-- Settings Section (Original) -->
-        <div class="menu-section">
+        <!-- <div class="menu-section">
             <div class="menu-section-title">Settings</div>
             <a href="./users.php" class="menu-item <?= isActive('users.php'); ?>">
                 <i class="fas fa-users"></i>
@@ -389,7 +398,7 @@ include 'sidebar-data.php';
                 <i class="fas fa-cog"></i>
                 <span>General Settings</span>
             </a>
-        </div>
+        </div> -->
     </nav>
 </aside>
 <style>
